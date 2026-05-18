@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum SensorType {
+  TEMPERATURE
+  HUMIDITY
+  SOIL_MOISTURE
+  LIGHT
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model FarmZone {
+  id          String   @id @default(cuid())
+  name        String
+  cropType    String
+  areaM2      Float
+  latitude    Float
+  longitude   Float
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sensors     Sensor[]
+  alerts      Alert[]
+}
+
+model Sensor {
+  id           String          @id @default(cuid())
+  code         String          @unique
+  name         String
+  type         SensorType
+  unit         String
+  minThreshold Float?
+  maxThreshold Float?
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  farmZoneId   String
+  farmZone     FarmZone        @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  readings     SensorReading[]
+}
+
+model SensorReading {
+  id         String   @id @default(cuid())
+  value      Float
+  recordedAt DateTime @default(now())
+  sensorId   String
+  sensor     Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+
+  @@index([sensorId, recordedAt])
+}
+
+model Alert {
+  id         String      @id @default(cuid())
+  title      String
+  message    String
+  severity   String
+  status     AlertStatus @default(OPEN)
+  createdAt  DateTime    @default(now())
+  resolvedAt DateTime?
+  farmZoneId String
+  farmZone   FarmZone    @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+}
