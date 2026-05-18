@@ -85,3 +85,76 @@ npm run start
 ```
 Server sẽ mặc định chạy tại: http://localhost:5000.
 Kiểm tra trạng thái hệ thống qua endpoint: GET http://localhost:5000/api/health
+
+
+🔐 Module Authentication (Xác thực & Phân quyền)1. 
+Mục đích của Module AuthModule này đóng vai trò là "người gác cổng" bảo mật cho toàn bộ hệ thống Smart Farm. 
+Nó chịu trách nhiệm:
+-   Đăng ký & Đăng nhập
+-   Quản lý Phiên (Session Management):
+-   Phân quyền (RBAC): 
+Danh sách API (Routes):
+
+Dưới đây là danh sách các đường dẫn API được cung cấp bởi module Auth, phương thức gọi và yêu cầu xác thực tương ứng:
+
+| Method |       Endpoint       |   Yêu cầu Auth  |                       Chức năng chính                    |
+| :----: | :------------------: | :-------------: | :------------------------------------------------------: |
+| `POST` | `/api/auth/register` | ❌ Không        | Đăng ký tài khoản mới vào hệ thống                       |
+| `POST` | `/api/auth/login`    | ❌ Không        | Đăng nhập, nhận Access Token & gài Cookie Refresh        |
+| `POST` | `/api/auth/refresh`  | 🍪 Dùng Cookie  | Dùng Cookie để xin cấp lại Access Token mới              |
+| `POST` | `/api/auth/logout`   | 🍪 Dùng Cookie  | Xóa Cookie, thu hồi token dưới DB, hủy phiên làm việc    |
+| `GET`  | `/api/auth/me`       | 🔑 Bearer Token | Truy xuất thông tin Profile của tài khoản đang đăng nhập |
+
+
+
+📌 Bước 1: Đăng ký tài khoản (Register)
+-   Method: POST
+-   URL: http://localhost:5000/api/auth/register
+-   Body (raw - JSON):JSON
+```json
+{
+  "name": "Kỹ Sư Nông Nghiệp",
+  "email": "kysu@smartfarm.com",
+  "password": "Password123!",
+  "confirmPassword": "Password123!"
+}
+```
+Kết quả mong đợi: 
+-   Mã 201 Created. 
+-   Trả về thông tin user (không chứa mật khẩu).
+📌 Bước 2: Đăng nhập (Login)
+Method: POST
+URL: http://localhost:5000/api/auth/login
+Body (raw - JSON):JSON
+Example
+```json
+    {
+      "email": "kysu@smartfarm.com",
+      "password": "Password123!"
+    }
+```
+** Kết quả mong đợi:
+    * Mã 200 OK. 
+    *   Trả về chuỗi `accessToken` (Bạn cần copy chuỗi này để dùng cho Bước 3).
+    *   *Mẹo Postman:* Mở tab **Cookies** (kế bên Headers) bạn sẽ thấy hệ thống tự động lưu một cookie tên là `refreshToken`.
+
+#### 📌 Bước 3: Lấy profile (Get Me) - Thử nghiệm Protect Route
+*   **Method:** `GET`
+*   **URL:** `http://localhost:5000/api/auth/me`
+*   **Headers:** 
+    *   Thêm mới một cột Header.
+    *   Key: `Authorization`
+    *   Value: `Bearer <dán_chuỗi_accessToken_vừa_copy_vào_đây>` (Chú ý có chữ Bearer và khoảng trắng).
+*   **Kết quả mong đợi:** Mã 200 OK. Trả về thông tin user của bạn. Nếu sai token hoặc hết hạn sẽ báo lỗi 401.
+
+#### 📌 Bước 4: Test tự động làm mới Token (Refresh)
+*   **Method:** `POST`
+*   **URL:** `http://localhost:5000/api/auth/refresh`
+*   **Yêu cầu:** Không cần truyền Body, cũng không cần truyền Headers Auth. Trình duyệt/Postman sẽ tự gửi Cookie ngầm.
+*   **Kết quả mong đợi:** Mã 200 OK. Hệ thống cấp cho bạn một `accessToken` mới tinh. (Cookie dưới DB cũng tự động được xoay vòng).
+
+#### 📌 Bước 5: Đăng xuất (Logout)
+*   **Method:** `POST`
+*   **URL:** `http://localhost:5000/api/auth/logout`
+*   **Yêu cầu:** Không cần truyền Body, không cần Headers Auth.
+*   **Kết quả mong đợi:** Mã 200 OK. Hệ thống thu hồi Refresh Token. Mở lại tab Cookies trong Postman bạn sẽ thấy cookie `refreshToken` đã biến mất.

@@ -8,6 +8,7 @@ import { env } from './config/env';
 import { corsOptions } from './config/cors';
 import { errorHandler } from './middlewares/error.middleware';
 import { ApiResponse } from './utils/apiResponse';
+import authRoutes from './modules/auth/auth.routes';
 
 const app: Application = express();
 
@@ -33,7 +34,7 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Các Routes khác (Router - Controller - Service) sẽ được mount ở đây sau
 // Ví dụ: app.use('/api/users', userRoutes);
-
+app.use('/api/auth', authRoutes);
 // --- 3. Error Handling Middleware (luôn để cuối cùng) ---
 app.use(errorHandler);
 
