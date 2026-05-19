@@ -2,16 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Home, Leaf, Map, Radio } from "lucide-react";
+import { BellRing, Home, Leaf, MapPinned, RadioTower } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const items = [
-  { title: "Home", href: "/dashboard", icon: Home },
-  { title: "Vùng", href: "/dashboard/fields/north-greenhouse", icon: Leaf },
-  { title: "Sensor", href: "/dashboard/sensors", icon: Radio },
-  { title: "Alert", href: "/dashboard/alerts", icon: Bell },
-  { title: "Map", href: "/dashboard/map", icon: Map },
+  { title: "Home", href: "/dashboard", match: "/dashboard", icon: Home },
+  {
+    title: "Vùng",
+    href: "/dashboard/zones/north-greenhouse",
+    match: "/dashboard/zones",
+    icon: Leaf,
+  },
+  {
+    title: "Sensor",
+    href: "/dashboard/sensors",
+    match: "/dashboard/sensors",
+    icon: RadioTower,
+  },
+  {
+    title: "Alert",
+    href: "/dashboard/alerts",
+    match: "/dashboard/alerts",
+    icon: BellRing,
+  },
+  {
+    title: "Map",
+    href: "/dashboard/map",
+    match: "/dashboard/map",
+    icon: MapPinned,
+  },
 ];
 
 export function MobileNav() {
@@ -23,8 +43,8 @@ export function MobileNav() {
         const Icon = item.icon;
         const isActive =
           item.href === "/dashboard"
-            ? pathname === item.href
-            : pathname.startsWith(item.href.split("/").slice(0, 3).join("/"));
+            ? pathname === "/dashboard"
+            : pathname.startsWith(item.match);
 
         return (
           <Link

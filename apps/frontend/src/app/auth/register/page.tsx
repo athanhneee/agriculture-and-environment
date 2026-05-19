@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sprout, UserPlus } from "lucide-react";
+import { ArrowRight, Sprout, UserPlus } from "lucide-react";
 
 export default function RegisterPage() {
   return (
@@ -50,9 +50,10 @@ export default function RegisterPage() {
             </label>
             <Link
               href="/dashboard"
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
             >
               Tạo tài khoản demo
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
           </form>
 
@@ -76,8 +77,8 @@ export default function RegisterPage() {
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-emerald-100/75">
-          Giao diện đã chuẩn bị cấu trúc auth để sau này nối backend Express,
-          Prisma và cơ chế xác thực thật.
+          Cấu trúc auth đã sẵn sàng để phần sau nối backend Express, Prisma và
+          xác thực thật.
         </p>
       </section>
     </main>

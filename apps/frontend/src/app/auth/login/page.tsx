@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogIn, Sprout } from "lucide-react";
+import { ArrowRight, LogIn, Sprout } from "lucide-react";
 
 export default function LoginPage() {
   return (
@@ -16,7 +16,7 @@ export default function LoginPage() {
             Theo dõi trang trại, vùng trồng và cảnh báo trong một dashboard.
           </p>
           <p className="mt-4 max-w-md text-sm leading-6 text-emerald-100/75">
-            Màn hình đăng nhập mẫu cho frontend, chưa kết nối API ở bước này.
+            Màn hình đăng nhập demo, chưa kết nối API ở phần frontend foundation.
           </p>
         </div>
       </section>
@@ -59,9 +59,10 @@ export default function LoginPage() {
             </label>
             <Link
               href="/dashboard"
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
             >
               Vào dashboard
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
           </form>
 

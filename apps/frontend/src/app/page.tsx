@@ -1,49 +1,49 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
-  Activity,
   ArrowRight,
-  Bell,
+  BellRing,
   Leaf,
-  Map,
-  Radio,
+  MapPinned,
+  RadioTower,
   ShieldCheck,
   Sprout,
 } from "lucide-react";
 
-export default function Home() {
-  const features = [
-    {
-      title: "Vùng trồng",
-      description: "Quản lý từng khu canh tác, loại cây và trạng thái chăm sóc.",
-      icon: Leaf,
-      tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
-    },
-    {
-      title: "Cảm biến real-time",
-      description: "Theo dõi nhiệt độ, độ ẩm, ánh sáng và độ ẩm đất theo thời gian thực.",
-      icon: Radio,
-      tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
-    },
-    {
-      title: "Cảnh báo",
-      description: "Nhận tín hiệu sớm khi chỉ số vượt ngưỡng an toàn.",
-      icon: Bell,
-      tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
-    },
-    {
-      title: "Bản đồ",
-      description: "Quan sát vị trí vùng trồng, trạm cảm biến và điểm cần xử lý.",
-      icon: Map,
-      tone: "bg-lime-100 text-lime-700 dark:bg-lime-400/15 dark:text-lime-200",
-    },
-  ];
+const features = [
+  {
+    title: "Vùng trồng",
+    description: "Quản lý khu canh tác, loại cây, diện tích và trạng thái vận hành.",
+    icon: Leaf,
+    tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
+  },
+  {
+    title: "Cảm biến real-time",
+    description: "Theo dõi nhiệt độ, độ ẩm, ánh sáng và độ ẩm đất theo thời gian thực.",
+    icon: RadioTower,
+    tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
+  },
+  {
+    title: "Cảnh báo",
+    description: "Phát hiện sớm chỉ số vượt ngưỡng để xử lý trước khi cây bị ảnh hưởng.",
+    icon: BellRing,
+    tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
+  },
+  {
+    title: "Bản đồ",
+    description: "Xem vị trí vùng trồng, trạm cảm biến và điểm cần kiểm tra.",
+    icon: MapPinned,
+    tone: "bg-lime-100 text-lime-700 dark:bg-lime-400/15 dark:text-lime-200",
+  },
+];
 
+export default function HomePage() {
   return (
-    <main className="min-h-dvh overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.18),transparent_34%),linear-gradient(135deg,#f7fee7_0%,#ecfdf5_42%,#f8fafc_100%)] text-emerald-950 dark:bg-[radial-gradient(circle_at_top_left,rgba(74,222,128,0.16),transparent_34%),linear-gradient(135deg,#071b14_0%,#10241f_45%,#111827_100%)] dark:text-emerald-50">
-      <section className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
-        <header className="flex items-center justify-between gap-4">
+    <main className="min-h-dvh overflow-hidden bg-[linear-gradient(135deg,#f7fee7_0%,#ecfdf5_46%,#f8fafc_100%)] text-emerald-950 dark:bg-[linear-gradient(135deg,#071712_0%,#10231d_52%,#111827_100%)] dark:text-emerald-50">
+      <section className="farm-grid mx-auto flex min-h-dvh w-full max-w-7xl flex-col px-5 py-6 text-emerald-950/30 sm:px-8 lg:px-10 dark:text-emerald-50/20">
+        <header className="flex items-center justify-between gap-4 text-emerald-950 dark:text-emerald-50">
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-900/15">
+            <span className="flex size-11 items-center justify-center rounded-2xl bg-emerald-700 text-white shadow-lg shadow-emerald-900/15">
               <Sprout className="size-6" aria-hidden="true" />
             </span>
             <span>
@@ -55,16 +55,17 @@ export default function Home() {
               </span>
             </span>
           </Link>
+
           <nav className="flex items-center gap-2">
             <Link
               href="/auth/login"
-              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-white/70 dark:text-emerald-100 dark:hover:bg-white/10 sm:inline-flex"
+              className="hidden rounded-xl px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-white/70 dark:text-emerald-100 dark:hover:bg-white/10 sm:inline-flex"
             >
               Đăng nhập
             </Link>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-800"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-700 px-4 text-sm font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-800"
             >
               Dashboard
               <ArrowRight className="size-4" aria-hidden="true" />
@@ -72,9 +73,9 @@ export default function Home() {
           </nav>
         </header>
 
-        <div className="grid flex-1 items-center gap-10 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:py-10">
+        <div className="grid flex-1 items-center gap-10 py-12 text-emerald-950 lg:grid-cols-[0.95fr_1.05fr] lg:py-10 dark:text-emerald-50">
           <div className="max-w-3xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/75 px-3 py-1 text-sm font-medium text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-semibold text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
               <ShieldCheck className="size-4" aria-hidden="true" />
               Giám sát nông trại thông minh
             </div>
@@ -83,8 +84,8 @@ export default function Home() {
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-900/75 dark:text-emerald-50/75 sm:text-lg">
               Hệ thống frontend mô phỏng dashboard giúp người quản lý trang trại
-              theo dõi vùng trồng, cảm biến IoT, cảnh báo môi trường và bản đồ
-              vận hành trong một giao diện responsive.
+              theo dõi vùng trồng, dữ liệu cảm biến, cảnh báo môi trường và bản
+              đồ vận hành trong một giao diện responsive.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -96,57 +97,49 @@ export default function Home() {
               </Link>
               <Link
                 href="/auth/register"
-                className="inline-flex h-12 items-center justify-center rounded-xl border border-emerald-200 bg-white/75 px-6 text-sm font-semibold text-emerald-900 transition hover:bg-white dark:border-white/15 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white/80 px-6 text-sm font-semibold text-emerald-900 transition hover:bg-white dark:border-white/15 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
               >
-                Tạo tài khoản mẫu
+                Tạo tài khoản demo
               </Link>
             </div>
           </div>
 
           <div className="relative">
-            <div className="rounded-[2rem] border border-white/70 bg-white/80 p-4 shadow-2xl shadow-emerald-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
-              <div className="rounded-[1.5rem] border border-emerald-100 bg-emerald-950 p-5 text-white dark:border-white/10">
-                <div className="mb-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-emerald-100/70">Farm Overview</p>
-                    <h2 className="text-2xl font-semibold">Khu A - Nhà kính</h2>
+            <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 shadow-2xl shadow-emerald-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
+              <Image
+                src="/smart-farm-hero.png"
+                alt="Minh họa nông trại thông minh với nhà kính và cảm biến"
+                width={1100}
+                height={760}
+                priority
+                className="aspect-[11/7] w-full object-cover"
+              />
+              <div className="grid gap-3 border-t bg-white/90 p-4 dark:border-white/10 dark:bg-emerald-950/80 sm:grid-cols-3">
+                {[
+                  ["24", "sensor online"],
+                  ["3", "vùng trồng"],
+                  ["98%", "uptime"],
+                ].map(([value, label]) => (
+                  <div key={label} className="rounded-xl bg-muted p-3">
+                    <p className="text-xl font-bold">{value}</p>
+                    <p className="text-xs font-medium text-muted-foreground">
+                      {label}
+                    </p>
                   </div>
-                  <span className="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-semibold text-emerald-100">
-                    Online
-                  </span>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {["Độ ẩm đất 68%", "Nhiệt độ 27°C", "Ánh sáng 820 lux", "Gió 6 km/h"].map(
-                    (item) => (
-                      <div
-                        key={item}
-                        className="rounded-2xl border border-white/10 bg-white/10 p-4"
-                      >
-                        <Activity className="mb-4 size-5 text-lime-200" />
-                        <p className="text-sm font-medium">{item}</p>
-                      </div>
-                    ),
-                  )}
-                </div>
-                <div className="mt-4 rounded-2xl border border-amber-200/20 bg-amber-300/15 p-4 text-amber-50">
-                  <p className="text-sm font-semibold">Cảnh báo gần nhất</p>
-                  <p className="mt-1 text-sm text-amber-50/75">
-                    Độ ẩm đất khu B giảm dưới ngưỡng khuyến nghị.
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        <section className="grid gap-4 pb-8 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-4 pb-8 text-emerald-950 sm:grid-cols-2 lg:grid-cols-4 dark:text-emerald-50">
           {features.map((feature) => {
             const Icon = feature.icon;
 
             return (
               <article
                 key={feature.title}
-                className="rounded-2xl border border-emerald-100 bg-white/80 p-5 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/10"
+                className="rounded-2xl border border-emerald-100 bg-white/85 p-5 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/10"
               >
                 <div
                   className={`mb-4 flex size-11 items-center justify-center rounded-xl ${feature.tone}`}

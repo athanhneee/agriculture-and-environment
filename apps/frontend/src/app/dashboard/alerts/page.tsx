@@ -1,4 +1,4 @@
-import { AlertTriangle, Bell } from "lucide-react";
+import { AlertTriangle, BellRing } from "lucide-react";
 
 import { alerts } from "@/lib/farm-data";
 
@@ -11,7 +11,8 @@ export default function AlertsPage() {
         </p>
         <h2 className="mt-2 text-2xl font-bold">Theo dõi ngưỡng bất thường</h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Các cảnh báo mẫu giúp nhóm thiết kế luồng ưu tiên xử lý trong dashboard.
+          Các cảnh báo mẫu giúp nhóm thiết kế luồng ưu tiên xử lý trong
+          dashboard.
         </p>
       </section>
 
@@ -43,7 +44,7 @@ export default function AlertsPage() {
 
       <section className="rounded-2xl border bg-card p-5 shadow-sm">
         <div className="flex items-center gap-3">
-          <Bell className="size-5 text-emerald-700 dark:text-emerald-300" />
+          <BellRing className="size-5 text-emerald-700 dark:text-emerald-300" />
           <h3 className="text-lg font-semibold">Quy tắc cảnh báo</h3>
         </div>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">

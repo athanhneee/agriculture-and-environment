@@ -1,21 +1,21 @@
 import { notFound } from "next/navigation";
-import { Activity, Droplets, Leaf, SunMedium, Thermometer } from "lucide-react";
+import { Activity, Droplets, Leaf, SunMedium, ThermometerSun } from "lucide-react";
 
 import { cropZones } from "@/lib/farm-data";
 
 export function generateStaticParams() {
   return cropZones.map((zone) => ({
-    fieldId: zone.id,
+    zoneId: zone.id,
   }));
 }
 
-export default async function FieldDetailPage({
+export default async function ZoneDetailPage({
   params,
 }: {
-  params: Promise<{ fieldId: string }>;
+  params: Promise<{ zoneId: string }>;
 }) {
-  const { fieldId } = await params;
-  const zone = cropZones.find((item) => item.id === fieldId);
+  const { zoneId } = await params;
+  const zone = cropZones.find((item) => item.id === zoneId);
 
   if (!zone) {
     notFound();
@@ -23,7 +23,7 @@ export default async function FieldDetailPage({
 
   const metrics = [
     { label: "Độ ẩm đất", value: `${zone.soilMoisture}%`, icon: Droplets },
-    { label: "Nhiệt độ", value: `${zone.temperature}°C`, icon: Thermometer },
+    { label: "Nhiệt độ", value: `${zone.temperature}°C`, icon: ThermometerSun },
     { label: "Độ ẩm không khí", value: `${zone.humidity}%`, icon: Activity },
     { label: "Ánh sáng", value: `${zone.light} lux`, icon: SunMedium },
   ];
@@ -38,7 +38,7 @@ export default async function FieldDetailPage({
             </p>
             <h2 className="mt-2 text-2xl font-bold">{zone.name}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              {zone.crop} • Diện tích {zone.area}
+              {zone.crop} • {zone.area} • {zone.location}
             </p>
           </div>
           <span className="w-fit rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
@@ -70,26 +70,28 @@ export default async function FieldDetailPage({
         <div className="rounded-2xl border bg-card p-5 shadow-sm">
           <h3 className="text-lg font-semibold">Lịch chăm sóc</h3>
           <div className="mt-4 space-y-3">
-            {["Tưới tự động lúc 06:30", "Kiểm tra pH đất lúc 14:00", "Ghi nhận hình ảnh cây trồng lúc 17:30"].map(
-              (task) => (
-                <div
-                  key={task}
-                  className="flex items-center gap-3 rounded-xl bg-muted p-3 text-sm"
-                >
-                  <Leaf className="size-4 text-emerald-700 dark:text-emerald-300" />
-                  {task}
-                </div>
-              ),
-            )}
+            {[
+              "Tưới tự động lúc 06:30",
+              "Kiểm tra pH đất lúc 14:00",
+              "Ghi nhận hình ảnh cây trồng lúc 17:30",
+            ].map((task) => (
+              <div
+                key={task}
+                className="flex items-center gap-3 rounded-xl bg-muted p-3 text-sm"
+              >
+                <Leaf className="size-4 text-emerald-700 dark:text-emerald-300" />
+                {task}
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <h3 className="text-lg font-semibold">Biểu đồ mô phỏng</h3>
+          <h3 className="text-lg font-semibold">Độ ẩm đất trong ngày</h3>
           <div className="mt-5 flex h-64 items-end gap-3 rounded-2xl bg-muted p-4">
             {[42, 56, 49, 68, 61, 74, 69, 78].map((value, index) => (
               <div
-                key={index}
+                key={`${value}-${index}`}
                 className="flex flex-1 flex-col items-center gap-2"
               >
                 <div

@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Bell,
+  BellRing,
   LayoutDashboard,
   Leaf,
   LucideIcon,
-  Map,
-  Radio,
+  MapPinned,
+  RadioTower,
   Sprout,
 } from "lucide-react";
 
@@ -17,15 +17,41 @@ import { cn } from "@/lib/utils";
 type NavItem = {
   title: string;
   href: string;
+  match: string;
   icon: LucideIcon;
 };
 
 const navItems: NavItem[] = [
-  { title: "Tổng quan", href: "/dashboard", icon: LayoutDashboard },
-  { title: "Vùng trồng", href: "/dashboard/fields/north-greenhouse", icon: Leaf },
-  { title: "Cảm biến", href: "/dashboard/sensors", icon: Radio },
-  { title: "Cảnh báo", href: "/dashboard/alerts", icon: Bell },
-  { title: "Bản đồ", href: "/dashboard/map", icon: Map },
+  {
+    title: "Tổng quan",
+    href: "/dashboard",
+    match: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Vùng trồng",
+    href: "/dashboard/zones/north-greenhouse",
+    match: "/dashboard/zones",
+    icon: Leaf,
+  },
+  {
+    title: "Cảm biến",
+    href: "/dashboard/sensors",
+    match: "/dashboard/sensors",
+    icon: RadioTower,
+  },
+  {
+    title: "Cảnh báo",
+    href: "/dashboard/alerts",
+    match: "/dashboard/alerts",
+    icon: BellRing,
+  },
+  {
+    title: "Bản đồ",
+    href: "/dashboard/map",
+    match: "/dashboard/map",
+    icon: MapPinned,
+  },
 ];
 
 export function Sidebar() {
@@ -50,8 +76,8 @@ export function Sidebar() {
           const Icon = item.icon;
           const isActive =
             item.href === "/dashboard"
-              ? pathname === item.href
-              : pathname.startsWith(item.href.split("/").slice(0, 3).join("/"));
+              ? pathname === "/dashboard"
+              : pathname.startsWith(item.match);
 
           return (
             <Link
@@ -72,9 +98,9 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto rounded-2xl border bg-white/55 p-4 text-sm shadow-sm dark:bg-white/5">
-        <p className="font-semibold">Demo dữ liệu</p>
+        <p className="font-semibold">Frontend foundation</p>
         <p className="mt-2 leading-6 text-muted-foreground">
-          UI đang dùng dữ liệu tĩnh để nhóm dễ nối API ở bước sau.
+          Dữ liệu hiện là mock tĩnh để phần sau nối API gọn hơn.
         </p>
       </div>
     </aside>
