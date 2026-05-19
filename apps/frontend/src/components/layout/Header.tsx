@@ -2,10 +2,10 @@ import { Bell, ChevronDown, Search, UserCircle } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b bg-background/88 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div>
-          <p className="text-xs font-medium uppercase text-muted-foreground">
+          <p className="text-xs font-semibold uppercase text-muted-foreground">
             Smart Farm Dashboard
           </p>
           <h1 className="text-base font-semibold sm:text-lg">

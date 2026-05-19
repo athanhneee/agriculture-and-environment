@@ -6,41 +6,41 @@ import {
   Droplets,
   Gauge,
   Leaf,
-  Thermometer,
+  ThermometerSun,
   Wind,
 } from "lucide-react";
 
 import { alerts, cropZones, sensorReadings } from "@/lib/farm-data";
 
 export default function DashboardPage() {
-  const cards = [
+  const summaryCards = [
     {
       label: "Vùng trồng",
       value: cropZones.length.toString(),
       note: "Đang theo dõi",
       icon: Leaf,
-      color: "text-emerald-700 bg-emerald-100 dark:bg-emerald-400/15 dark:text-emerald-200",
+      tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
     },
     {
-      label: "Cảm biến online",
+      label: "Sensor online",
       value: "24",
       note: "98% uptime",
       icon: Gauge,
-      color: "text-sky-700 bg-sky-100 dark:bg-sky-400/15 dark:text-sky-200",
+      tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
     },
     {
       label: "Nhiệt độ TB",
       value: "27°C",
       note: "Trong ngưỡng",
-      icon: Thermometer,
-      color: "text-amber-700 bg-amber-100 dark:bg-amber-400/15 dark:text-amber-200",
+      icon: ThermometerSun,
+      tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
     },
     {
       label: "Cảnh báo",
       value: alerts.length.toString(),
       note: "Cần xem trong ngày",
       icon: AlertTriangle,
-      color: "text-rose-700 bg-rose-100 dark:bg-rose-400/15 dark:text-rose-200",
+      tone: "bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-200",
     },
   ];
 
@@ -53,15 +53,15 @@ export default function DashboardPage() {
               Tổng quan hôm nay
             </p>
             <h2 className="mt-2 text-2xl font-bold">
-              Tình trạng nông trại đang ổn định
+              Nông trại đang vận hành ổn định
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Dashboard demo hiển thị số liệu tĩnh để minh họa luồng giám sát
-              Smart Farm trước khi kết nối API backend.
+              Dashboard dùng mock data để minh họa luồng giám sát vùng trồng,
+              cảm biến, cảnh báo và bản đồ trước khi tích hợp API.
             </p>
           </div>
           <Link
-            href="/dashboard/fields/north-greenhouse"
+            href="/dashboard/zones/north-greenhouse"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
           >
             Xem vùng trồng
@@ -71,7 +71,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map((card) => {
+        {summaryCards.map((card) => {
           const Icon = card.icon;
 
           return (
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <span
-                  className={`flex size-11 items-center justify-center rounded-xl ${card.color}`}
+                  className={`flex size-11 items-center justify-center rounded-xl ${card.tone}`}
                 >
                   <Icon className="size-5" aria-hidden="true" />
                 </span>
@@ -98,21 +98,19 @@ export default function DashboardPage() {
         })}
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
+      <section className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
         <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold">Vùng trồng nổi bật</h2>
-              <p className="text-sm text-muted-foreground">
-                Theo dõi nhanh độ ẩm đất, nhiệt độ và trạng thái.
-              </p>
-            </div>
+          <div className="mb-5">
+            <h2 className="text-lg font-semibold">Vùng trồng nổi bật</h2>
+            <p className="text-sm text-muted-foreground">
+              Theo dõi nhanh độ ẩm đất, nhiệt độ và trạng thái chăm sóc.
+            </p>
           </div>
           <div className="space-y-3">
             {cropZones.map((zone) => (
               <Link
                 key={zone.id}
-                href={`/dashboard/fields/${zone.id}`}
+                href={`/dashboard/zones/${zone.id}`}
                 className="grid gap-3 rounded-2xl border bg-background p-4 transition hover:border-emerald-300 hover:bg-emerald-50/60 dark:hover:bg-emerald-400/10 sm:grid-cols-[1fr_auto]"
               >
                 <div>
@@ -123,7 +121,7 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {zone.crop} • {zone.area}
+                    {zone.crop} • {zone.area} • {zone.location}
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-sm sm:min-w-72">
@@ -144,7 +142,7 @@ export default function DashboardPage() {
 
         <div className="space-y-6">
           <div className="rounded-2xl border bg-card p-5 shadow-sm">
-            <h2 className="text-lg font-semibold">Cảm biến real-time</h2>
+            <h2 className="text-lg font-semibold">Realtime sensors</h2>
             <div className="mt-4 grid gap-3">
               {sensorReadings.map((reading) => (
                 <div
@@ -152,9 +150,14 @@ export default function DashboardPage() {
                   className="rounded-2xl border bg-background p-4"
                 >
                   <p className="text-sm text-muted-foreground">{reading.label}</p>
-                  <p className="mt-1 text-2xl font-bold">{reading.value}</p>
+                  <div className="mt-1 flex items-end justify-between gap-3">
+                    <p className="text-2xl font-bold">{reading.value}</p>
+                    <span className="rounded-full bg-secondary px-2 py-1 text-xs font-semibold text-secondary-foreground">
+                      {reading.change}
+                    </span>
+                  </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {reading.note}
+                    {reading.state}
                   </p>
                 </div>
               ))}
@@ -162,7 +165,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="rounded-2xl border bg-card p-5 shadow-sm">
-            <h2 className="text-lg font-semibold">Điều kiện môi trường</h2>
+            <h2 className="text-lg font-semibold">Môi trường</h2>
             <div className="mt-4 grid grid-cols-2 gap-3">
               {[
                 { label: "Mưa", value: "Không", icon: CloudSun },

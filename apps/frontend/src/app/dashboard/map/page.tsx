@@ -11,17 +11,17 @@ export default function FarmMapPage() {
         </p>
         <h2 className="mt-2 text-2xl font-bold">Sơ đồ nông trại</h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Màn hình bản đồ demo bằng Tailwind, có thể thay bằng Leaflet/Mapbox ở
-          giai đoạn tích hợp bản đồ thật.
+          Bản đồ demo bằng Tailwind, có thể thay bằng Leaflet hoặc Mapbox ở giai
+          đoạn tích hợp bản đồ thật.
         </p>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="relative min-h-[28rem] overflow-hidden rounded-2xl border bg-[linear-gradient(135deg,#dcfce7_0%,#bbf7d0_45%,#dbeafe_100%)] p-5 shadow-sm dark:bg-[linear-gradient(135deg,#143326_0%,#174333_48%,#17304a_100%)]">
+        <div className="farm-grid relative min-h-[28rem] overflow-hidden rounded-2xl border bg-[linear-gradient(135deg,#dcfce7_0%,#bbf7d0_45%,#dbeafe_100%)] p-5 text-emerald-950/20 shadow-sm dark:bg-[linear-gradient(135deg,#143326_0%,#174333_48%,#17304a_100%)] dark:text-emerald-50/15">
           {cropZones.map((zone, index) => (
             <div
               key={zone.id}
-              className="absolute rounded-2xl border border-white/70 bg-white/80 p-4 shadow-lg backdrop-blur dark:border-white/10 dark:bg-white/10"
+              className="absolute rounded-2xl border border-white/70 bg-white/85 p-4 text-foreground shadow-lg backdrop-blur dark:border-white/10 dark:bg-white/10"
               style={{
                 left: `${14 + index * 24}%`,
                 top: `${18 + (index % 2) * 38}%`,

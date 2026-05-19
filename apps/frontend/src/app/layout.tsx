@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Smart Farm",
   },
   description:
-    "Frontend dashboard for monitoring crop zones, realtime sensors, alerts, and farm maps.",
+    "Frontend dashboard for crop zones, real-time sensors, alerts, and farm maps.",
   keywords: [
     "Smart Farm",
     "Monitoring System",
