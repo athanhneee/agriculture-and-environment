@@ -12,6 +12,8 @@ import authRoutes from './modules/auth/auth.routes';
 import farmZoneRoutes from './modules/farm-zones/farm-zones.routes';
 import cropRoutes from './modules/crops/crops.routes';
 import sensorRoutes from './modules/sensors/sensors.routes';
+import sensorReadingRoutes from './modules/sensor-readings/sensorReadings.routes';
+import alertRoutes from './modules/alerts/alerts.routes';
 const app: Application = express();
 
 // --- 1. Global Middlewares ---
@@ -30,7 +32,7 @@ app.get('/api/health', (req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     environment: env.nodeEnv,
   };
-  
+
   res.status(200).json(ApiResponse.success('Health check passed', healthData));
 });
 
@@ -40,6 +42,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/farm-zones', farmZoneRoutes);
 app.use('/api/crops', cropRoutes);
 app.use('/api/sensors', sensorRoutes);
+app.use('/api/sensor-readings', sensorReadingRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // --- 3. Error Handling Middleware (luôn để cuối cùng) ---
 app.use(errorHandler);

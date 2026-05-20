@@ -173,7 +173,7 @@ async function main() {
           severity: AlertSeverity.CRITICAL,
           title: 'Độ ẩm đất xuống mức nguy hiểm',
           message: `Hệ thống ghi nhận độ ẩm đất tại khu ${zone.name} chỉ còn 18.5%. Cần kích hoạt béc phun tưới tự động ngay!`,
-          status: AlertStatus.PENDING,
+          status: AlertStatus.OPEN,
         },
       });
     }

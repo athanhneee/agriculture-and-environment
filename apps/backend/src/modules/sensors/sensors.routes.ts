@@ -1,16 +1,16 @@
 import { Router } from 'express';
 import { SensorController } from './sensors.controller';
-import { authenticate } from '../../middlewares/auth.middleware';
+import { authenticate, authorize } from '../../middlewares/auth.middleware';
 import { asyncHandler } from '../../utils/asyncHandler';
 
-const router = Router();
+const sensorRoutes = Router();
 
-router.use(authenticate);
+sensorRoutes.use(authenticate);
 
-router.get('/', asyncHandler(SensorController.getSensors));
-router.get('/:id', asyncHandler(SensorController.getSensorById));
-router.post('/', asyncHandler(SensorController.createSensor));
-router.patch('/:id', asyncHandler(SensorController.updateSensor));
-router.delete('/:id', asyncHandler(SensorController.deleteSensor));
+sensorRoutes.get('/', asyncHandler(SensorController.getSensors));
+sensorRoutes.get('/:id', asyncHandler(SensorController.getSensorById));
+sensorRoutes.post('/', authorize(['ADMIN']), asyncHandler(SensorController.createSensor));
+sensorRoutes.patch('/:id', authorize(['ADMIN']), asyncHandler(SensorController.updateSensor));
+sensorRoutes.delete('/:id', authorize(['ADMIN']), asyncHandler(SensorController.deleteSensor));
 
-export default router;
+export default sensorRoutes;
