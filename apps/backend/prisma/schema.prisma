@@ -53,6 +53,11 @@ enum AlertType {
   SOIL_DRY
   SENSOR_MALFUNCTION
   OVERHEATING
+  HIGH_TEMPERATURE
+  LOW_SOIL_MOISTURE
+  HIGH_HUMIDITY
+  LOW_LIGHT
+  PEST_RISK
 }
 
 enum AlertSeverity {
@@ -62,7 +67,7 @@ enum AlertSeverity {
 }
 
 enum AlertStatus {
-  PENDING
+  OPEN
   ACKNOWLEDGED
   RESOLVED
 }
@@ -163,7 +168,7 @@ model Alert {
   severity        AlertSeverity @default(WARNING)
   title           String
   message         String
-  status          AlertStatus   @default(PENDING)
+  status          AlertStatus   @default(OPEN)
   createdAt       DateTime      @default(now())
   resolvedAt      DateTime?
 

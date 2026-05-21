@@ -26,3 +26,17 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     return res.status(401).json(ApiResponse.error('Access Token không hợp lệ hoặc đã hết hạn'));
   }
 };
+
+export const authorize = (allowedRoles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json(ApiResponse.error('Chưa xác thực người dùng'));
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json(ApiResponse.error('Bạn không có quyền truy cập tài nguyên này (Forbidden)'));
+    }
+
+    next();
+  };
+};
