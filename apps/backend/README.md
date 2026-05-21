@@ -158,3 +158,154 @@ Example
 *   **URL:** `http://localhost:5000/api/auth/logout`
 *   **Yêu cầu:** Không cần truyền Body, không cần Headers Auth.
 *   **Kết quả mong đợi:** Mã 200 OK. Hệ thống thu hồi Refresh Token. Mở lại tab Cookies trong Postman bạn sẽ thấy cookie `refreshToken` đã biến mất.
+
+---
+
+## 🌿 Module Core (Farm Zones, Crops, Sensors)
+
+Hệ thống cung cấp 3 module lõi để quản lý nông trại:
+
+1. **Farm Zones (Vùng canh tác):** Quản lý thông tin vùng đất (diện tích, tọa độ, loại đất).
+2. **Crops (Cây trồng):** Quản lý danh sách các loại cây trồng được gieo trồng trên từng vùng canh tác.
+3. **Sensors (Cảm biến):** Quản lý thiết bị IoT giám sát chỉ số (Nhiệt độ, Độ ẩm, Ánh sáng, Độ ẩm đất) được lắp đặt tại các vùng.
+
+Tất cả các API này đều yêu cầu **Authentication (Bearer Token)** lấy từ quá trình đăng nhập.
+
+### 📍 Danh sách API (Routes)
+
+#### 1. API FarmZones (`/api/farm-zones`)
+
+| Method | Endpoint | Yêu cầu Auth | Chức năng chính |
+| :---: | :--- | :---: | :--- |
+| `GET` | `/api/farm-zones` | 🔑 Token | Lấy danh sách vùng canh tác (Hỗ trợ phân trang, lọc theo status, search) |
+| `GET` | `/api/farm-zones/:id` | 🔑 Token | Xem chi tiết vùng canh tác (Kèm danh sách crops, sensors, alerts) |
+| `POST` | `/api/farm-zones` | 🔑 Token | Tạo vùng canh tác mới |
+| `PATCH` | `/api/farm-zones/:id` | 🔑 Token | Cập nhật thông tin vùng canh tác (Chỉ Owner/Admin) |
+| `DELETE`| `/api/farm-zones/:id` | 🔑 Token | Xóa vùng canh tác (Cascade xóa crops, sensors) |
+
+#### 2. API Crops (`/api/crops`)
+
+| Method | Endpoint | Yêu cầu Auth | Chức năng chính |
+| :---: | :--- | :---: | :--- |
+| `GET` | `/api/crops` | 🔑 Token | Lấy danh sách cây trồng (Lọc theo `farmZoneId`, `status`) |
+| `GET` | `/api/crops/:id` | 🔑 Token | Xem chi tiết cây trồng |
+| `POST` | `/api/crops` | 🔑 Token | Tạo cây trồng mới vào vùng canh tác |
+| `PATCH` | `/api/crops/:id` | 🔑 Token | Cập nhật thông tin (ngày thu hoạch, trạng thái) |
+| `DELETE`| `/api/crops/:id` | 🔑 Token | Xóa cây trồng |
+
+#### 3. API Sensors (`/api/sensors`)
+
+| Method | Endpoint | Yêu cầu Auth | Chức năng chính |
+| :---: | :--- | :---: | :--- |
+| `GET` | `/api/sensors` | 🔑 Token | Lấy danh sách cảm biến (Lọc theo `farmZoneId`, `type`, `status`) |
+| `GET` | `/api/sensors/:id` | 🔑 Token | Xem chi tiết cảm biến |
+| `POST` | `/api/sensors` | 🔑 Token | Tạo cảm biến mới (Yêu cầu `code` duy nhất) |
+| `PATCH` | `/api/sensors/:id` | 🔑 Token | Cập nhật thông tin thiết bị cảm biến |
+| `DELETE`| `/api/sensors/:id` | 🔑 Token | Xóa cảm biến |
+
+---
+
+### 🧪 Hướng dẫn Test API (Postman)
+
+Để test các API này, bạn **BẮT BUỘC** phải gắn Bearer Token vào header.
+
+#### 📌 Bước 1: Gắn Authorization Header
+1. Đăng nhập qua `/api/auth/login` để lấy `accessToken`.
+2. Mở tab **Authorization** trong Postman.
+3. Chọn type là **Bearer Token**.
+4. Dán `accessToken` vào ô Token.
+
+#### 📌 Bước 2: Test API Tạo Vùng Canh Tác (Create FarmZone)
+*   **Method:** `POST`
+*   **URL:** `http://localhost:5000/api/farm-zones`
+*   **Body (raw - JSON):**
+```json
+{
+  "name": "Khu Cà Chua Dưa Lưới",
+  "area": 500,
+  "latitude": 10.762622,
+  "longitude": 106.660172,
+  "soilType": "Đất phù sa"
+}
+```
+*   **Kết quả:** Mã 201 Created. Trả về thông tin vùng canh tác mới kèm `id`. Copy `id` này.
+
+#### 📌 Bước 3: Test API Tạo Cây Trồng (Create Crop)
+*   **Method:** `POST`
+*   **URL:** `http://localhost:5000/api/crops`
+*   **Body (raw - JSON):**
+```json
+{
+  "name": "Cà chua Cherry",
+  "variety": "Giống ngoại nhập",
+  "plantedDate": "2024-05-01T00:00:00Z",
+  "farmZoneId": "<dán_id_farm_zone_từ_bước_2>"
+}
+```
+*   **Kết quả:** Mã 201 Created. `expectedHarvestDate` tự động null nếu không điền.
+
+#### 📌 Bước 4: Test API Tạo Cảm Biến (Create Sensor)
+*   **Method:** `POST`
+*   **URL:** `http://localhost:5000/api/sensors`
+*   **Body (raw - JSON):**
+```json
+{
+  "name": "Cảm biến Nhiệt Ẩm 01",
+  "code": "DHT22-ZONE1-01",
+  "type": "TEMPERATURE",
+  "unit": "°C",
+  "farmZoneId": "<dán_id_farm_zone_từ_bước_2>"
+}
+```
+*   **Kết quả:** Mã 201 Created. Thử POST lại cùng `code` sẽ nhận lỗi 400 (Mã cảm biến đã tồn tại).
+
+#### 📌 Bước 5: Test API Cập Nhật (PATCH)
+*   **Method:** `PATCH`
+*   **Cập nhật FarmZone:** `PATCH http://localhost:5000/api/farm-zones/<id>`
+*   **Cập nhật Cây Trồng (Crop):** `PATCH http://localhost:5000/api/crops/<id>`
+```json
+{
+  "status": "HARVESTED"
+}
+```
+*   **Cập nhật Cảm Biến (Sensor):** `PATCH http://localhost:5000/api/sensors/<id>`
+```json
+{
+  "status": "MAINTENANCE"
+}
+```
+*   **Kết quả:** Mã 200 OK, trả về thông tin đã được cập nhật.
+
+#### 📌 Bước 6: Test API Lấy Danh Sách (GET List)
+*   **Method:** `GET`
+*   **FarmZone:** `GET http://localhost:5000/api/farm-zones?page=1&limit=5&search=Cà Chua`
+*   **Crops:** `GET http://localhost:5000/api/crops?farmZoneId=<dán_id_farm_zone>`
+*   **Sensors:** `GET http://localhost:5000/api/sensors?type=TEMPERATURE&status=ACTIVE`
+*   **Kết quả:** Mã 200 OK. Trả về mảng dữ liệu hoặc cấu trúc phân trang (đối với FarmZone):
+```json
+{
+  "success": true,
+  "message": "Lấy danh sách vùng canh tác thành công",
+  "data": [...],
+  "metadata": {
+    "page": 1,
+    "limit": 5,
+    "total": 1,
+    "totalPages": 1
+  }
+}
+```
+
+#### 📌 Bước 7: Test API Xem Chi Tiết (GET Detail)
+*   **Method:** `GET`
+*   **FarmZone:** `GET http://localhost:5000/api/farm-zones/<id>` (Bên trong `data` trả về sẽ chứa thêm mảng `crops` và `sensors`)
+*   **Crop:** `GET http://localhost:5000/api/crops/<id>`
+*   **Sensor:** `GET http://localhost:5000/api/sensors/<id>`
+*   **Kết quả:** Mã 200 OK. Trả về thông tin chi tiết của đối tượng.
+
+#### 📌 Bước 8: Test API Xóa (DELETE)
+*   **Method:** `DELETE`
+*   **Xóa Crop:** `DELETE http://localhost:5000/api/crops/<id>`
+*   **Xóa Sensor:** `DELETE http://localhost:5000/api/sensors/<id>`
+*   **Xóa FarmZone:** `DELETE http://localhost:5000/api/farm-zones/<id>`
+*   **Kết quả:** Mã 200 OK. Lưu ý: Xóa FarmZone sẽ tự động xóa sạch (Cascade Delete) toàn bộ `crops` và `sensors` thuộc về Zone đó.

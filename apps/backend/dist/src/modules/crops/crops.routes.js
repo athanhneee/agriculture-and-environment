@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const crops_controller_1 = require("./crops.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const asyncHandler_1 = require("../../utils/asyncHandler");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.getCrops));
+router.get('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.getCropById));
+router.post('/', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.createCrop));
+router.patch('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.updateCrop));
+router.delete('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.deleteCrop));
+exports.default = router;
