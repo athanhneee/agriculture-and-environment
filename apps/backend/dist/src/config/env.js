@@ -14,4 +14,6 @@ exports.env = {
     jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'fallback_access_secret',
     jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'fallback_refresh_secret',
     isDev: process.env.NODE_ENV === 'development',
+    sensorMockEnabled: process.env.SENSOR_MOCK_ENABLED === 'true',
+    sensorMockIntervalMs: parseInt(process.env.SENSOR_MOCK_INTERVAL_MS || '5000', 10),
 };

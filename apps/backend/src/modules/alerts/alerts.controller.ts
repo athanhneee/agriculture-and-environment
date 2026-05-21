@@ -15,22 +15,22 @@ export class AlertController {
   }
 
   static async getAlertById(req: Request, res: Response) {
-    const alert = await AlertService.getAlertById(req.params.id);
+    const alert = await AlertService.getAlertById(req.params.id as string);
     res.status(200).json(ApiResponse.success('Lấy chi tiết cảnh báo thành công', alert));
   }
 
   static async acknowledgeAlert(req: Request, res: Response) {
-    const alert = await AlertService.acknowledgeAlert(req.params.id);
+    const alert = await AlertService.acknowledgeAlert(req.params.id as string);
     res.status(200).json(ApiResponse.success('Đã xác nhận cảnh báo', alert));
   }
 
   static async resolveAlert(req: Request, res: Response) {
-    const alert = await AlertService.resolveAlert(req.params.id);
+    const alert = await AlertService.resolveAlert(req.params.id as string);
     res.status(200).json(ApiResponse.success('Đã xử lý cảnh báo', alert));
   }
 
   static async deleteAlert(req: Request, res: Response) {
-    await AlertService.deleteAlert(req.params.id);
+    await AlertService.deleteAlert(req.params.id as string);
     res.status(200).json(ApiResponse.success('Đã xóa cảnh báo', null));
   }
 }

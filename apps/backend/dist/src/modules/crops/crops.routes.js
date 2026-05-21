@@ -10,5 +10,5 @@ router.get('/', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropControll
 router.get('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.getCropById));
 router.post('/', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.createCrop));
 router.patch('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.updateCrop));
-router.delete('/:id', (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.deleteCrop));
+router.delete('/:id', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(crops_controller_1.CropController.deleteCrop));
 exports.default = router;
