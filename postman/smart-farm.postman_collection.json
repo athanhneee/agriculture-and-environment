@@ -1,7 +1,8 @@
 {
   "info": {
+    "_postman_id": "c495a789-9c6f-4b2a-90e8-8bc18a6db1d8",
     "name": "Smart Farm Monitoring System",
-    "description": "API endpoints for the Smart Farm backend.",
+    "description": "Collection mẫu để demo API Smart Farm Monitoring System. Không chứa token thật; accessToken được lưu vào collection variable sau request login.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -9,83 +10,448 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Login",
+          "name": "register",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@smartfarm.com\",\n  \"password\": \"Admin@123\"\n}"
+              "raw": "{\n  \"name\": \"Demo Farmer\",\n  \"email\": \"demo.farmer@example.com\",\n  \"password\": \"FarmPassword123\",\n  \"confirmPassword\": \"FarmPassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
-              "raw": "http://localhost:5000/api/auth/login",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5000",
-              "path": ["api", "auth", "login"]
-            }
-          }
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Đăng ký tài khoản demo. Nếu email đã tồn tại, đổi email trước khi gửi."
+          },
+          "response": []
         },
         {
-          "name": "Register",
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.success && json.data && json.data.accessToken) {",
+                  "  pm.collectionVariables.set('accessToken', json.data.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@smartfarm.com\",\n  \"password\": \"Password@123\",\n  \"confirmPassword\": \"Password@123\"\n}"
+              "raw": "{\n  \"email\": \"demo.farmer@example.com\",\n  \"password\": \"FarmPassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
-              "raw": "http://localhost:5000/api/auth/register",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5000",
-              "path": ["api", "auth", "register"]
-            }
-          }
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Đăng nhập và tự động lưu accessToken vào collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Lấy thông tin người dùng hiện tại bằng Bearer accessToken."
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Statistics & Exports",
+      "name": "Farm Zones",
       "item": [
         {
-          "name": "Get Overview",
+          "name": "create farm zone",
           "request": {
-            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Khu Nhà Kính Dưa Lưới A\",\n  \"description\": \"Hệ thống nhà màng ứng dụng tưới nhỏ giọt\",\n  \"area\": 1200.5,\n  \"latitude\": 10.9983,\n  \"longitude\": 106.5024,\n  \"soilType\": \"Đất cát pha thịt nhẹ\",\n  \"status\": \"ACTIVE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "http://localhost:5000/api/statistics/overview",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5000",
-              "path": ["api", "statistics", "overview"]
-            }
-          }
+              "raw": "{{baseUrl}}/api/farm-zones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "farm-zones"
+              ]
+            },
+            "description": "Tạo vùng trồng mới. Endpoint này là đặc tả đề xuất nếu backend chưa mount route."
+          },
+          "response": []
         },
         {
-          "name": "Export Readings (Excel)",
+          "name": "list farm zones",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
-            ],
+            "header": [],
             "url": {
-              "raw": "http://localhost:5000/api/exports/readings.xlsx",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5000",
-              "path": ["api", "exports", "readings.xlsx"]
-            }
-          }
+              "raw": "{{baseUrl}}/api/farm-zones?status=ACTIVE&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "farm-zones"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lấy danh sách vùng trồng."
+          },
+          "response": []
         }
       ]
+    },
+    {
+      "name": "Crops",
+      "item": [
+        {
+          "name": "create crop",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dưa Lưới Taki\",\n  \"variety\": \"Giống Nhật Bản\",\n  \"plantedDate\": \"2026-04-22T00:00:00.000Z\",\n  \"expectedHarvestDate\": \"2026-07-06T00:00:00.000Z\",\n  \"status\": \"PLANTED\",\n  \"farmZoneId\": \"zone_001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/crops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "crops"
+              ]
+            },
+            "description": "Tạo cây trồng mới trong vùng trồng. Có thể thay zone_001 bằng id vùng trồng thật."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sensors",
+      "item": [
+        {
+          "name": "create sensor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Trạm Thống Kê IoT Mẫu 1\",\n  \"code\": \"ESP32-NODE-01\",\n  \"type\": \"ALL_IN_ONE\",\n  \"unit\": \"Hỗn hợp\",\n  \"status\": \"ACTIVE\",\n  \"farmZoneId\": \"zone_001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sensors",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sensors"
+              ]
+            },
+            "description": "Tạo cảm biến mới trong vùng trồng."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sensor Readings",
+      "item": [
+        {
+          "name": "list readings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sensor-readings?farmZoneId=zone_001&page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sensor-readings"
+              ],
+              "query": [
+                {
+                  "key": "farmZoneId",
+                  "value": "zone_001"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Lấy lịch sử dữ liệu đo cảm biến."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Alerts",
+      "item": [
+        {
+          "name": "list alerts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/alerts?status=PENDING&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alerts"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lấy danh sách cảnh báo đang chờ xử lý."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "statistics overview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/statistics/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "statistics",
+                "overview"
+              ]
+            },
+            "description": "Lấy thống kê tổng quan dashboard."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
     }
   ]
 }
