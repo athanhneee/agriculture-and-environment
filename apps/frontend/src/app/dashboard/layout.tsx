@@ -1,3 +1,4 @@
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -12,7 +13,9 @@ export default function DashboardLayout({
       <Sidebar />
       <div className="min-h-dvh md:pl-72">
         <Header />
-        <main className="px-4 pb-24 pt-5 sm:px-6 lg:px-8">{children}</main>
+        <main className="px-4 pb-24 pt-5 sm:px-6 lg:px-8">
+          <AuthGuard>{children}</AuthGuard>
+        </main>
       </div>
       <MobileNav />
     </div>
