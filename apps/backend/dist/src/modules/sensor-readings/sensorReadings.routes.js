@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const sensorReadings_controller_1 = require("./sensorReadings.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+// import { validate } from '../../middlewares/validate.middleware';
+const auth_validation_1 = require("../auth/auth.validation");
+const sensorReadings_validation_1 = require("./sensorReadings.validation");
+const asyncHandler_1 = require("../../utils/asyncHandler");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, auth_validation_1.validate)(sensorReadings_validation_1.getSensorReadingsSchema), (0, asyncHandler_1.asyncHandler)(sensorReadings_controller_1.SensorReadingController.getReadings));
+router.get('/latest', (0, asyncHandler_1.asyncHandler)(sensorReadings_controller_1.SensorReadingController.getLatestReadings));
+router.post('/', (0, auth_middleware_1.authorize)(['ADMIN']), (0, auth_validation_1.validate)(sensorReadings_validation_1.createSensorReadingSchema), (0, asyncHandler_1.asyncHandler)(sensorReadings_controller_1.SensorReadingController.createReading));
+router.delete('/:id', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(sensorReadings_controller_1.SensorReadingController.deleteReading));
+exports.default = router;

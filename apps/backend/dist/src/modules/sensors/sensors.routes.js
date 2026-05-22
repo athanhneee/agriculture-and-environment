@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const sensors_controller_1 = require("./sensors.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const asyncHandler_1 = require("../../utils/asyncHandler");
+const sensorRoutes = (0, express_1.Router)();
+sensorRoutes.use(auth_middleware_1.authenticate);
+sensorRoutes.get('/', (0, asyncHandler_1.asyncHandler)(sensors_controller_1.SensorController.getSensors));
+sensorRoutes.get('/:id', (0, asyncHandler_1.asyncHandler)(sensors_controller_1.SensorController.getSensorById));
+sensorRoutes.post('/', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(sensors_controller_1.SensorController.createSensor));
+sensorRoutes.patch('/:id', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(sensors_controller_1.SensorController.updateSensor));
+sensorRoutes.delete('/:id', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(sensors_controller_1.SensorController.deleteSensor));
+exports.default = sensorRoutes;

@@ -26,7 +26,7 @@ export const AuthValidation = {
 };
 
 // Middleware bọc Zod để validate request
-export const validate = (schema: z.AnyZodObject) => {
+export const validate = (schema: any) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
