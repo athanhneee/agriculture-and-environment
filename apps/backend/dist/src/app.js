@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_json_1 = __importDefault(require("./docs/swagger.json"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -16,6 +18,10 @@ const auth_routes_1 = __importDefault(require("./modules/auth/auth.routes"));
 const farm_zones_routes_1 = __importDefault(require("./modules/farm-zones/farm-zones.routes"));
 const crops_routes_1 = __importDefault(require("./modules/crops/crops.routes"));
 const sensors_routes_1 = __importDefault(require("./modules/sensors/sensors.routes"));
+const sensorReadings_routes_1 = __importDefault(require("./modules/sensor-readings/sensorReadings.routes"));
+const alerts_routes_1 = __importDefault(require("./modules/alerts/alerts.routes"));
+const statistics_routes_1 = __importDefault(require("./modules/statistics/statistics.routes"));
+const exports_routes_1 = __importDefault(require("./modules/exports/exports.routes"));
 const app = (0, express_1.default)();
 // --- 1. Global Middlewares ---
 app.use((0, helmet_1.default)()); // Bảo mật HTTP headers
@@ -36,10 +42,15 @@ app.get('/api/health', (req, res) => {
 });
 // Các Routes khác (Router - Controller - Service) sẽ được mount ở đây sau
 // Ví dụ: app.use('/api/users', userRoutes);
+app.use('/api/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/farm-zones', farm_zones_routes_1.default);
 app.use('/api/crops', crops_routes_1.default);
 app.use('/api/sensors', sensors_routes_1.default);
+app.use('/api/sensor-readings', sensorReadings_routes_1.default);
+app.use('/api/alerts', alerts_routes_1.default);
+app.use('/api/statistics', statistics_routes_1.default);
+app.use('/api/exports', exports_routes_1.default);
 // --- 3. Error Handling Middleware (luôn để cuối cùng) ---
 app.use(error_middleware_1.errorHandler);
 exports.default = app;

@@ -26,7 +26,7 @@ export class SensorReadingController {
 
   static async deleteReading(req: Request, res: Response) {
     const { id } = req.params;
-    await SensorReadingService.deleteReading(id);
+    await SensorReadingService.deleteReading(id as string);
     res.status(200).json(ApiResponse.success('Sensor reading deleted successfully', null));
   }
 }

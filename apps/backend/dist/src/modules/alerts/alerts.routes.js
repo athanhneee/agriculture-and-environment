@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const alerts_controller_1 = require("./alerts.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const validate_middleware_1 = require("../../middlewares/validate.middleware");
+const alerts_validation_1 = require("./alerts.validation");
+const asyncHandler_1 = require("../../utils/asyncHandler");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, validate_middleware_1.validate)(alerts_validation_1.getAlertsSchema), (0, asyncHandler_1.asyncHandler)(alerts_controller_1.AlertController.getAlerts));
+router.get('/:id', (0, asyncHandler_1.asyncHandler)(alerts_controller_1.AlertController.getAlertById));
+router.patch('/:id/acknowledge', (0, asyncHandler_1.asyncHandler)(alerts_controller_1.AlertController.acknowledgeAlert));
+router.patch('/:id/resolve', (0, asyncHandler_1.asyncHandler)(alerts_controller_1.AlertController.resolveAlert));
+router.delete('/:id', (0, auth_middleware_1.authorize)(['ADMIN']), (0, asyncHandler_1.asyncHandler)(alerts_controller_1.AlertController.deleteAlert));
+exports.default = router;
