@@ -124,6 +124,58 @@ export async function apiRequest<T>(
   return body.data as T;
 }
 
+export async function downloadApiFile(
+  path: string,
+  filename: string,
+  options: RequestOptions = {},
+) {
+  const { skipAuth, skipRefresh, headers, ...init } = options;
+  const token = useAuthStore.getState().accessToken;
+  const requestHeaders = new Headers(headers);
+
+  if (!skipAuth && token) {
+    requestHeaders.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(buildUrl(path), {
+    ...init,
+    method: init.method ?? "GET",
+    headers: requestHeaders,
+    credentials: "include",
+  });
+
+  if (response.status === 401 && !skipAuth && !skipRefresh) {
+    const newToken = await refreshAccessToken();
+    return downloadApiFile(path, filename, {
+      ...options,
+      headers: {
+        ...Object.fromEntries(requestHeaders.entries()),
+        Authorization: `Bearer ${newToken}`,
+      },
+      skipRefresh: true,
+    });
+  }
+
+  if (!response.ok) {
+    const body = await parseResponse<never>(response);
+    throw new ApiError(
+      body.message || "Khong the tai file Excel",
+      response.status,
+      body.errors,
+    );
+  }
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 export const authApi = {
   login: (payload: LoginPayload) =>
     apiRequest<LoginResponse>("/api/auth/login", {
@@ -197,157 +249,15 @@ export const farmZonesApi = {
     }),
 };
 
-export type CropStatus = "PLANTED" | "GROWING" | "HARVESTED" | "DISEASED";
-
-export type Crop = {
-  id: string;
-  name: string;
-  variety: string;
-  plantedDate: string;
-  expectedHarvestDate?: string | null;
-  status: CropStatus;
-  farmZoneId: string;
-  farmZone?: {
-    id: string;
-    name: string;
-  };
-  createdAt?: string;
-  updatedAt?: string;
+export const exportsApi = {
+  readings: (params?: URLSearchParams) =>
+    downloadApiFile(
+      `/api/exports/readings.xlsx${params ? `?${params.toString()}` : ""}`,
+      "readings.xlsx",
+    ),
+  alerts: (params?: URLSearchParams) =>
+    downloadApiFile(
+      `/api/exports/alerts.xlsx${params ? `?${params.toString()}` : ""}`,
+      "alerts.xlsx",
+    ),
 };
-
-export type SensorType = "TEMPERATURE" | "AIR_HUMIDITY" | "SOIL_MOISTURE" | "LIGHT_INTENSITY" | "ALL_IN_ONE";
-export type SensorStatus = "ACTIVE" | "INACTIVE" | "ERROR";
-
-export type Sensor = {
-  id: string;
-  name: string;
-  code: string;
-  type: SensorType;
-  unit: string;
-  status: SensorStatus;
-  farmZoneId: string;
-  farmZone?: {
-    id: string;
-    name: string;
-  };
-  createdAt?: string;
-  updatedAt?: string;
-};
-
-export const cropsApi = {
-  list: (params?: { farmZoneId?: string; status?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params?.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
-    if (params?.status && params.status !== "ALL") searchParams.append("status", params.status);
-    const query = searchParams.toString();
-    return apiRequest<Crop[]>(`/api/crops${query ? `?${query}` : ""}`);
-  },
-  create: (payload: any) =>
-    apiRequest<Crop>("/api/crops", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
-  update: (id: string, payload: any) =>
-    apiRequest<Crop>(`/api/crops/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(payload),
-    }),
-  delete: (id: string) =>
-    apiRequest<void>(`/api/crops/${id}`, {
-      method: "DELETE",
-    }),
-};
-
-export const sensorsApi = {
-  list: (params?: { farmZoneId?: string; type?: string; status?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params?.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
-    if (params?.type && params.type !== "ALL") searchParams.append("type", params.type);
-    if (params?.status && params.status !== "ALL") searchParams.append("status", params.status);
-    const query = searchParams.toString();
-    return apiRequest<Sensor[]>(`/api/sensors${query ? `?${query}` : ""}`);
-  },
-  create: (payload: any) =>
-    apiRequest<Sensor>("/api/sensors", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
-  update: (id: string, payload: any) =>
-    apiRequest<Sensor>(`/api/sensors/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(payload),
-    }),
-  delete: (id: string) =>
-    apiRequest<void>(`/api/sensors/${id}`, {
-      method: "DELETE",
-    }),
-};
-
-export type SensorReading = {
-  id: string;
-  sensorId: string;
-  farmZoneId: string;
-  temperature?: number | null;
-  airHumidity?: number | null;
-  soilMoisture?: number | null;
-  lightIntensity?: number | null;
-  recordedAt: string;
-  sensor?: {
-    id: string;
-    name: string;
-    code: string;
-    type: string;
-    unit: string;
-  };
-  farmZone?: {
-    id: string;
-    name: string;
-  };
-};
-
-export type StatisticsReadings = Array<{
-  date: string;
-  avgTemperature: number;
-  avgAirHumidity: number;
-  avgSoilMoisture: number;
-  avgLightIntensity: number;
-}>;
-
-export const sensorReadingsApi = {
-  list: (params: { farmZoneId?: string; from?: string; to?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
-    if (params.from) searchParams.append("from", params.from);
-    if (params.to) searchParams.append("to", params.to);
-    const query = searchParams.toString();
-    return apiRequest<SensorReading[]>(`/api/sensor-readings${query ? `?${query}` : ""}`);
-  },
-  exportUrl: (params: { farmZoneId?: string; from?: string; to?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
-    if (params.from) searchParams.append("from", params.from);
-    if (params.to) searchParams.append("to", params.to);
-    const query = searchParams.toString();
-    return `${apiBaseUrl}/api/exports/readings.xlsx${query ? `?${query}` : ""}`;
-  },
-};
-
-export const statisticsApi = {
-  overview: () => apiRequest<any>("/api/statistics/overview"),
-  alerts: (params?: { from?: string; to?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params?.from) searchParams.append("from", params.from);
-    if (params?.to) searchParams.append("to", params.to);
-    const query = searchParams.toString();
-    return apiRequest<any>(`/api/statistics/alerts${query ? `?${query}` : ""}`);
-  },
-  readings: (params?: { from?: string; to?: string }) => {
-    const searchParams = new URLSearchParams();
-    if (params?.from) searchParams.append("from", params.from);
-    if (params?.to) searchParams.append("to", params.to);
-    const query = searchParams.toString();
-    return apiRequest<StatisticsReadings>(`/api/statistics/readings${query ? `?${query}` : ""}`);
-  },
-};
-
-

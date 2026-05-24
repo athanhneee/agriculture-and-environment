@@ -40,7 +40,7 @@ export function FarmZoneForm() {
       } else {
         setErrorMsg(res.message);
       }
-    } catch (err) {
+    } catch {
       setErrorMsg("Có lỗi xảy ra trong quá trình kết nối với server.");
     }
   };
