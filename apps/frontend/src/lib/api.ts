@@ -283,3 +283,71 @@ export const sensorsApi = {
     }),
 };
 
+export type SensorReading = {
+  id: string;
+  sensorId: string;
+  farmZoneId: string;
+  temperature?: number | null;
+  airHumidity?: number | null;
+  soilMoisture?: number | null;
+  lightIntensity?: number | null;
+  recordedAt: string;
+  sensor?: {
+    id: string;
+    name: string;
+    code: string;
+    type: string;
+    unit: string;
+  };
+  farmZone?: {
+    id: string;
+    name: string;
+  };
+};
+
+export type StatisticsReadings = Array<{
+  date: string;
+  avgTemperature: number;
+  avgAirHumidity: number;
+  avgSoilMoisture: number;
+  avgLightIntensity: number;
+}>;
+
+export const sensorReadingsApi = {
+  list: (params: { farmZoneId?: string; from?: string; to?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
+    if (params.from) searchParams.append("from", params.from);
+    if (params.to) searchParams.append("to", params.to);
+    const query = searchParams.toString();
+    return apiRequest<SensorReading[]>(`/api/sensor-readings${query ? `?${query}` : ""}`);
+  },
+  exportUrl: (params: { farmZoneId?: string; from?: string; to?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
+    if (params.from) searchParams.append("from", params.from);
+    if (params.to) searchParams.append("to", params.to);
+    const query = searchParams.toString();
+    return `${apiBaseUrl}/api/exports/readings.xlsx${query ? `?${query}` : ""}`;
+  },
+};
+
+export const statisticsApi = {
+  overview: () => apiRequest<any>("/api/statistics/overview"),
+  alerts: (params?: { from?: string; to?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.from) searchParams.append("from", params.from);
+    if (params?.to) searchParams.append("to", params.to);
+    const query = searchParams.toString();
+    return apiRequest<any>(`/api/statistics/alerts${query ? `?${query}` : ""}`);
+  },
+  readings: (params?: { from?: string; to?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.from) searchParams.append("from", params.from);
+    if (params?.to) searchParams.append("to", params.to);
+    const query = searchParams.toString();
+    return apiRequest<StatisticsReadings>(`/api/statistics/readings${query ? `?${query}` : ""}`);
+  },
+};
+
+
