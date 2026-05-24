@@ -10,7 +10,7 @@ const items = [
   { title: "Home", href: "/dashboard", match: "/dashboard", icon: Home },
   {
     title: "Vùng",
-    href: "/dashboard/zones/north-greenhouse",
+    href: "/dashboard/zones",
     match: "/dashboard/zones",
     icon: Leaf,
   },

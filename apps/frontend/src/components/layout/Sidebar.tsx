@@ -30,8 +30,14 @@ const navItems: NavItem[] = [
   },
   {
     title: "Vùng trồng",
-    href: "/dashboard/zones/north-greenhouse",
+    href: "/dashboard/zones",
     match: "/dashboard/zones",
+    icon: MapPinned,
+  },
+  {
+    title: "Cây trồng",
+    href: "/dashboard/crops",
+    match: "/dashboard/crops",
     icon: Leaf,
   },
   {

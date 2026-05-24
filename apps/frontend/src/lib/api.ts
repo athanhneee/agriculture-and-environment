@@ -196,3 +196,90 @@ export const farmZonesApi = {
       body: JSON.stringify(payload),
     }),
 };
+
+export type CropStatus = "PLANTED" | "GROWING" | "HARVESTED" | "DISEASED";
+
+export type Crop = {
+  id: string;
+  name: string;
+  variety: string;
+  plantedDate: string;
+  expectedHarvestDate?: string | null;
+  status: CropStatus;
+  farmZoneId: string;
+  farmZone?: {
+    id: string;
+    name: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type SensorType = "TEMPERATURE" | "AIR_HUMIDITY" | "SOIL_MOISTURE" | "LIGHT_INTENSITY" | "ALL_IN_ONE";
+export type SensorStatus = "ACTIVE" | "INACTIVE" | "ERROR";
+
+export type Sensor = {
+  id: string;
+  name: string;
+  code: string;
+  type: SensorType;
+  unit: string;
+  status: SensorStatus;
+  farmZoneId: string;
+  farmZone?: {
+    id: string;
+    name: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export const cropsApi = {
+  list: (params?: { farmZoneId?: string; status?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
+    if (params?.status && params.status !== "ALL") searchParams.append("status", params.status);
+    const query = searchParams.toString();
+    return apiRequest<Crop[]>(`/api/crops${query ? `?${query}` : ""}`);
+  },
+  create: (payload: any) =>
+    apiRequest<Crop>("/api/crops", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  update: (id: string, payload: any) =>
+    apiRequest<Crop>(`/api/crops/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/api/crops/${id}`, {
+      method: "DELETE",
+    }),
+};
+
+export const sensorsApi = {
+  list: (params?: { farmZoneId?: string; type?: string; status?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.farmZoneId && params.farmZoneId !== "ALL") searchParams.append("farmZoneId", params.farmZoneId);
+    if (params?.type && params.type !== "ALL") searchParams.append("type", params.type);
+    if (params?.status && params.status !== "ALL") searchParams.append("status", params.status);
+    const query = searchParams.toString();
+    return apiRequest<Sensor[]>(`/api/sensors${query ? `?${query}` : ""}`);
+  },
+  create: (payload: any) =>
+    apiRequest<Sensor>("/api/sensors", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  update: (id: string, payload: any) =>
+    apiRequest<Sensor>(`/api/sensors/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/api/sensors/${id}`, {
+      method: "DELETE",
+    }),
+};
+
