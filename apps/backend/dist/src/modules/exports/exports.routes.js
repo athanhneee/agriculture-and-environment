@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const exports_controller_1 = require("./exports.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const validate_middleware_1 = require("../../middlewares/validate.middleware");
+const exports_validation_1 = require("./exports.validation");
+const asyncHandler_1 = require("../../utils/asyncHandler");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/readings.xlsx', (0, validate_middleware_1.validate)(exports_validation_1.exportReadingsSchema), (0, asyncHandler_1.asyncHandler)(exports_controller_1.ExportsController.exportReadings));
+router.get('/alerts.xlsx', (0, validate_middleware_1.validate)(exports_validation_1.exportAlertsSchema), (0, asyncHandler_1.asyncHandler)(exports_controller_1.ExportsController.exportAlerts));
+exports.default = router;

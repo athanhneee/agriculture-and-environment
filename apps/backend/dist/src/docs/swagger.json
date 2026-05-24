@@ -1,0 +1,220 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Smart Farm Monitoring System API",
+        "version": "1.0.0",
+        "description": "API Documentation for Smart Farm Monitoring System"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000",
+            "description": "Local Development Server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Đăng nhập",
+                "security": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": { "type": "string" },
+                                    "password": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Đăng ký",
+                "security": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "email": { "type": "string" },
+                                    "password": { "type": "string" },
+                                    "confirmPassword": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "Created" } }
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "Lấy thông tin cá nhân",
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/farm-zones": {
+            "get": {
+                "tags": ["Farm Zones"],
+                "summary": "Lấy danh sách Farm Zones",
+                "responses": { "200": { "description": "OK" } }
+            },
+            "post": {
+                "tags": ["Farm Zones"],
+                "summary": "Tạo Farm Zone mới",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "area": { "type": "number" },
+                                    "latitude": { "type": "number" },
+                                    "longitude": { "type": "number" },
+                                    "soilType": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "Created" } }
+            }
+        },
+        "/api/crops": {
+            "get": {
+                "tags": ["Crops"],
+                "summary": "Lấy danh sách Crops",
+                "parameters": [
+                    { "in": "query", "name": "farmZoneId", "schema": { "type": "string" } }
+                ],
+                "responses": { "200": { "description": "OK" } }
+            },
+            "post": {
+                "tags": ["Crops"],
+                "summary": "Thêm Crop mới",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "variety": { "type": "string" },
+                                    "farmZoneId": { "type": "string" },
+                                    "plantedDate": { "type": "string", "format": "date-time" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "Created" } }
+            }
+        },
+        "/api/sensors": {
+            "get": {
+                "tags": ["Sensors"],
+                "summary": "Lấy danh sách Sensors",
+                "parameters": [
+                    { "in": "query", "name": "farmZoneId", "schema": { "type": "string" } }
+                ],
+                "responses": { "200": { "description": "OK" } }
+            },
+            "post": {
+                "tags": ["Sensors"],
+                "summary": "Thêm Sensor mới",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "code": { "type": "string" },
+                                    "type": { "type": "string" },
+                                    "unit": { "type": "string" },
+                                    "farmZoneId": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "Created" } }
+            }
+        },
+        "/api/alerts": {
+            "get": {
+                "tags": ["Alerts"],
+                "summary": "Lấy danh sách Cảnh báo",
+                "parameters": [
+                    { "in": "query", "name": "farmZoneId", "schema": { "type": "string" } },
+                    { "in": "query", "name": "status", "schema": { "type": "string" } }
+                ],
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/alerts/{id}/acknowledge": {
+            "patch": {
+                "tags": ["Alerts"],
+                "summary": "Xác nhận cảnh báo",
+                "parameters": [
+                    { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/alerts/{id}/resolve": {
+            "patch": {
+                "tags": ["Alerts"],
+                "summary": "Xử lý xong cảnh báo",
+                "parameters": [
+                    { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/statistics/overview": {
+            "get": {
+                "tags": ["Statistics"],
+                "summary": "Thống kê tổng quan",
+                "responses": { "200": { "description": "OK" } }
+            }
+        },
+        "/api/exports/readings.xlsx": {
+            "get": {
+                "tags": ["Exports"],
+                "summary": "Xuất Excel Lịch sử Cảm biến",
+                "responses": { "200": { "description": "Excel File" } }
+            }
+        }
+    }
+}
