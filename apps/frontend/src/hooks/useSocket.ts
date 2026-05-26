@@ -1,32 +1,34 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { socket } from "@/lib/socket";
+import { useEffect, useRef, useState } from "react";
+import { getSocket } from "@/lib/socket";
+import { useAuthStore } from "@/stores/auth.store";
 import { useRealtimeStore } from "@/stores/realtime.store";
 
 export function useSocket(onAlertCreated?: (alert: any) => void) {
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const [isConnected, setIsConnected] = useState(false);
+
   const addReading = useRealtimeStore((state) => state.addReading);
   const addAlert = useRealtimeStore((state) => state.addAlert);
-  
-  // Dùng ref để giữ callback tránh re-trigger useEffect khi callback thay đổi
+
   const onAlertRef = useRef(onAlertCreated);
+
   useEffect(() => {
     onAlertRef.current = onAlertCreated;
   }, [onAlertCreated]);
 
   useEffect(() => {
-    // Bắt đầu kết nối
-    socket.connect();
+    const socket = getSocket(accessToken);
 
     const handleConnect = () => {
       setIsConnected(true);
-      console.log("🔌 Connected to Socket.io server");
+      console.log("Connected to Socket.io server");
     };
 
     const handleDisconnect = () => {
       setIsConnected(false);
-      console.log("🔌 Disconnected from Socket.io server");
+      console.log("Disconnected from Socket.io server");
     };
 
     const handleSensorReading = (payload: any) => {
@@ -35,9 +37,7 @@ export function useSocket(onAlertCreated?: (alert: any) => void) {
 
     const handleAlertCreated = (alert: any) => {
       addAlert(alert);
-      if (onAlertRef.current) {
-        onAlertRef.current(alert);
-      }
+      onAlertRef.current?.(alert);
     };
 
     socket.on("connect", handleConnect);
@@ -45,15 +45,19 @@ export function useSocket(onAlertCreated?: (alert: any) => void) {
     socket.on("sensor:global-reading", handleSensorReading);
     socket.on("alert:global", handleAlertCreated);
 
-    // Hủy đăng ký khi Component unmount
+    if (!socket.connected) {
+      socket.connect();
+    } else {
+      setIsConnected(true);
+    }
+
     return () => {
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
       socket.off("sensor:global-reading", handleSensorReading);
       socket.off("alert:global", handleAlertCreated);
-      socket.disconnect();
     };
-  }, [addReading, addAlert]);
+  }, [accessToken, addReading, addAlert]);
 
   return { isConnected };
 }

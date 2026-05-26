@@ -18,6 +18,7 @@ import sensorReadingRoutes from './modules/sensor-readings/sensorReadings.routes
 import alertRoutes from './modules/alerts/alerts.routes';
 import statisticsRoutes from './modules/statistics/statistics.routes';
 import exportsRoutes from './modules/exports/exports.routes';
+import importRoutes from "./modules/imports/imports.routes";
 const app: Application = express();
 
 // --- 1. Global Middlewares ---
@@ -51,6 +52,7 @@ app.use('/api/sensor-readings', sensorReadingRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/statistics', statisticsRoutes);
 app.use('/api/exports', exportsRoutes);
+app.use("/api/imports", importRoutes);
 
 // --- 3. Error Handling Middleware (luôn để cuối cùng) ---
 app.use(errorHandler);

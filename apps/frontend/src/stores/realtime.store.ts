@@ -15,11 +15,16 @@ export interface Alert {
   id: string;
   farmZoneId: string;
   sensorReadingId?: string;
+  farmZone?: {
+    id: string;
+    name: string;
+    ownerId?: string;
+  };
   type: string;
-  severity: "CRITICAL" | "WARNING";
+  severity: string;
   title: string;
   message: string;
-  status: "OPEN" | "ACKNOWLEDGED" | "RESOLVED";
+  status: string;
   createdAt: string;
 }
 

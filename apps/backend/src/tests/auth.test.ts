@@ -12,6 +12,12 @@ jest.mock('../config/prisma', () => ({
       findUnique: jest.fn(),
       create: jest.fn(),
     },
+    refreshToken: {
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      updateMany: jest.fn(),
+    },
   },
 }));
 
@@ -47,6 +53,13 @@ describe('Auth API Tests', () => {
         email: 'test@example.com',
         passwordHash: hashedPassword,
         role: 'USER',
+      });
+      (prisma.refreshToken.create as jest.Mock).mockResolvedValue({
+        id: 'refresh-token-id',
+        tokenHash: 'hashed-token',
+        userId: 'user-id',
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        revokedAt: null,
       });
 
       const res = await request(app)

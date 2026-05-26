@@ -18,6 +18,22 @@ type ApiResponse<T> = {
   errors?: unknown;
 };
 
+type PaginatedResponse<T> = {
+  data: T[];
+  metadata?: unknown;
+  meta?: unknown;
+};
+
+function unwrapList<T>(payload: T[] | PaginatedResponse<T>): T[] {
+  if (Array.isArray(payload)) return payload;
+
+  if (payload && Array.isArray((payload as PaginatedResponse<T>).data)) {
+    return (payload as PaginatedResponse<T>).data;
+  }
+
+  return [];
+}
+
 type RequestOptions = RequestInit & {
   skipAuth?: boolean;
   skipRefresh?: boolean;
@@ -240,7 +256,12 @@ export type FarmZone = {
 };
 
 export const farmZonesApi = {
-  list: () => apiRequest<FarmZone[]>("/api/farm-zones"),
+  list: async () => {
+    const payload = await apiRequest<FarmZone[] | PaginatedResponse<FarmZone>>(
+      "/api/farm-zones",
+    );
+    return unwrapList(payload);
+  },
   detail: (id: string) => apiRequest<FarmZone>(`/api/farm-zones/${id}`),
   create: (payload: FarmZoneFormValues) =>
     apiRequest<FarmZone>("/api/farm-zones", {
@@ -260,4 +281,127 @@ export const exportsApi = {
       `/api/exports/alerts.xlsx${params ? `?${params.toString()}` : ""}`,
       "alerts.xlsx",
     ),
+};
+export type CropStatus = "PLANTED" | "GROWING" | "HARVESTED" | "DISEASED";
+
+export type Crop = {
+  id: string;
+  name: string;
+  variety?: string;
+  plantedDate: string;
+  expectedHarvestDate?: string;
+  status: CropStatus;
+  farmZoneId: string;
+  farmZone?: { id: string; name: string };
+};
+
+export type SensorStatus = "ACTIVE" | "INACTIVE" | "ERROR";
+export type SensorType =
+  | "TEMPERATURE"
+  | "AIR_HUMIDITY"
+  | "SOIL_MOISTURE"
+  | "LIGHT_INTENSITY"
+  | "ALL_IN_ONE";
+
+export type Sensor = {
+  id: string;
+  name: string;
+  code: string;
+  type: SensorType;
+  unit: string;
+  status: SensorStatus;
+  farmZoneId: string;
+  farmZone?: { id: string; name: string };
+};
+
+export type SensorReading = {
+  id: string;
+  sensorId?: string;
+  farmZoneId: string;
+  sensor?: {
+    id: string;
+    name: string;
+    code?: string;
+    type?: string;
+    unit?: string;
+  };
+  farmZone?: {
+    id: string;
+    name: string;
+  };
+  temperature?: number;
+  airHumidity?: number;
+  soilMoisture?: number;
+  lightIntensity?: number;
+  recordedAt: string;
+};
+
+const cleanParams = (params?: Record<string, string>) => {
+  const search = new URLSearchParams();
+  Object.entries(params ?? {}).forEach(([key, value]) => {
+    if (value && value !== "ALL") search.set(key, value);
+  });
+  return search.toString();
+};
+
+export const cropsApi = {
+  list: async (params?: Record<string, string>) => {
+    const payload = await apiRequest<Crop[] | PaginatedResponse<Crop>>(
+      `/api/crops?${cleanParams(params)}`,
+    );
+    return unwrapList(payload);
+  },
+  create: (payload: Partial<Crop>) =>
+    apiRequest<Crop>("/api/crops", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  update: (id: string, payload: Partial<Crop>) =>
+    apiRequest<Crop>(`/api/crops/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/api/crops/${id}`, { method: "DELETE" }),
+};
+
+export const sensorsApi = {
+  list: async (params?: Record<string, string>) => {
+    const payload = await apiRequest<Sensor[] | PaginatedResponse<Sensor>>(
+      `/api/sensors?${cleanParams(params)}`,
+    );
+    return unwrapList(payload);
+  },
+  create: (payload: Partial<Sensor>) =>
+    apiRequest<Sensor>("/api/sensors", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  update: (id: string, payload: Partial<Sensor>) =>
+    apiRequest<Sensor>(`/api/sensors/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/api/sensors/${id}`, { method: "DELETE" }),
+};
+
+export const sensorReadingsApi = {
+  list: async (params?: Record<string, string>) => {
+    const payload = await apiRequest<
+      SensorReading[] | PaginatedResponse<SensorReading>
+    >(`/api/sensor-readings?${cleanParams(params)}`);
+    return unwrapList(payload);
+  },
+  latest: () => apiRequest<SensorReading[]>("/api/sensor-readings/latest"),
+  exportUrl: (params?: Record<string, string>) =>
+    `${apiBaseUrl}/api/exports/readings.xlsx?${cleanParams(params)}`,
+};
+
+export const statisticsApi = {
+  overview: () => apiRequest<any>("/api/statistics/overview"),
+  alerts: (params?: Record<string, string>) =>
+    apiRequest<any>(`/api/statistics/alerts?${cleanParams(params)}`),
+  readings: (params?: Record<string, string>) =>
+    apiRequest<any[]>(`/api/statistics/readings?${cleanParams(params)}`),
 };

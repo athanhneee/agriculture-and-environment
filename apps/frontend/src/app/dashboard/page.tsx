@@ -32,6 +32,24 @@ export default async function DashboardPage() {
           light: zone.latestSensorSummary?.lightIntensity ?? 0,
         }))
       : cropZones;
+
+  const totalSensors = apiZones.reduce(
+    (sum, zone) => sum + (zone.sensors?.length ?? 0),
+    0,
+  );
+
+  const temperatureValues = apiZones
+    .map((zone) => zone.latestSensorSummary?.temperature)
+    .filter((value): value is number => typeof value === "number");
+
+  const averageTemperature =
+    temperatureValues.length > 0
+      ? Math.round(
+          temperatureValues.reduce((sum, value) => sum + value, 0) /
+            temperatureValues.length,
+        )
+      : 0;
+
   const summaryCards = [
     {
       label: "Vùng trồng",
@@ -42,14 +60,14 @@ export default async function DashboardPage() {
     },
     {
       label: "Sensor online",
-      value: "24",
+      value: `${totalSensors} cảm biến`,
       note: "98% uptime",
       icon: Gauge,
       tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
     },
     {
       label: "Nhiệt độ TB",
-      value: "27°C",
+      value: `${averageTemperature}°C`,
       note: "Trong ngưỡng",
       icon: ThermometerSun,
       tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
@@ -75,15 +93,12 @@ export default async function DashboardPage() {
               Tổng quan hôm nay
             </p>
             <h2 className="mt-2 text-2xl font-bold">
-              Nông trại đang vận hành ổn định
+              Nông trại đang vận hành 
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Dashboard dùng mock data để minh họa luồng giám sát vùng trồng,
-              cảm biến, cảnh báo và bản đồ trước khi tích hợp API.
-            </p>
+           
           </div>
           <Link
-            href="/dashboard/zones/north-greenhouse"
+            href={apiZones[0]?.id ? `/dashboard/zones/${apiZones[0].id}` : "/dashboard/zones"}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
           >
             Xem vùng trồng

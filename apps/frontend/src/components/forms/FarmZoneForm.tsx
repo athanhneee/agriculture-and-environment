@@ -8,14 +8,16 @@ import Link from "next/link";
 
 import { createFarmZoneAction } from "@/app/dashboard/zones/actions";
 import { farmZoneSchema, type FarmZoneFormValues } from "@/lib/validations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function FarmZoneForm() {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [areaInput, setAreaInput] = useState("");
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FarmZoneFormValues>({
@@ -30,6 +32,22 @@ export function FarmZoneForm() {
       status: "ACTIVE",
     },
   });
+
+  useEffect(() => {
+    register("area");
+  }, [register]);
+
+  const handleAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = event.target.value.replace(",", ".");
+
+    if (!/^\d*\.?\d*$/.test(nextValue)) return;
+
+    setAreaInput(nextValue);
+    setValue("area", nextValue === "" ? 0 : Number(nextValue), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
 
   const onSubmit = async (values: FarmZoneFormValues) => {
     setErrorMsg(null);
@@ -98,12 +116,19 @@ export function FarmZoneForm() {
           <label className="block">
             <span className="text-sm font-medium">Diện tích (ha) *</span>
             <input
-              type="number"
-              step="any"
+              type="text"
+              inputMode="decimal"
               placeholder="1.5"
+              value={areaInput}
               aria-invalid={Boolean(errors.area)}
               className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
-              {...register("area", { valueAsNumber: true })}
+              name="area"
+              onChange={handleAreaChange}
+              onKeyDown={(event) => {
+                if (["-", "+", "e", "E"].includes(event.key)) {
+                  event.preventDefault();
+                }
+              }}
             />
             {errors.area?.message ? (
               <p className="mt-2 text-sm text-destructive">{errors.area.message}</p>

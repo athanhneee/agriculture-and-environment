@@ -61,6 +61,24 @@ export default async function ZoneDetailPage({ params }: PageProps) {
 
   const currentStatus = statusConfig[zone.status] || statusConfig.INACTIVE;
 
+  const getSensorStatusLabel = (status: string) => {
+    if (status === "ACTIVE") return "Online";
+    if (status === "ERROR") return "Lỗi";
+    return "Offline";
+  };
+
+  const getSensorStatusClass = (status: string) => {
+    if (status === "ACTIVE") {
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+    }
+
+    if (status === "ERROR") {
+      return "bg-red-50 text-red-700 border-red-200";
+    }
+
+    return "bg-slate-50 text-slate-600 border-slate-200";
+  };
+
   // Lấy chỉ số mới nhất
   const temp = zone.latestSensorSummary?.temperature;
   const airHum = zone.latestSensorSummary?.airHumidity;
@@ -222,12 +240,12 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                       Loại: {sensor.type} {sensor.unit ? `(${sensor.unit})` : ""}
                     </p>
                   </div>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                    sensor.status === "ONLINE"
-                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
-                      : "bg-red-100 text-red-700 dark:bg-red-400/15 dark:text-red-300"
-                  }`}>
-                    {sensor.status === "ONLINE" ? "Online" : "Offline"}
+                  <span
+                    className={`rounded-full border px-3 py-1 text-xs font-bold ${getSensorStatusClass(
+                      sensor.status,
+                    )}`}
+                  >
+                    {getSensorStatusLabel(sensor.status)}
                   </span>
                 </div>
               ))

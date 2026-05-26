@@ -7,8 +7,6 @@ import { type FarmZone } from "@/lib/api";
 import { ZoneMarkerPopup } from "./ZoneMarkerPopup";
 
 // Import CSS Leaflet bắt buộc
-import "leaflet/dist/leaflet.css";
-
 // Override marker icon mặc định của Leaflet để tránh lỗi hiển thị ảnh sau khi đóng gói Next.js
 const DefaultIcon = L.icon({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",

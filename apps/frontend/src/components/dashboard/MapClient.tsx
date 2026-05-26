@@ -18,10 +18,12 @@ const FarmMap = dynamic(
 );
 
 interface MapClientProps {
-  zones: FarmZone[];
+  initialZones?: FarmZone[];
+  zones?: FarmZone[];
 }
 
-export default function MapClient({ zones }: MapClientProps) {
+export function MapClient({ initialZones, zones }: MapClientProps) {
+  const mapZones = initialZones ?? zones ?? [];
   const [selectedZone, setSelectedZone] = useState<FarmZone | null>(null);
 
   const statusLabels = {
@@ -34,7 +36,7 @@ export default function MapClient({ zones }: MapClientProps) {
     setSelectedZone(zone);
   };
 
-  if (zones.length === 0) {
+  if (mapZones.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-card py-20 text-center">
         <MapPin className="size-10 text-muted-foreground/45 animate-bounce" />
@@ -61,7 +63,7 @@ export default function MapClient({ zones }: MapClientProps) {
         {/* Leaflet Map panel */}
         <div className="order-1 lg:order-1">
           <FarmMap
-            zones={zones}
+            zones={mapZones}
             selectedZone={selectedZone}
             onSelectZone={handleSelectZone}
           />
@@ -72,7 +74,7 @@ export default function MapClient({ zones }: MapClientProps) {
           <div className="border-b pb-3 mb-4">
             <h3 className="font-bold text-base text-foreground flex items-center gap-2">
               <Navigation className="size-4.5 text-emerald-600" />
-              Danh sách phân khu ({zones.length})
+              Danh sách phân khu ({mapZones.length})
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
               Click vào phân khu để di chuyển camera bản đồ
@@ -81,7 +83,7 @@ export default function MapClient({ zones }: MapClientProps) {
 
           {/* List items scroll area */}
           <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-            {zones.map((zone) => {
+            {mapZones.map((zone) => {
               const isSelected = selectedZone?.id === zone.id;
               const hasAlerts = zone.openAlertsCount !== undefined && zone.openAlertsCount > 0;
               

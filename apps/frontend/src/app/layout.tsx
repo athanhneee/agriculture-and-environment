@@ -1,31 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
+  subsets: ["latin"],
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Smart Farm Monitoring System",
-    template: "%s | Smart Farm",
-  },
+  title: "Smart Farm Monitoring",
   description:
-    "Frontend dashboard for crop zones, real-time sensors, alerts, and farm maps.",
-  keywords: [
-    "Smart Farm",
-    "Monitoring System",
-    "IoT",
-    "Agriculture",
-    "INT1334",
-  ],
+    "Hệ thống giám sát farm thông minh, theo dõi cảm biến thời gian thực và cảnh báo sâu bệnh.",
 };
 
 export default function RootLayout({
@@ -34,10 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="vi"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="vi" className={`${geistSans.variable} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

@@ -1,7 +1,40 @@
-import prisma from '../../config/prisma';
-import { Prisma } from '@prisma/client';
-import { CreateFarmZoneInput, UpdateFarmZoneInput } from './farm-zones.validation';
-import { JwtPayload } from '../../utils/jwt';
+import prisma from "../../config/prisma";
+import { Prisma } from "@prisma/client";
+import {
+  CreateFarmZoneInput,
+  UpdateFarmZoneInput,
+} from "./farm-zones.validation";
+import { JwtPayload } from "../../utils/jwt";
+
+function mapFarmZoneDto(zone: any) {
+  const latestReading =
+    zone.sensorReadings && zone.sensorReadings.length > 0
+      ? zone.sensorReadings[0]
+      : null;
+
+  const latestCrop =
+    zone.crops && zone.crops.length > 0 ? zone.crops[0] : null;
+
+  const openAlertsCount =
+    zone._count?.alerts ??
+    zone.alerts?.filter((a: any) => a.status === "OPEN").length ??
+    0;
+
+  return {
+    ...zone,
+    cropName: latestCrop?.name ?? null,
+    latestSensorSummary: latestReading
+      ? {
+          temperature: latestReading.temperature,
+          airHumidity: latestReading.airHumidity,
+          soilMoisture: latestReading.soilMoisture,
+          lightIntensity: latestReading.lightIntensity,
+          recordedAt: latestReading.recordedAt,
+        }
+      : null,
+    openAlertsCount,
+  };
+}
 
 export class FarmZoneService {
   static async getFarmZones(query: any, user: JwtPayload) {
@@ -10,13 +43,13 @@ export class FarmZoneService {
     const take = Number(limit);
 
     const where: Prisma.FarmZoneWhereInput = {};
-    
-    if (user.role !== 'ADMIN') {
+
+    if (user.role !== "ADMIN") {
       where.ownerId = user.id;
     }
 
     if (search) {
-      where.name = { contains: String(search), mode: 'insensitive' };
+      where.name = { contains: String(search), mode: "insensitive" };
     }
 
     if (status) {
@@ -29,12 +62,38 @@ export class FarmZoneService {
         where,
         skip,
         take,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
+        include: {
+          crops: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+          },
+          sensors: {
+            select: {
+              id: true,
+              name: true,
+              type: true,
+              status: true,
+              unit: true,
+            },
+          },
+          sensorReadings: {
+            orderBy: { recordedAt: "desc" },
+            take: 1,
+          },
+          _count: {
+            select: {
+              alerts: {
+                where: { status: "OPEN" },
+              },
+            },
+          },
+        },
       }),
     ]);
 
     return {
-      data: farmZones,
+      data: farmZones.map(mapFarmZoneDto),
       metadata: {
         page: Number(page),
         limit: take,
@@ -49,33 +108,44 @@ export class FarmZoneService {
       where: { id },
       include: {
         crops: {
-          orderBy: { createdAt: 'desc' },
-          take: 5
+          orderBy: { createdAt: "desc" },
+          take: 5,
         },
         sensors: {
           include: {
             readings: {
-              orderBy: { recordedAt: 'desc' },
-              take: 1
-            }
-          }
+              orderBy: { recordedAt: "desc" },
+              take: 1,
+            },
+          },
+        },
+        sensorReadings: {
+          orderBy: { recordedAt: "desc" },
+          take: 1,
         },
         alerts: {
-          orderBy: { createdAt: 'desc' },
-          take: 5
-        }
-      }
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        },
+        _count: {
+          select: {
+            alerts: {
+              where: { status: "OPEN" },
+            },
+          },
+        },
+      },
     });
 
     if (!farmZone) {
-      throw new Error('Không tìm thấy vùng canh tác');
+      throw new Error("Không tìm thấy vùng canh tác");
     }
 
-    if (user.role !== 'ADMIN' && farmZone.ownerId !== user.id) {
-      throw new Error('Bạn không có quyền truy cập vùng canh tác này');
+    if (user.role !== "ADMIN" && farmZone.ownerId !== user.id) {
+      throw new Error("Bạn không có quyền truy cập vùng canh tác này");
     }
 
-    return farmZone;
+    return mapFarmZoneDto(farmZone);
   }
 
   static async createFarmZone(data: CreateFarmZoneInput, user: JwtPayload) {
@@ -87,14 +157,19 @@ export class FarmZoneService {
     });
   }
 
-  static async updateFarmZone(id: string, data: UpdateFarmZoneInput, user: JwtPayload) {
+  static async updateFarmZone(
+    id: string,
+    data: UpdateFarmZoneInput,
+    user: JwtPayload,
+  ) {
     const existingZone = await prisma.farmZone.findUnique({ where: { id } });
+
     if (!existingZone) {
-      throw new Error('Không tìm thấy vùng canh tác');
+      throw new Error("Không tìm thấy vùng canh tác");
     }
 
-    if (user.role !== 'ADMIN' && existingZone.ownerId !== user.id) {
-      throw new Error('Bạn không có quyền chỉnh sửa vùng canh tác này');
+    if (user.role !== "ADMIN" && existingZone.ownerId !== user.id) {
+      throw new Error("Bạn không có quyền chỉnh sửa vùng canh tác này");
     }
 
     return prisma.farmZone.update({
@@ -105,15 +180,15 @@ export class FarmZoneService {
 
   static async deleteFarmZone(id: string, user: JwtPayload) {
     const existingZone = await prisma.farmZone.findUnique({ where: { id } });
+
     if (!existingZone) {
-      throw new Error('Không tìm thấy vùng canh tác');
+      throw new Error("Không tìm thấy vùng canh tác");
     }
 
-    if (user.role !== 'ADMIN' && existingZone.ownerId !== user.id) {
-      throw new Error('Bạn không có quyền xóa vùng canh tác này');
+    if (user.role !== "ADMIN" && existingZone.ownerId !== user.id) {
+      throw new Error("Bạn không có quyền xóa vùng canh tác này");
     }
 
-    // Cascade delete is handled by Prisma schema (onDelete: Cascade)
     await prisma.farmZone.delete({
       where: { id },
     });

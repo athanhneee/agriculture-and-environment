@@ -1,36 +1,75 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AlertService } from './alerts.service';
 import { ApiResponse } from '../../utils/apiResponse';
 
-export class AlertController {
-  static async getAlerts(req: Request, res: Response) {
-    const { farmZoneId, status, severity, type, from, to, page = '1', limit = '10' } = req.query as any;
-    
-    const result = await AlertService.getAlerts(
-      { farmZoneId, status, severity, type, from, to },
-      { page: parseInt(page, 10), limit: parseInt(limit, 10) }
-    );
-    
-    res.status(200).json(ApiResponse.success('Lấy danh sách cảnh báo thành công', result));
+export class AlertsController {
+  static async getAlerts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const page = Number(req.query.page ?? 1);
+      const limit = Number(req.query.limit ?? 20);
+
+      const result = await AlertService.getAlerts(
+        {
+          status: req.query.status as string | undefined,
+          severity: req.query.severity as string | undefined,
+          type: req.query.type as string | undefined,
+          farmZoneId: req.query.farmZoneId as string | undefined,
+        },
+        { page, limit },
+        req.user!,
+      );
+
+      return res
+        .status(200)
+        .json(ApiResponse.success('Lấy danh sách cảnh báo thành công', result));
+    } catch (error) {
+      return next(error);
+    }
   }
 
-  static async getAlertById(req: Request, res: Response) {
-    const alert = await AlertService.getAlertById(req.params.id as string);
-    res.status(200).json(ApiResponse.success('Lấy chi tiết cảnh báo thành công', alert));
+  static async getAlertById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const alert = await AlertService.getAlertById(req.params.id as string, req.user!);
+      return res
+        .status(200)
+        .json(ApiResponse.success('Lấy chi tiết cảnh báo thành công', alert));
+    } catch (error) {
+      return next(error);
+    }
   }
 
-  static async acknowledgeAlert(req: Request, res: Response) {
-    const alert = await AlertService.acknowledgeAlert(req.params.id as string);
-    res.status(200).json(ApiResponse.success('Đã xác nhận cảnh báo', alert));
+  static async acknowledgeAlert(req: Request, res: Response, next: NextFunction) {
+    try {
+      const alert = await AlertService.acknowledgeAlert(req.params.id as string, req.user!);
+      return res
+        .status(200)
+        .json(ApiResponse.success('Xác nhận cảnh báo thành công', alert));
+    } catch (error) {
+      return next(error);
+    }
   }
 
-  static async resolveAlert(req: Request, res: Response) {
-    const alert = await AlertService.resolveAlert(req.params.id as string);
-    res.status(200).json(ApiResponse.success('Đã xử lý cảnh báo', alert));
+  static async resolveAlert(req: Request, res: Response, next: NextFunction) {
+    try {
+      const alert = await AlertService.resolveAlert(req.params.id as string, req.user!);
+      return res
+        .status(200)
+        .json(ApiResponse.success('Đánh dấu đã xử lý cảnh báo thành công', alert));
+    } catch (error) {
+      return next(error);
+    }
   }
 
-  static async deleteAlert(req: Request, res: Response) {
-    await AlertService.deleteAlert(req.params.id as string);
-    res.status(200).json(ApiResponse.success('Đã xóa cảnh báo', null));
+  static async deleteAlert(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await AlertService.deleteAlert(req.params.id as string, req.user!);
+      return res
+        .status(200)
+        .json(ApiResponse.success('Xóa cảnh báo thành công', result));
+    } catch (error) {
+      return next(error);
+    }
   }
 }
+
+export const AlertController = AlertsController;

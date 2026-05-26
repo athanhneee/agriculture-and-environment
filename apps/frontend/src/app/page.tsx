@@ -1,7 +1,7 @@
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   BellRing,
   Leaf,
   MapPinned,
@@ -10,34 +10,46 @@ import {
   Sprout,
 } from "lucide-react";
 
+import {
+  HomeHeroAuthActions,
+  HomeNavAuthActions,
+} from "@/components/auth/HomeAuthActions";
+
 const features = [
   {
     title: "Vùng trồng",
-    description: "Quản lý khu canh tác, loại cây, diện tích và trạng thái vận hành.",
+    description:
+      "Quản lý khu canh tác, loại cây, diện tích và trạng thái vận hành.",
     icon: Leaf,
     tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
   },
   {
     title: "Cảm biến real-time",
-    description: "Theo dõi nhiệt độ, độ ẩm, ánh sáng và độ ẩm đất theo thời gian thực.",
+    description:
+      "Theo dõi nhiệt độ, độ ẩm, ánh sáng và độ ẩm đất theo thời gian thực.",
     icon: RadioTower,
     tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
   },
   {
     title: "Cảnh báo",
-    description: "Phát hiện sớm chỉ số vượt ngưỡng để xử lý trước khi cây bị ảnh hưởng.",
+    description:
+      "Phát hiện sớm chỉ số vượt ngưỡng để xử lý trước khi cây bị ảnh hưởng.",
     icon: BellRing,
     tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
   },
   {
     title: "Bản đồ",
-    description: "Xem vị trí vùng trồng, trạm cảm biến và điểm cần kiểm tra.",
+    description:
+      "Xem vị trí vùng trồng, trạm cảm biến và điểm cần kiểm tra.",
     icon: MapPinned,
     tone: "bg-lime-100 text-lime-700 dark:bg-lime-400/15 dark:text-lime-200",
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const cookieStore = await cookies();
+  const isAuthenticated = Boolean(cookieStore.get("accessToken")?.value);
+
   return (
     <main className="min-h-dvh overflow-hidden bg-[linear-gradient(135deg,#f7fee7_0%,#ecfdf5_46%,#f8fafc_100%)] text-emerald-950 dark:bg-[linear-gradient(135deg,#071712_0%,#10231d_52%,#111827_100%)] dark:text-emerald-50">
       <section className="farm-grid mx-auto flex min-h-dvh w-full max-w-7xl flex-col px-5 py-6 text-emerald-950/30 sm:px-8 lg:px-10 dark:text-emerald-50/20">
@@ -50,27 +62,10 @@ export default function HomePage() {
               <span className="block text-base font-semibold leading-5">
                 Smart Farm
               </span>
-              <span className="block text-xs font-medium text-emerald-700 dark:text-emerald-200">
-                INT1334 Web Project
-              </span>
             </span>
           </Link>
 
-          <nav className="flex items-center gap-2">
-            <Link
-              href="/auth/login"
-              className="hidden rounded-xl px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-white/70 dark:text-emerald-100 dark:hover:bg-white/10 sm:inline-flex"
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              href="/dashboard"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-700 px-4 text-sm font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-800"
-            >
-              Dashboard
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
-          </nav>
+          <HomeNavAuthActions initialIsAuthenticated={isAuthenticated} />
         </header>
 
         <div className="grid flex-1 items-center gap-10 py-12 text-emerald-950 lg:grid-cols-[0.95fr_1.05fr] lg:py-10 dark:text-emerald-50">
@@ -83,25 +78,10 @@ export default function HomePage() {
               Smart Farm Monitoring System
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-900/75 dark:text-emerald-50/75 sm:text-lg">
-              Hệ thống frontend mô phỏng dashboard giúp người quản lý trang trại
-              theo dõi vùng trồng, dữ liệu cảm biến, cảnh báo môi trường và bản
-              đồ vận hành trong một giao diện responsive.
+              Hệ thống mô phỏng dashboard giúp người quản lý trang trại theo
+              dõi vùng trồng, dữ liệu cảm biến, cảnh báo môi trường.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/dashboard"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 text-sm font-semibold text-white shadow-xl shadow-emerald-900/15 transition hover:bg-emerald-800"
-              >
-                Xem dashboard
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/auth/register"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white/80 px-6 text-sm font-semibold text-emerald-900 transition hover:bg-white dark:border-white/15 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
-              >
-                Tạo tài khoản demo
-              </Link>
-            </div>
+            <HomeHeroAuthActions initialIsAuthenticated={isAuthenticated} />
           </div>
 
           <div className="relative">

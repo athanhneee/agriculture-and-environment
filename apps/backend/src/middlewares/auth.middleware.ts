@@ -10,20 +10,42 @@ declare global {
   }
 }
 
+function getAccessToken(req: Request): string | null {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1] || null;
+  }
+
+  // Fallback cho các luồng frontend dùng cookie:
+  // - Next middleware kiểm tra cookie accessToken
+  // - Server Action đọc cookie accessToken
+  // - window.open export Excel không tự gắn Authorization header
+  const cookieToken = req.cookies?.accessToken;
+
+  if (typeof cookieToken === 'string' && cookieToken.trim()) {
+    return cookieToken;
+  }
+
+  return null;
+}
+
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = getAccessToken(req);
+
+    if (!token) {
       return res.status(401).json(ApiResponse.error('Không tìm thấy Access Token'));
     }
 
-    const token = authHeader.split(' ')[1];
     const decoded = JwtUtil.verifyAccessToken(token);
-    
     req.user = decoded;
-    next();
-  } catch (error) {
-    return res.status(401).json(ApiResponse.error('Access Token không hợp lệ hoặc đã hết hạn'));
+
+    return next();
+  } catch {
+    return res
+      .status(401)
+      .json(ApiResponse.error('Access Token không hợp lệ hoặc đã hết hạn'));
   }
 };
 
@@ -34,9 +56,11 @@ export const authorize = (allowedRoles: string[]) => {
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      return res.status(403).json(ApiResponse.error('Bạn không có quyền truy cập tài nguyên này (Forbidden)'));
+      return res
+        .status(403)
+        .json(ApiResponse.error('Bạn không có quyền truy cập tài nguyên này (Forbidden)'));
     }
 
-    next();
+    return next();
   };
 };

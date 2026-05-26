@@ -167,14 +167,7 @@ export default function RegisterPage() {
           </span>
           <span className="font-semibold">Smart Farm</span>
         </Link>
-        <div>
-          <h2 className="max-w-md text-3xl font-bold leading-tight">
-            Frontend kết nối backend với form đăng ký validation phức tạp.
-          </h2>
-          <p className="mt-4 max-w-md text-sm leading-6 text-emerald-100/75">
-            Mật khẩu yêu cầu có ít nhất 8 ký tự, bao gồm cả chữ cái và chữ số để đảm bảo an toàn bảo mật.
-          </p>
-        </div>
+       
       </section>
     </main>
   );

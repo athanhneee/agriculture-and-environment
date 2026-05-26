@@ -37,7 +37,7 @@ const generateMockData = async () => {
       });
 
       // Đánh giá cảnh báo ngay sau khi tạo reading
-      await AlertService.processNewReading(reading);
+      await AlertService.processNewReading(reading.id);
 
       const io = getIO();
       const payload = {

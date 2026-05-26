@@ -1,54 +1,27 @@
-import { Activity, RadioTower } from "lucide-react";
-
+import { Metadata } from "next";
+import { getFarmZones } from "@/lib/farm-zones-server";
+import { SensorsClient } from "@/components/dashboard/SensorsClient";
 import { ExportExcelButtons } from "@/components/dashboard/ExportExcelButtons";
-import { sensorReadings } from "@/lib/farm-data";
 
-export default function SensorsPage() {
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Quản lý Cảm biến | Smart Farm Monitoring System",
+  description:
+    "Quản lý thiết bị cảm biến IoT được gán cho từng vùng trồng trong nông trại.",
+};
+
+export default async function SensorsPage() {
+  const zones = await getFarmZones();
+
+  const formattedZones = zones.map((zone) => ({
+    id: zone.id,
+    name: zone.name,
+  }));
+
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border bg-card p-5 shadow-sm sm:p-6">
-        <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-          Cảm biến
-        </p>
-        <h2 className="mt-2 text-2xl font-bold">Realtime sensor monitoring</h2>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Danh sách sensor demo, sẵn sàng để thay bằng dữ liệu API hoặc socket.
-        </p>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {sensorReadings.map((reading) => (
-          <article
-            key={reading.label}
-            className="rounded-2xl border bg-card p-5 shadow-sm"
-          >
-            <RadioTower className="size-6 text-emerald-700 dark:text-emerald-300" />
-            <p className="mt-4 text-sm text-muted-foreground">{reading.label}</p>
-            <p className="mt-1 text-3xl font-bold">{reading.value}</p>
-            <p className="mt-2 text-sm text-muted-foreground">{reading.state}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="rounded-2xl border bg-card p-5 shadow-sm">
-        <h3 className="text-lg font-semibold">Luồng dữ liệu gần đây</h3>
-        <div className="mt-4 space-y-3">
-          {[
-            "Sensor SM-01 gửi độ ẩm đất",
-            "Sensor TMP-04 cập nhật nhiệt độ",
-            "Gateway khu B đồng bộ thành công",
-          ].map((event) => (
-            <div
-              key={event}
-              className="flex items-center gap-3 rounded-xl bg-muted p-3 text-sm"
-            >
-              <Activity className="size-4 text-emerald-700 dark:text-emerald-300" />
-              {event}
-            </div>
-          ))}
-        </div>
-      </section>
-
+      <SensorsClient initialZones={formattedZones} />
       <ExportExcelButtons />
     </div>
   );

@@ -10,6 +10,7 @@ import {
   MapPinned,
   RadioTower,
   Sprout,
+  UploadCloud,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -51,6 +52,12 @@ const navItems: NavItem[] = [
     href: "/dashboard/alerts",
     match: "/dashboard/alerts",
     icon: BellRing,
+  },
+  {
+    title: "Import",
+    href: "/dashboard/imports",
+    match: "/dashboard/imports",
+    icon: UploadCloud,
   },
   {
     title: "Bản đồ",
@@ -104,10 +111,6 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto rounded-2xl border bg-white/55 p-4 text-sm shadow-sm dark:bg-white/5">
-        <p className="font-semibold">Frontend foundation</p>
-        <p className="mt-2 leading-6 text-muted-foreground">
-          Dữ liệu hiện là mock tĩnh để phần sau nối API gọn hơn.
-        </p>
       </div>
     </aside>
   );

@@ -1,12 +1,20 @@
-import { Bell, ChevronDown, Search, UserCircle } from "lucide-react";
+"use client";
+
+import { Bell, Loader2, LogOut, Search, UserCircle } from "lucide-react";
+
+import { useLogout } from "@/hooks/useLogout";
+import { useAuthStore } from "@/stores/auth.store";
 
 export function Header() {
+  const user = useAuthStore((state) => state.user);
+  const { logout, isLoggingOut } = useLogout({ redirectTo: "/auth/login" });
+
   return (
     <header className="sticky top-0 z-20 border-b bg-background/88 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div>
           <p className="text-xs font-semibold uppercase text-muted-foreground">
-            Smart Farm Dashboard
+            Smart Farm 
           </p>
           <h1 className="text-base font-semibold sm:text-lg">
             Giám sát trang trại
@@ -25,13 +33,23 @@ export function Header() {
           >
             <Bell className="size-5" aria-hidden="true" />
           </button>
+          <div className="hidden h-10 max-w-48 items-center gap-2 rounded-xl border bg-card px-3 text-sm font-medium sm:flex">
+            <UserCircle className="size-5 shrink-0 text-emerald-700 dark:text-emerald-300" />
+            <span className="truncate">{user?.name ?? "Tài khoản"}</span>
+          </div>
           <button
             type="button"
-            className="flex h-10 items-center gap-2 rounded-xl border bg-card px-2 text-sm font-medium transition hover:bg-muted sm:px-3"
+            onClick={logout}
+            disabled={isLoggingOut}
+            aria-label="Đăng xuất"
+            className="flex h-10 items-center justify-center gap-2 rounded-xl border bg-card px-3 text-sm font-medium transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
           >
-            <UserCircle className="size-5 text-emerald-700 dark:text-emerald-300" />
-            <span className="hidden sm:inline">User demo</span>
-            <ChevronDown className="hidden size-4 text-muted-foreground sm:inline" />
+            {isLoggingOut ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <LogOut className="size-4" aria-hidden="true" />
+            )}
+            <span className="hidden sm:inline">Đăng xuất</span>
           </button>
         </div>
       </div>

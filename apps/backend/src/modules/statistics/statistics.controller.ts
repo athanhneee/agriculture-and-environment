@@ -19,9 +19,7 @@ export class StatisticsController {
 
   static async getReadings(req: Request, res: Response) {
     const user = req.user!;
-    const { farmZoneId, from, to } = req.query as { farmZoneId?: string; from?: string; to?: string };
-    
-    const stats = await StatisticsService.getReadingStats(user, farmZoneId, from, to);
+    const stats = await StatisticsService.getReadingStats(req.query, user);
     res.status(200).json(ApiResponse.success('Lấy thống kê cảm biến thành công', stats));
   }
 }

@@ -35,9 +35,7 @@ export function ExportExcelButtons() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">Export Excel</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Tai lich su readings hoac alerts tu backend.
-          </p>
+          
         </div>
         <div className="flex flex-wrap gap-2">
           <button

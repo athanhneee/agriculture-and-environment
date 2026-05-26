@@ -53,12 +53,12 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
     setErrorMsg(null);
     try {
       // Chuẩn hóa ngày trước khi gửi lên API (Next.js format ISO string)
-      const payload = {
+      const payload: Partial<Crop> = {
         ...values,
         plantedDate: new Date(values.plantedDate).toISOString(),
         expectedHarvestDate: values.expectedHarvestDate 
           ? new Date(values.expectedHarvestDate).toISOString() 
-          : null,
+          : undefined,
       };
 
       if (isEdit && initialData) {

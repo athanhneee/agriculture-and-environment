@@ -15,6 +15,7 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const setAuth = useAuthStore((state) => state.setAuth);
   const isRegistered = searchParams.get("registered") === "true";
+  const nextPath = searchParams.get("next");
 
   const {
     register,
@@ -33,7 +34,11 @@ export default function LoginPage() {
     try {
       const data = await authApi.login(values);
       setAuth(data);
-      router.replace("/dashboard");
+      const redirectTo =
+        nextPath?.startsWith("/") && !nextPath.startsWith("//")
+          ? nextPath
+          : "/dashboard";
+      router.replace(redirectTo);
     } catch (error) {
       const message =
         error instanceof ApiError
@@ -57,10 +62,7 @@ export default function LoginPage() {
           <p className="max-w-md text-3xl font-bold leading-tight">
             Theo dõi trang trại, vùng trồng và cảnh báo trong một dashboard.
           </p>
-          <p className="mt-4 max-w-md text-sm leading-6 text-emerald-100/75">
-            Đăng nhập dùng access token trong Zustand và refresh token bằng
-            cookie httpOnly từ backend.
-          </p>
+         
         </div>
       </section>
 

@@ -5,26 +5,22 @@ export class StatisticsService {
   static async getOverview(user: JwtPayload) {
     const farmZoneFilter = user.role === 'ADMIN' ? {} : { ownerId: user.id };
 
-    // 1. Total Farm Zones
     const totalFarmZones = await prisma.farmZone.count({
       where: farmZoneFilter,
     });
 
-    // 2. Total Crops (in user's zones)
     const totalCrops = await prisma.crop.count({
       where: {
         farmZone: farmZoneFilter,
       },
     });
 
-    // 3. Total Sensors
     const totalSensors = await prisma.sensor.count({
       where: {
         farmZone: farmZoneFilter,
       },
     });
 
-    // 4. Alerts
     const openAlerts = await prisma.alert.count({
       where: {
         farmZone: farmZoneFilter,
@@ -40,7 +36,6 @@ export class StatisticsService {
       },
     });
 
-    // 5. Averages of current state or overall (we will just take average of all readings)
     const readingsAgg = await prisma.sensorReading.aggregate({
       where: {
         farmZone: farmZoneFilter,
@@ -67,9 +62,11 @@ export class StatisticsService {
   }
 
   static async getAlertStats(user: JwtPayload, from?: string, to?: string) {
-    const whereClause: any = {
-      farmZone: user.role === 'ADMIN' ? undefined : { ownerId: user.id },
-    };
+    const whereClause: any = {};
+
+    if (user.role !== 'ADMIN') {
+      whereClause.farmZone = { ownerId: user.id };
+    }
 
     if (from || to) {
       whereClause.createdAt = {};
@@ -102,78 +99,141 @@ export class StatisticsService {
     });
 
     return {
-      byType: byType.map(item => ({ type: item.type, count: item._count._all })),
-      bySeverity: bySeverity.map(item => ({ severity: item.severity, count: item._count._all })),
-      byStatus: byStatus.map(item => ({ status: item.status, count: item._count._all })),
+      byType: byType.map((item) => ({ type: item.type, count: item._count._all })),
+      bySeverity: bySeverity.map((item) => ({
+        severity: item.severity,
+        count: item._count._all,
+      })),
+      byStatus: byStatus.map((item) => ({
+        status: item.status,
+        count: item._count._all,
+      })),
     };
   }
 
-  static async getReadingStats(user: JwtPayload, farmZoneId?: string, from?: string, to?: string) {
-    // Determine which farm zones the user has access to
+  static async getReadingStats(query: any, user: JwtPayload) {
+    const from = query.from
+      ? new Date(query.from)
+      : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const to = query.to ? new Date(query.to) : new Date();
+    const groupBy = query.groupBy ?? 'day';
+
     let allowedFarmZoneIds: string[] = [];
-    
-    if (farmZoneId) {
-      // User specified a farm zone, check if they own it (if not admin)
-      if (user.role !== 'ADMIN') {
-        const zone = await prisma.farmZone.findFirst({
-          where: { id: farmZoneId, ownerId: user.id },
-        });
-        if (!zone) {
-          throw new Error('Bạn không có quyền truy cập dữ liệu của khu vực này');
-        }
-      }
-      allowedFarmZoneIds = [farmZoneId];
-    } else {
-      // User didn't specify, get all their zones or all zones if admin
+
+    if (user.role === 'ADMIN') {
       const zones = await prisma.farmZone.findMany({
-        where: user.role === 'ADMIN' ? {} : { ownerId: user.id },
         select: { id: true },
       });
-      allowedFarmZoneIds = zones.map(z => z.id);
+      allowedFarmZoneIds = zones.map((zone) => zone.id);
+    } else {
+      const zones = await prisma.farmZone.findMany({
+        where: { ownerId: user.id },
+        select: { id: true },
+      });
+      allowedFarmZoneIds = zones.map((zone) => zone.id);
+    }
+
+    if (query.farmZoneId) {
+      if (!allowedFarmZoneIds.includes(query.farmZoneId)) {
+        return [];
+      }
+
+      allowedFarmZoneIds = [query.farmZoneId];
     }
 
     if (allowedFarmZoneIds.length === 0) {
       return [];
     }
 
-    // Build the query using Raw SQL for Date Grouping
-    // Prisma $queryRaw uses template literals for safety against SQL injection
-    
-    const conditions = [];
-    if (from) {
-      conditions.push(`"recordedAt" >= '${new Date(from).toISOString()}'`);
+    const readings = await prisma.sensorReading.findMany({
+      where: {
+        farmZoneId: {
+          in: allowedFarmZoneIds,
+        },
+        recordedAt: {
+          gte: from,
+          lte: to,
+        },
+      },
+      select: {
+        recordedAt: true,
+        temperature: true,
+        airHumidity: true,
+        soilMoisture: true,
+        lightIntensity: true,
+      },
+      orderBy: {
+        recordedAt: 'asc',
+      },
+    });
+
+    const buckets = new Map<
+      string,
+      {
+        period: string;
+        count: number;
+        totalTemperature: number;
+        totalAirHumidity: number;
+        totalSoilMoisture: number;
+        totalLightIntensity: number;
+      }
+    >();
+
+    for (const reading of readings) {
+      const date = reading.recordedAt;
+
+      const period =
+        groupBy === 'hour'
+          ? date.toISOString().slice(0, 13) + ':00:00.000Z'
+          : date.toISOString().slice(0, 10);
+
+      const current =
+        buckets.get(period) ??
+        {
+          period,
+          count: 0,
+          totalTemperature: 0,
+          totalAirHumidity: 0,
+          totalSoilMoisture: 0,
+          totalLightIntensity: 0,
+        };
+
+      current.count += 1;
+      current.totalTemperature += reading.temperature ?? 0;
+      current.totalAirHumidity += reading.airHumidity ?? 0;
+      current.totalSoilMoisture += reading.soilMoisture ?? 0;
+      current.totalLightIntensity += reading.lightIntensity ?? 0;
+
+      buckets.set(period, current);
     }
-    if (to) {
-      conditions.push(`"recordedAt" <= '${new Date(to).toISOString()}'`);
-    }
-    
-    // Convert array of UUIDs to SQL IN clause format safely
-    const inClause = allowedFarmZoneIds.map(id => `'${id}'`).join(',');
-    conditions.push(`"farmZoneId" IN (${inClause})`);
 
-    const whereSql = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    return Array.from(buckets.values()).map((bucket) => {
+      const averageTemperature = Number(
+        (bucket.totalTemperature / bucket.count).toFixed(2),
+      );
+      const averageAirHumidity = Number(
+        (bucket.totalAirHumidity / bucket.count).toFixed(2),
+      );
+      const averageSoilMoisture = Number(
+        (bucket.totalSoilMoisture / bucket.count).toFixed(2),
+      );
+      const averageLightIntensity = Number(
+        (bucket.totalLightIntensity / bucket.count).toFixed(2),
+      );
 
-    const rawQuery = `
-      SELECT 
-        DATE("recordedAt") as "date",
-        AVG("temperature") as "avgTemperature",
-        AVG("airHumidity") as "avgAirHumidity",
-        AVG("soilMoisture") as "avgSoilMoisture",
-        AVG("lightIntensity") as "avgLightIntensity"
-      FROM "SensorReading"
-      ${whereSql}
-      GROUP BY DATE("recordedAt")
-      ORDER BY "date" ASC
-    `;
-
-    const results: any[] = await prisma.$queryRawUnsafe(rawQuery);
-
-    return results.map(row => ({
-      date: row.date.toISOString().split('T')[0],
-      avgTemperature: row.avgTemperature ? Number(row.avgTemperature) : 0,
-      avgAirHumidity: row.avgAirHumidity ? Number(row.avgAirHumidity) : 0,
-      avgSoilMoisture: row.avgSoilMoisture ? Number(row.avgSoilMoisture) : 0,
-      avgLightIntensity: row.avgLightIntensity ? Number(row.avgLightIntensity) : 0,
-    }));
+      return {
+        period: bucket.period,
+        date: bucket.period,
+        count: bucket.count,
+        averageTemperature,
+        averageAirHumidity,
+        averageSoilMoisture,
+        averageLightIntensity,
+        avgTemperature: averageTemperature,
+        avgAirHumidity: averageAirHumidity,
+        avgSoilMoisture: averageSoilMoisture,
+        avgLightIntensity: averageLightIntensity,
+      };
+    });
   }
 }

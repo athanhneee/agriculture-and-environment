@@ -101,9 +101,9 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
 
   const statusText =
     status === "connected"
-      ? "Socket connected"
+      ? ""
       : status === "connecting"
-        ? "Dang ket noi socket"
+        ? "Dang ket noi"
         : "Socket offline";
 
   return (
@@ -112,9 +112,7 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold">Realtime sensors</h2>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {statusText} ({socketBaseUrl})
-            </p>
+
           </div>
           <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
             <RadioTower className="size-5" aria-hidden="true" />
@@ -151,7 +149,7 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
             })
           ) : (
             <div className="rounded-2xl border bg-background p-4 text-sm text-muted-foreground">
-              Chua co farm zones tu API de join room realtime.
+              Chua co farm zones.
             </div>
           )}
         </div>
@@ -163,17 +161,14 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
           <h2 className="text-lg font-semibold">Realtime alerts</h2>
         </div>
         <div className="mt-4 rounded-2xl border bg-background p-4">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <Activity className="size-4 text-emerald-700 dark:text-emerald-300" />
-            <span>{eventCount} realtime events trong phien hien tai</span>
-          </div>
+                                                          
           <p className="mt-3 font-semibold">
             {latestAlert?.title ?? "Chua nhan alert moi"}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
             {latestAlert?.severity
               ? `Muc ${latestAlert.severity}`
-              : "Cho su kien alert:created hoac alert:global tu backend."}
+              : "Dang xay ra loi"}
           </p>
         </div>
       </div>
