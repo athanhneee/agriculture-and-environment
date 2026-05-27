@@ -106,6 +106,9 @@ model FarmZone {
   sensors        Sensor[]
   sensorReadings SensorReading[]
   alerts         Alert[]
+
+  @@unique([ownerId, name])
+  @@unique([ownerId, latitude, longitude])
 }
 
 model Crop {

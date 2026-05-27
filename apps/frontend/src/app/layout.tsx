@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+    <html lang="vi" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-full" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

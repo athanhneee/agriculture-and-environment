@@ -10,10 +10,11 @@ import {
   MapPinned,
   RadioTower,
   Sprout,
-  UploadCloud,
+  Shield,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/stores/auth.store";
 
 type NavItem = {
   title: string;
@@ -53,12 +54,7 @@ const navItems: NavItem[] = [
     match: "/dashboard/alerts",
     icon: BellRing,
   },
-  {
-    title: "Import",
-    href: "/dashboard/imports",
-    match: "/dashboard/imports",
-    icon: UploadCloud,
-  },
+
   {
     title: "Bản đồ",
     href: "/dashboard/map",
@@ -69,6 +65,8 @@ const navItems: NavItem[] = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === "ADMIN";
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r bg-sidebar px-4 py-5 text-sidebar-foreground md:flex md:flex-col">
@@ -96,6 +94,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               className={cn(
                 "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
                 isActive
@@ -108,6 +107,27 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        {isAdmin && (
+          <>
+            <div className="pt-4 pb-2 px-3">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Hệ thống</span>
+            </div>
+            <Link
+              href="/dashboard/admin"
+              prefetch={true}
+              className={cn(
+                "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+                pathname.startsWith("/dashboard/admin")
+                  ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
+                  : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+              )}
+            >
+              <Shield className="size-5" aria-hidden="true" />
+              Quản trị hệ thống
+            </Link>
+          </>
+        )}
       </nav>
 
       <div className="mt-auto rounded-2xl border bg-white/55 p-4 text-sm shadow-sm dark:bg-white/5">

@@ -7,6 +7,7 @@ import { sensorsApi, type Sensor } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { SensorTable } from "./SensorTable";
 import { SensorForm } from "../forms/SensorForm";
+import { ImportSensorsExcelModal } from "./ImportSensorsExcelModal";
 
 interface SensorsClientProps {
   initialZones: Array<{ id: string; name: string }>;
@@ -29,6 +30,9 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
   // Form state
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>(undefined);
+
+  // Import modal state
+  const [isImportOpen, setIsImportOpen] = useState(false);
 
   // Toast notification
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -91,11 +95,10 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${
-            toast.type === "success"
+          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
               ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
               : "border-destructive/20 bg-destructive/10 text-destructive"
-          }`}
+            }`}
         >
           <span className="text-sm font-semibold">{toast.message}</span>
         </div>
@@ -109,18 +112,37 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
             Quản lý danh sách phần cứng trạm IoT đo đạc nhiệt độ, độ ẩm và cường độ ánh sáng.
           </p>
         </div>
-        
-        {/* Nút thêm mới - chỉ hiển thị nếu có quyền ADMIN */}
-        {isAdmin && (
-          <button
-            onClick={handleCreateClick}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"
-          >
-            <Plus className="size-4" />
-            Thêm cảm biến
-          </button>
+
+        {/* Nút thao tác - KHÔNG cho ADMIN */}
+        {!isAdmin && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setIsImportOpen(true)}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+              Import Excel
+            </button>
+            <button
+              onClick={handleCreateClick}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"
+            >
+              <Plus className="size-4" />
+              Thêm cảm biến
+            </button>
+          </div>
         )}
       </div>
+
+      {/* Import Sensors Modal */}
+      <ImportSensorsExcelModal
+        open={isImportOpen}
+        onClose={() => setIsImportOpen(false)}
+        onSuccess={(imported, skipped) => {
+          triggerToast("success", `Import thành công ${imported} cảm biến${skipped > 0 ? `, bỏ qua ${skipped} dòng lỗi` : ""}!`);
+          fetchSensors();
+        }}
+      />
 
       {/* Form Dialog Modal */}
       {isFormOpen && (

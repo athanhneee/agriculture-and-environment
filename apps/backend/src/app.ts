@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
@@ -23,6 +24,7 @@ const app: Application = express();
 
 // --- 1. Global Middlewares ---
 app.use(helmet()); // Bảo mật HTTP headers
+app.use(compression()); // Nén HTTP response (Gzip/Brotli) để tải nhanh hơn
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

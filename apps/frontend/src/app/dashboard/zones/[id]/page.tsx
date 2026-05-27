@@ -18,9 +18,15 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { getFarmZoneById } from "@/lib/farm-zones-server";
+import { getFarmZoneById, getAllZoneIds } from "@/lib/farm-zones-server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
+
+// Pre-build tất cả trang chi tiết zone khi khởi động — trả về tức thì từ cache
+export async function generateStaticParams() {
+  const ids = await getAllZoneIds();
+  return ids.map((id) => ({ id }));
+}
 
 interface PageProps {
   params: Promise<{ id: string }>;

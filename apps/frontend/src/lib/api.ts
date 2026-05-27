@@ -69,7 +69,15 @@ async function parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
   return response.json() as Promise<ApiResponse<T>>;
 }
 
+let refreshPromise: Promise<string> | null = null;
+
 async function refreshAccessToken() {
+  if (refreshPromise) {
+    return refreshPromise;
+  }
+
+  refreshPromise = (async () => {
+    try {
   const response = await fetch(buildUrl("/api/auth/refresh"), {
     method: "POST",
     credentials: "include",
@@ -88,8 +96,14 @@ async function refreshAccessToken() {
     );
   }
 
-  useAuthStore.getState().setAccessToken(body.data.accessToken);
-  return body.data.accessToken;
+      useAuthStore.getState().setAccessToken(body.data.accessToken);
+      return body.data.accessToken;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
 }
 
 export async function apiRequest<T>(
@@ -258,7 +272,7 @@ export type FarmZone = {
 export const farmZonesApi = {
   list: async () => {
     const payload = await apiRequest<FarmZone[] | PaginatedResponse<FarmZone>>(
-      "/api/farm-zones",
+      "/api/farm-zones?limit=1000",
     );
     return unwrapList(payload);
   },
@@ -282,6 +296,146 @@ export const exportsApi = {
       "alerts.xlsx",
     ),
 };
+
+export const importsApi = {
+  /**
+   * Import vùng trồng từ file Excel (.xlsx), CSV (.csv) hoặc TXT (.txt)
+   * Gửi multipart/form-data với field tên "file"
+   */
+  uploadFarmZones: async (
+    file: File,
+  ): Promise<{ imported: number; skipped: number; errors?: { row: number; message: string }[] }> => {
+    const token = useAuthStore.getState().accessToken;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(buildUrl("/api/imports/farm-zones"), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: "include",
+      body: formData,
+    });
+
+    const body = await parseResponse<{
+      imported: number;
+      skipped: number;
+      errors?: { row: number; message: string }[];
+    }>(response);
+
+    if (!response.ok || !body.success) {
+      throw new ApiError(
+        body.message || "Không thể import file. Vui lòng kiểm tra định dạng.",
+        response.status,
+        body.errors,
+      );
+    }
+
+    return body.data as { imported: number; skipped: number; errors?: { row: number; message: string }[] };
+  },
+
+  /** Tải file Excel mẫu để làm template import vùng trồng */
+  downloadTemplate: () =>
+    downloadApiFile(
+      "/api/imports/farm-zones/template",
+      "farm_zones_template.xlsx",
+      { skipAuth: true },
+    ),
+
+  /**
+   * Import cây trồng hàng loạt từ file Excel (.xlsx), CSV (.csv) hoặc TXT (.txt)
+   * Cột "farmZoneName" phải khớp với tên vùng trồng đang sở hữu.
+   */
+  uploadCrops: async (
+    file: File,
+  ): Promise<{ imported: number; skipped: number; errors?: { row: number; message: string }[] }> => {
+    const token = useAuthStore.getState().accessToken;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(buildUrl("/api/imports/crops"), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: "include",
+      body: formData,
+    });
+
+    const body = await parseResponse<{
+      imported: number;
+      skipped: number;
+      errors?: { row: number; message: string }[];
+    }>(response);
+
+    if (!response.ok || !body.success) {
+      throw new ApiError(
+        body.message || "Không thể import file cây trồng. Vui lòng kiểm tra định dạng.",
+        response.status,
+        body.errors,
+      );
+    }
+
+    return body.data as { imported: number; skipped: number; errors?: { row: number; message: string }[] };
+  },
+
+  /** Tải file Excel mẫu để làm template import cây trồng */
+  downloadCropsTemplate: () =>
+    downloadApiFile(
+      "/api/imports/crops/template",
+      "crops_template.xlsx",
+      { skipAuth: true },
+    ),
+
+  /**
+   * Import cảm biến hàng loạt từ file Excel (.xlsx), CSV (.csv) hoặc TXT (.txt)
+   */
+  uploadSensors: async (
+    file: File,
+  ): Promise<{ imported: number; skipped: number; errors?: { row: number; message: string }[] }> => {
+    const token = useAuthStore.getState().accessToken;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(buildUrl("/api/imports/sensors"), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: "include",
+      body: formData,
+    });
+
+    const body = await parseResponse<{
+      imported: number;
+      skipped: number;
+      errors?: { row: number; message: string }[];
+    }>(response);
+
+    if (!response.ok || !body.success) {
+      throw new ApiError(
+        body.message || "Không thể import file cảm biến. Vui lòng kiểm tra định dạng.",
+        response.status,
+        body.errors,
+      );
+    }
+
+    return body.data as { imported: number; skipped: number; errors?: { row: number; message: string }[] };
+  },
+
+  /** Tải file Excel mẫu để làm template import cảm biến */
+  downloadSensorsTemplate: () =>
+    downloadApiFile(
+      "/api/imports/sensors/template",
+      "sensors_template.xlsx",
+      { skipAuth: true },
+    ),
+};
+
 export type CropStatus = "PLANTED" | "GROWING" | "HARVESTED" | "DISEASED";
 
 export type Crop = {

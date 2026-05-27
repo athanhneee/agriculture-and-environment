@@ -5,12 +5,16 @@ import Link from "next/link";
 import { Plus, Search, SlidersHorizontal, Leaf } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 import { FarmZoneCard } from "./FarmZoneCard";
+import { useAuthStore } from "@/stores/auth.store";
 
 interface FarmZonesBrowserProps {
   initialZones: FarmZone[];
 }
 
 export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === "ADMIN";
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
 
@@ -27,7 +31,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header and Add button */}
+      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Quản lý Vùng Trồng</h1>
@@ -35,13 +39,16 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
             Theo dõi, chỉnh sửa và cấu hình các khu vực trồng trọt và cảm biến.
           </p>
         </div>
-        <Link
-          href="/dashboard/zones/new"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"
-        >
-          <Plus className="size-4" />
-          Thêm vùng trồng
-        </Link>
+
+        {!isAdmin && (
+          <Link
+            href="/dashboard/zones/new"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"
+          >
+            <Plus className="size-4" />
+            Thêm vùng trồng
+          </Link>
+        )}
       </div>
 
       {/* Search and Filters */}
@@ -56,7 +63,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
             className="h-11 w-full rounded-xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           />
         </div>
-        
+
         <div className="flex items-center gap-2 shrink-0">
           <SlidersHorizontal className="size-4 text-muted-foreground" />
           <select

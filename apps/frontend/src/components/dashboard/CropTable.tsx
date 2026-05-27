@@ -116,7 +116,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                       : "-"}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
+                    <span className={`inline-flex items-center shrink-0 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
                       {status.label}
                     </span>
                   </td>
@@ -161,7 +161,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                   <h4 className="font-bold text-base text-foreground leading-tight">{crop.name}</h4>
                   <p className="text-xs text-muted-foreground mt-1">Giống: {crop.variety}</p>
                 </div>
-                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
+                <span className={`inline-flex items-center shrink-0 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
                   {status.label}
                 </span>
               </div>

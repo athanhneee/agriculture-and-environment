@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { getOverviewStats } from "@/lib/dashboard-server";
 import { StatisticsClient } from "@/components/dashboard/StatisticsClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: "Báo cáo Thống kê | Smart Farm Monitoring System",

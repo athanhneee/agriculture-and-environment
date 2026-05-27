@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import ExcelJS from "exceljs";
 import { ImportsService } from "./imports.service";
 import { ApiResponse } from "../../utils/apiResponse";
 
@@ -13,5 +14,335 @@ export class ImportsController {
     return res
       .status(201)
       .json(ApiResponse.success("Import vùng trồng thành công", result));
+  }
+
+  static async downloadTemplate(_req: Request, res: Response) {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("farm_zones_template");
+
+    // Định nghĩa cột với header và width
+    sheet.columns = [
+      { header: "name", key: "name", width: 28 },
+      { header: "description", key: "description", width: 36 },
+      { header: "area", key: "area", width: 14 },
+      { header: "latitude", key: "latitude", width: 16 },
+      { header: "longitude", key: "longitude", width: 16 },
+      { header: "soilType", key: "soilType", width: 22 },
+      { header: "status", key: "status", width: 16 },
+    ];
+
+    // Style header row
+    const headerRow = sheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF16A34A" }, // emerald-600
+      };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+      cell.border = {
+        bottom: { style: "thin", color: { argb: "FF15803D" } },
+      };
+    });
+    headerRow.height = 22;
+
+    // Thêm 10 dòng dữ liệu mẫu
+    const sampleRows = [
+      {
+        name: "Vùng trồng A - Khu Bắc",
+        description: "Khu vực trồng lúa chính vụ Đông Xuân",
+        area: 2.5,
+        latitude: 10.7626,
+        longitude: 106.6602,
+        soilType: "Đất đỏ Bazan",
+        status: "ACTIVE",
+      },
+      {
+        name: "Vùng trồng B - Khu Nam",
+        description: "Khu thử nghiệm rau màu hữu cơ",
+        area: 1.0,
+        latitude: 10.7750,
+        longitude: 106.7000,
+        soilType: "Đất phù sa",
+        status: "INACTIVE",
+      },
+      {
+        name: "Khu C - Cà phê Tây Nguyên",
+        description: "Trồng cà phê Arabica xuất khẩu",
+        area: 5.2,
+        latitude: 12.6667,
+        longitude: 108.0500,
+        soilType: "Đất đỏ Bazan",
+        status: "ACTIVE",
+      },
+      {
+        name: "Khu D - Hồ tiêu Gia Lai",
+        description: "Vùng tiêu đen chứng nhận GlobalG.A.P",
+        area: 3.8,
+        latitude: 13.9833,
+        longitude: 108.0000,
+        soilType: "Đất feralit đỏ vàng",
+        status: "ACTIVE",
+      },
+      {
+        name: "Khu E - Cao su Bình Phước",
+        description: "Vườn cao su tiểu điền 8 năm tuổi",
+        area: 10.0,
+        latitude: 11.7500,
+        longitude: 106.9167,
+        soilType: "Đất xám bạc màu",
+        status: "MAINTENANCE",
+      },
+      {
+        name: "Khu F - Điều Đồng Nai",
+        description: "Trồng điều ghép giống cao sản",
+        area: 4.5,
+        latitude: 11.0686,
+        longitude: 107.1676,
+        soilType: "Đất cát pha",
+        status: "ACTIVE",
+      },
+      {
+        name: "Khu G - Mía Tây Ninh",
+        description: "Vùng nguyên liệu mía cho nhà máy đường",
+        area: 8.0,
+        latitude: 11.3500,
+        longitude: 106.1000,
+        soilType: "Đất phù sa cổ",
+        status: "ACTIVE",
+      },
+      {
+        name: "Khu H - Thanh long Bình Thuận",
+        description: "Thanh long ruột đỏ xuất khẩu châu Âu",
+        area: 2.0,
+        latitude: 10.9333,
+        longitude: 108.1000,
+        soilType: "Đất cát",
+        status: "ACTIVE",
+      },
+      {
+        name: "Khu I - Xoài Đồng Tháp",
+        description: "Xoài cát Hòa Lộc VietGAP",
+        area: 1.8,
+        latitude: 10.4667,
+        longitude: 105.6333,
+        soilType: "Đất phù sa ngọt",
+        status: "INACTIVE",
+      },
+      {
+        name: "Khu J - Sầu riêng Tiền Giang",
+        description: "Sầu riêng Ri6 và Monthong xuất khẩu",
+        area: 3.0,
+        latitude: 10.3600,
+        longitude: 106.3600,
+        soilType: "Đất thịt pha sét",
+        status: "ACTIVE",
+      },
+    ];
+
+
+    sampleRows.forEach((row, i) => {
+      const dataRow = sheet.addRow(row);
+      dataRow.eachCell((cell) => {
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: i % 2 === 0 ? "FFF0FDF4" : "FFFFFFFF" },
+        };
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="farm_zones_template.xlsx"',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  }
+  static async importCrops(req: Request, res: Response) {
+    if (!req.file) {
+      return res.status(400).json(ApiResponse.error("Vui lòng upload file"));
+    }
+
+    const result = await ImportsService.importCrops(req.file, req.user!);
+
+    return res
+      .status(201)
+      .json(ApiResponse.success("Import cây trồng thành công", result));
+  }
+
+  static async downloadCropsTemplate(_req: Request, res: Response) {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("crops_template");
+
+    // Định nghĩa cột với header và width
+    sheet.columns = [
+      { header: "name", key: "name", width: 28 },
+      { header: "variety", key: "variety", width: 28 },
+      { header: "plantedDate", key: "plantedDate", width: 16 },
+      { header: "expectedHarvestDate", key: "expectedHarvestDate", width: 22 },
+      { header: "status", key: "status", width: 16 },
+      { header: "farmZoneName", key: "farmZoneName", width: 28 },
+    ];
+
+    // Style header row
+    const headerRow = sheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF16A34A" }, // emerald-600
+      };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+      cell.border = {
+        bottom: { style: "thin", color: { argb: "FF15803D" } },
+      };
+    });
+    headerRow.height = 22;
+
+    // Thêm dòng dữ liệu mẫu
+    const sampleRows = [
+      {
+        name: "Cà chua Cherry",
+        variety: "F1 Nhật Bản",
+        plantedDate: "2024-03-01",
+        expectedHarvestDate: "2024-05-15",
+        status: "GROWING",
+        farmZoneName: "Vùng trồng A - Khu Bắc",
+      },
+      {
+        name: "Dưa lưới Mật",
+        variety: "Hoàng kim",
+        plantedDate: "2024-04-10",
+        expectedHarvestDate: "2024-07-20",
+        status: "PLANTED",
+        farmZoneName: "Vùng trồng B - Khu Nam",
+      },
+      {
+        name: "Bắp cải tím",
+        variety: "Ruby Perfection",
+        plantedDate: "2024-01-15",
+        expectedHarvestDate: "2024-04-05",
+        status: "HARVESTED",
+        farmZoneName: "Khu C - Cà phê Tây Nguyên",
+      },
+    ];
+
+    sampleRows.forEach((row, i) => {
+      const dataRow = sheet.addRow(row);
+      dataRow.eachCell((cell) => {
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: i % 2 === 0 ? "FFF0FDF4" : "FFFFFFFF" },
+        };
+      });
+    });
+
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="crops_template.xlsx"',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  }
+
+  static async importSensors(req: Request, res: Response) {
+    if (!req.file) {
+      return res.status(400).json(ApiResponse.error("Vui lòng upload file"));
+    }
+
+    const result = await ImportsService.importSensors(req.file, req.user!);
+
+    return res
+      .status(201)
+      .json(ApiResponse.success("Import cảm biến thành công", result));
+  }
+
+  static async downloadSensorsTemplate(_req: Request, res: Response) {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("sensors_template");
+
+    sheet.columns = [
+      { header: "name", key: "name", width: 28 },
+      { header: "code", key: "code", width: 22 },
+      { header: "type", key: "type", width: 22 },
+      { header: "unit", key: "unit", width: 14 },
+      { header: "status", key: "status", width: 16 },
+      { header: "farmZoneName", key: "farmZoneName", width: 28 },
+    ];
+
+    const headerRow = sheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF16A34A" }, 
+      };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+      cell.border = {
+        bottom: { style: "thin", color: { argb: "FF15803D" } },
+      };
+    });
+    headerRow.height = 22;
+
+    const sampleRows = [
+      {
+        name: "Cảm biến Nhiệt độ 1",
+        code: "SN-TEMP-001",
+        type: "TEMPERATURE",
+        unit: "°C",
+        status: "ACTIVE",
+        farmZoneName: "Vùng trồng A - Khu Bắc",
+      },
+      {
+        name: "Cảm biến Độ ẩm đất 1",
+        code: "SN-SOIL-001",
+        type: "SOIL_MOISTURE",
+        unit: "%",
+        status: "ACTIVE",
+        farmZoneName: "Vùng trồng B - Khu Nam",
+      },
+      {
+        name: "Trạm tích hợp A",
+        code: "SN-ALL-001",
+        type: "ALL_IN_ONE",
+        unit: "Multi",
+        status: "INACTIVE",
+        farmZoneName: "Khu C - Cà phê Tây Nguyên",
+      },
+    ];
+
+    sampleRows.forEach((row, i) => {
+      const dataRow = sheet.addRow(row);
+      dataRow.eachCell((cell) => {
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: i % 2 === 0 ? "FFF0FDF4" : "FFFFFFFF" },
+        };
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="sensors_template.xlsx"',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
   }
 }
