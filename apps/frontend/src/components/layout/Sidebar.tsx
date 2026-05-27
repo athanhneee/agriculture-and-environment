@@ -11,6 +11,7 @@ import {
   RadioTower,
   Sprout,
   Shield,
+  Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -118,13 +119,26 @@ export function Sidebar() {
               prefetch={true}
               className={cn(
                 "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
-                pathname.startsWith("/dashboard/admin")
+                pathname === "/dashboard/admin"
                   ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
                   : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
               )}
             >
               <Shield className="size-5" aria-hidden="true" />
-              Quản trị hệ thống
+              Tổng quan Hệ thống
+            </Link>
+            <Link
+              href="/dashboard/admin/users"
+              prefetch={true}
+              className={cn(
+                "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+                pathname.startsWith("/dashboard/admin/users")
+                  ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
+                  : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+              )}
+            >
+              <Users className="size-5" aria-hidden="true" />
+              Quản lý Người dùng
             </Link>
           </>
         )}

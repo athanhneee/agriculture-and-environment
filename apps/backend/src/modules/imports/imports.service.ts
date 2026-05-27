@@ -1,7 +1,8 @@
 import ExcelJS from "exceljs";
 import prisma from "../../config/prisma";
 import { JwtPayload } from "../../utils/jwt";
-import { ZoneStatus, CropStatus, SensorType, SensorStatus } from "@prisma/client";
+import { ZoneStatus, CropStatus, SensorType, SensorStatus, Role, UserStatus } from "@prisma/client";
+import { PasswordUtil } from "../../utils/password";
 
 type ImportRow = {
   name: string;
@@ -148,6 +149,42 @@ function validateSensorRow(row: any, index: number): ImportSensorRow {
     unit: String(row.unit).trim(),
     status: statusStr as SensorStatus,
     farmZoneName: String(row.farmZoneName).trim(),
+  };
+}
+
+type ImportUserRow = {
+  name: string;
+  email: string;
+  password?: string;
+  role: Role;
+  status: UserStatus;
+};
+
+const REQUIRED_USER_HEADERS = ["name", "email"];
+
+function validateUserRow(row: any, index: number): ImportUserRow {
+  for (const header of REQUIRED_USER_HEADERS) {
+    if (row[header] === undefined || row[header] === null || row[header] === "") {
+      throw new Error(`Dòng ${index}: thiếu cột bắt buộc "${header}"`);
+    }
+  }
+
+  const roleStr = String(row.role || "USER").trim().toUpperCase();
+  if (!["ADMIN", "USER"].includes(roleStr)) {
+    throw new Error(`Dòng ${index}: quyền (role) chỉ được là ADMIN hoặc USER`);
+  }
+
+  const statusStr = String(row.status || "ACTIVE").trim().toUpperCase();
+  if (!["ACTIVE", "INACTIVE"].includes(statusStr)) {
+    throw new Error(`Dòng ${index}: trạng thái (status) chỉ được là ACTIVE hoặc INACTIVE`);
+  }
+
+  return {
+    name: String(row.name).trim(),
+    email: String(row.email).trim().toLowerCase(),
+    password: row.password ? String(row.password).trim() : undefined,
+    role: roleStr as Role,
+    status: statusStr as UserStatus,
   };
 }
 
@@ -404,6 +441,67 @@ export class ImportsService {
 
     console.log(
       `[Import Sensors] Hoàn tất — Thành công: ${imported}/${rawRows.length} | Lỗi: ${errors.length}`,
+    );
+
+    return { imported, skipped: errors.length, errors };
+  }
+
+  static async importUsers(file: Express.Multer.File, user: JwtPayload) {
+    if (user.role !== "ADMIN") {
+      throw new Error("Chỉ quản trị viên mới có quyền import người dùng.");
+    }
+
+    const filename = file.originalname.toLowerCase();
+    let rawRows: any[] = [];
+
+    if (filename.endsWith(".xlsx")) {
+      rawRows = await parseExcel(file.buffer);
+    } else if (filename.endsWith(".csv") || filename.endsWith(".txt")) {
+      rawRows = parseTextTable(file.buffer);
+    } else {
+      throw new Error("Chỉ hỗ trợ file .xlsx, .csv hoặc .txt");
+    }
+
+    let imported = 0;
+    const errors: { row: number; message: string }[] = [];
+
+    for (let i = 0; i < rawRows.length; i++) {
+      const rowNumber = i + 2; 
+      try {
+        const validated = validateUserRow(rawRows[i], rowNumber);
+
+        const existingEmail = await prisma.user.findUnique({
+          where: { email: validated.email }
+        });
+
+        if (existingEmail) {
+          throw new Error(`Email "${validated.email}" đã tồn tại trong hệ thống`);
+        }
+
+        const defaultPassword = validated.password || 'SmartFarm@123';
+        const passwordHash = await PasswordUtil.hash(defaultPassword);
+
+        await prisma.user.create({
+          data: {
+            name: validated.name,
+            email: validated.email,
+            passwordHash,
+            role: validated.role,
+            status: validated.status,
+          },
+        });
+        
+        imported++;
+        console.log(`[Import Users] ✅ Dòng ${rowNumber}: "${validated.email}" — lưu thành công`);
+      } catch (err: any) {
+        const message: string = err?.message ?? "Lỗi không xác định";
+        errors.push({ row: rowNumber, message });
+        console.warn(`[Import Users] ❌ Dòng ${rowNumber}: ${message}`);
+      }
+    }
+
+    console.log(
+      `[Import Users] Hoàn tất — Thành công: ${imported}/${rawRows.length} | Lỗi: ${errors.length}`,
     );
 
     return { imported, skipped: errors.length, errors };

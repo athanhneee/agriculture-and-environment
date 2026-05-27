@@ -345,4 +345,91 @@ export class ImportsController {
     await workbook.xlsx.write(res);
     res.end();
   }
+
+  static async importUsers(req: Request, res: Response) {
+    if (!req.file) {
+      return res.status(400).json(ApiResponse.error("Vui lòng upload file"));
+    }
+
+    const result = await ImportsService.importUsers(req.file, req.user!);
+
+    return res
+      .status(201)
+      .json(ApiResponse.success("Import người dùng thành công", result));
+  }
+
+  static async downloadUsersTemplate(_req: Request, res: Response) {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("users_template");
+
+    sheet.columns = [
+      { header: "name", key: "name", width: 28 },
+      { header: "email", key: "email", width: 35 },
+      { header: "password", key: "password", width: 20 },
+      { header: "role", key: "role", width: 16 },
+      { header: "status", key: "status", width: 16 },
+    ];
+
+    const headerRow = sheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF16A34A" }, 
+      };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+      cell.border = {
+        bottom: { style: "thin", color: { argb: "FF15803D" } },
+      };
+    });
+    headerRow.height = 22;
+
+    const sampleRows = [
+      {
+        name: "Lê Văn Bảy",
+        email: "levanbay@gmail.com",
+        password: "Password123",
+        role: "USER",
+        status: "ACTIVE",
+      },
+      {
+        name: "Nguyễn Thị Chín",
+        email: "nguyenthichin@gmail.com",
+        password: "",
+        role: "USER",
+        status: "INACTIVE",
+      },
+      {
+        name: "Trần Quản Trị",
+        email: "tranquan@gmail.com",
+        password: "Admin@123",
+        role: "ADMIN",
+        status: "ACTIVE",
+      },
+    ];
+
+    sampleRows.forEach((row, i) => {
+      const dataRow = sheet.addRow(row);
+      dataRow.eachCell((cell) => {
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: i % 2 === 0 ? "FFF0FDF4" : "FFFFFFFF" },
+        };
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="users_template.xlsx"',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  }
 }

@@ -35,6 +35,10 @@ export class AuthService {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) throw { statusCode: 401, message: 'Email hoặc mật khẩu không chính xác' };
 
+    if (user.status === 'INACTIVE') {
+      throw { statusCode: 403, message: 'Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.' };
+    }
+
     const isValidPassword = await PasswordUtil.verify(password, user.passwordHash);
     if (!isValidPassword) throw { statusCode: 401, message: 'Email hoặc mật khẩu không chính xác' };
 

@@ -20,6 +20,8 @@ import alertRoutes from './modules/alerts/alerts.routes';
 import statisticsRoutes from './modules/statistics/statistics.routes';
 import exportsRoutes from './modules/exports/exports.routes';
 import importRoutes from "./modules/imports/imports.routes";
+import searchRoutes from "./modules/search/search.routes";
+import usersRoutes from "./modules/users/users.routes";
 const app: Application = express();
 
 // --- 1. Global Middlewares ---
@@ -55,6 +57,8 @@ app.use('/api/alerts', alertRoutes);
 app.use('/api/statistics', statisticsRoutes);
 app.use('/api/exports', exportsRoutes);
 app.use("/api/imports", importRoutes);
+app.use("/api/search", searchRoutes);
+app.use("/api/users", usersRoutes);
 
 // --- 3. Error Handling Middleware (luôn để cuối cùng) ---
 app.use(errorHandler);

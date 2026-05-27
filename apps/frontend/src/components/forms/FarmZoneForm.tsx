@@ -7,14 +7,18 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { createFarmZoneAction } from "@/app/dashboard/zones/actions";
+import { createFarmZoneAction, updateFarmZoneAction } from "@/app/dashboard/zones/actions";
 import { farmZoneSchema, type FarmZoneFormValues } from "@/lib/validations";
 import { ImportExcelModal } from "@/components/dashboard/ImportExcelModal";
+import type { FarmZone } from "@/lib/api";
 
-export function FarmZoneForm() {
+interface FarmZoneFormProps {
+  initialData?: FarmZone;
+}
+
+export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [areaInput, setAreaInput] = useState("");
   const [importModalOpen, setImportModalOpen] = useState(false);
 
   const {
@@ -24,16 +28,28 @@ export function FarmZoneForm() {
     formState: { errors, isSubmitting },
   } = useForm<FarmZoneFormValues>({
     resolver: zodResolver(farmZoneSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      area: 0,
-      latitude: 10.762622,
-      longitude: 106.660172,
-      soilType: "",
-      status: "ACTIVE",
-    },
+    defaultValues: initialData
+      ? {
+          name: initialData.name,
+          description: initialData.description || "",
+          area: initialData.area,
+          latitude: initialData.latitude,
+          longitude: initialData.longitude,
+          soilType: initialData.soilType,
+          status: initialData.status,
+        }
+      : {
+          name: "",
+          description: "",
+          area: 0,
+          latitude: 10.762622,
+          longitude: 106.660172,
+          soilType: "",
+          status: "ACTIVE",
+        },
   });
+
+  const [areaInput, setAreaInput] = useState(initialData ? String(initialData.area) : "");
 
   useEffect(() => {
     register("area");
@@ -52,9 +68,12 @@ export function FarmZoneForm() {
   const onSubmit = async (values: FarmZoneFormValues) => {
     setErrorMsg(null);
     try {
-      const res = await createFarmZoneAction(values);
+      const res = initialData 
+        ? await updateFarmZoneAction(initialData.id, values)
+        : await createFarmZoneAction(values);
+
       if (res.success) {
-        router.push("/dashboard/zones");
+        router.push(initialData ? `/dashboard/zones/${initialData.id}` : "/dashboard/zones");
       } else {
         setErrorMsg(res.message);
       }
@@ -70,18 +89,19 @@ export function FarmZoneForm() {
       <div className="w-full max-w-2xl rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">Thêm vùng trồng mới</h2>
+            <h2 className="text-xl font-bold">{initialData ? "Cập nhật vùng trồng" : "Thêm vùng trồng mới"}</h2>
             <p className="text-sm text-muted-foreground">
-              Nhập thông tin chi tiết để thiết lập khu vực giám sát mới.
+              {initialData ? "Chỉnh sửa thông tin chi tiết của khu vực giám sát." : "Nhập thông tin chi tiết để thiết lập khu vực giám sát mới."}
             </p>
           </div>
-          <Link
-            href="/dashboard/zones"
+          <button
+            type="button"
+            onClick={() => router.back()}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline dark:text-emerald-300"
           >
             <ArrowLeft className="size-4" />
             Quay lại
-          </Link>
+          </button>
         </div>
 
         {errorMsg ? (
@@ -202,14 +222,18 @@ export function FarmZoneForm() {
           {/* Action buttons */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t pt-5">
             {/* Import Excel — mở modal */}
-            <button
-              type="button"
-              onClick={() => setImportModalOpen(true)}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-600/30 bg-emerald-600/10 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-600/15 dark:text-emerald-400"
-            >
-              <UploadCloud className="size-4" />
-              Import từ Excel
-            </button>
+            {!initialData ? (
+              <button
+                type="button"
+                onClick={() => setImportModalOpen(true)}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-600/30 bg-emerald-600/10 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-600/15 dark:text-emerald-400"
+              >
+                <UploadCloud className="size-4" />
+                Import từ Excel
+              </button>
+            ) : (
+              <div></div>
+            )}
 
             {/* Save */}
             <button

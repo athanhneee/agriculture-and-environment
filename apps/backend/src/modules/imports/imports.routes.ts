@@ -43,6 +43,11 @@ router.get(
   asyncHandler(ImportsController.downloadSensorsTemplate),
 );
 
+router.get(
+  "/users/template",
+  asyncHandler(ImportsController.downloadUsersTemplate),
+);
+
 router.use(authenticate);
 
 router.post(
@@ -61,6 +66,12 @@ router.post(
   "/sensors",
   upload.single("file"),
   asyncHandler(ImportsController.importSensors),
+);
+
+router.post(
+  "/users",
+  upload.single("file"),
+  asyncHandler(ImportsController.importUsers),
 );
 
 export default router;

@@ -94,7 +94,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
               <th className="px-6 py-4">Ngày gieo trồng</th>
               <th className="px-6 py-4">Thu hoạch dự kiến</th>
               <th className="px-6 py-4">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
+              {(!isAdmin) && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -120,7 +120,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                       {status.label}
                     </span>
                   </td>
-                  {isAdmin && (
+                  {(!isAdmin) && (
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
@@ -193,7 +193,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                 )}
               </div>
 
-              {isAdmin && (
+              {(!isAdmin) && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(crop)}

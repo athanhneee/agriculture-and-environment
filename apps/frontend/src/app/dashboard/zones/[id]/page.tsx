@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 
 import { getFarmZoneById, getAllZoneIds } from "@/lib/farm-zones-server";
+import { ZoneActionButtons } from "@/components/dashboard/ZoneActionButtons";
 
 export const revalidate = 30;
 
@@ -118,16 +119,7 @@ export default async function ZoneDetailPage({ params }: PageProps) {
         </div>
 
         {/* Edit/Delete actions (Demo permission) */}
-        <div className="flex items-center gap-2">
-          <button className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border bg-card hover:bg-muted px-4 text-xs font-semibold transition">
-            <Edit className="size-3.5" />
-            Sửa vùng
-          </button>
-          <button className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 text-destructive px-4 text-xs font-semibold transition">
-            <Trash2 className="size-3.5" />
-            Xóa vùng
-          </button>
-        </div>
+        <ZoneActionButtons zoneId={id} />
       </div>
 
       {/* Main Stats Summary */}

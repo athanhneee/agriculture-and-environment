@@ -98,7 +98,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               <th className="px-6 py-4">Loại cảm biến</th>
               <th className="px-6 py-4">Đơn vị</th>
               <th className="px-6 py-4 text-center">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
+              {(!isAdmin) && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -121,7 +121,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                       </span>
                     </div>
                   </td>
-                  {isAdmin && (
+                  {(!isAdmin) && (
                     <td className="px-6 py-4 align-middle text-right">
                       <div className="flex justify-end gap-2">
                         <button
@@ -185,7 +185,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                 </div>
               </div>
 
-              {isAdmin && (
+              {(!isAdmin) && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(sensor)}

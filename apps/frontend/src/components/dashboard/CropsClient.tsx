@@ -23,8 +23,17 @@ export function CropsClient({ initialZones }: CropsClientProps) {
   const [error, setError] = useState<string | null>(null);
 
   // Bộ lọc
-  const [filterZone, setFilterZone] = useState("ALL");
-  const [filterStatus, setFilterStatus] = useState("ALL");
+  const [filterZone, setFilterZone] = useState<string>("ALL");
+  const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Form state
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -48,6 +57,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       const data = await cropsApi.list({
         farmZoneId: filterZone,
         status: filterStatus,
+        search: debouncedSearch,
       });
       setCrops(data);
     } catch (err: any) {
@@ -56,7 +66,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
     } finally {
       setLoading(false);
     }
-  }, [filterZone, filterStatus]);
+  }, [filterZone, filterStatus, debouncedSearch]);
 
   useEffect(() => {
     fetchCrops();
@@ -158,8 +168,22 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       {/* Filter Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center bg-card p-4 rounded-2xl border shadow-sm">
         <div className="flex flex-wrap items-center gap-3 flex-1">
-          {/* Lọc theo Vùng trồng */}
+          {/* Lọc theo Tên/Giống (Search) */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="shrink-0 font-medium text-foreground">Tìm kiếm:</span>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Tên, giống cây..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="h-9 w-40 sm:w-48 rounded-lg border bg-background px-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              />
+            </div>
+          </div>
+
+          {/* Lọc theo Vùng trồng */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
             <span className="shrink-0 font-medium text-foreground">Vùng trồng:</span>
             <select
               value={filterZone}

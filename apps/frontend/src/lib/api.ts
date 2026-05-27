@@ -24,11 +24,15 @@ type PaginatedResponse<T> = {
   meta?: unknown;
 };
 
-function unwrapList<T>(payload: T[] | PaginatedResponse<T>): T[] {
+function unwrapList<T>(payload: any): T[] {
   if (Array.isArray(payload)) return payload;
 
-  if (payload && Array.isArray((payload as PaginatedResponse<T>).data)) {
-    return (payload as PaginatedResponse<T>).data;
+  if (payload && Array.isArray(payload.data)) {
+    return payload.data;
+  }
+
+  if (payload && Array.isArray(payload.items)) {
+    return payload.items;
   }
 
   return [];
@@ -434,6 +438,51 @@ export const importsApi = {
       "sensors_template.xlsx",
       { skipAuth: true },
     ),
+  
+  /**
+   * Import người dùng hàng loạt từ file Excel (.xlsx), CSV (.csv) hoặc TXT (.txt)
+   */
+  uploadUsers: async (
+    file: File,
+  ): Promise<{ imported: number; skipped: number; errors?: { row: number; message: string }[] }> => {
+    const token = useAuthStore.getState().accessToken;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(buildUrl("/api/imports/users"), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: "include",
+      body: formData,
+    });
+
+    const body = await parseResponse<{
+      imported: number;
+      skipped: number;
+      errors?: { row: number; message: string }[];
+    }>(response);
+
+    if (!response.ok || !body.success) {
+      throw new ApiError(
+        body.message || "Không thể import file người dùng. Vui lòng kiểm tra định dạng.",
+        response.status,
+        body.errors,
+      );
+    }
+
+    return body.data as { imported: number; skipped: number; errors?: { row: number; message: string }[] };
+  },
+
+  /** Tải file Excel mẫu để làm template import người dùng */
+  downloadUsersTemplate: () =>
+    downloadApiFile(
+      "/api/imports/users/template",
+      "users_template.xlsx",
+      { skipAuth: true },
+    ),
 };
 
 export type CropStatus = "PLANTED" | "GROWING" | "HARVESTED" | "DISEASED";
@@ -540,6 +589,15 @@ export const sensorsApi = {
     apiRequest<void>(`/api/sensors/${id}`, { method: "DELETE" }),
 };
 
+export const alertsApi = {
+  list: async (params?: Record<string, string>) => {
+    const payload = await apiRequest<any[] | PaginatedResponse<any>>(
+      `/api/alerts?${cleanParams(params)}`,
+    );
+    return unwrapList(payload);
+  },
+};
+
 export const sensorReadingsApi = {
   list: async (params?: Record<string, string>) => {
     const payload = await apiRequest<
@@ -558,4 +616,42 @@ export const statisticsApi = {
     apiRequest<any>(`/api/statistics/alerts?${cleanParams(params)}`),
   readings: (params?: Record<string, string>) =>
     apiRequest<any[]>(`/api/statistics/readings?${cleanParams(params)}`),
+};
+
+export const searchApi = {
+  global: (query: string) =>
+    apiRequest<{
+      zones: any[];
+      crops: any[];
+      sensors: any[];
+    }>(`/api/search?q=${encodeURIComponent(query)}`),
+};
+
+export type SystemUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: "ADMIN" | "USER";
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+};
+
+export const usersApi = {
+  list: async (role?: string) => {
+    const params = role ? `?role=${role}` : "";
+    const payload = await apiRequest<SystemUser[]>(`/api/users${params}`);
+    return unwrapList(payload);
+  },
+  create: (payload: Partial<SystemUser> & { password?: string }) =>
+    apiRequest<SystemUser>("/api/users", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  update: (id: string, payload: Partial<SystemUser> & { password?: string }) =>
+    apiRequest<SystemUser>(`/api/users/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/api/users/${id}`, { method: "DELETE" }),
 };
