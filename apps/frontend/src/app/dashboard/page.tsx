@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
@@ -13,8 +16,12 @@ import {
 import { RealtimeDashboardPanel } from "@/components/dashboard/RealtimeDashboardPanel";
 import { alerts, cropZones } from "@/lib/farm-data";
 import { getFarmZones } from "@/lib/farm-zones-server";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Tổng quan",
+  description:
+    "Bảng điều khiển tổng quan hệ thống giám sát nông nghiệp — số liệu thời gian thực, cảnh báo và trạng thái các vùng trồng.",
+};
 
 export const revalidate = 30;
 
