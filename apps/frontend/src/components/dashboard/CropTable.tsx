@@ -101,7 +101,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
             {crops.map((crop) => {
               const status = statusConfig[crop.status] || { label: crop.status, className: "" };
               return (
-                <tr key={crop.id} className="hover:bg-muted/30 transition-all duration-150">
+                <tr key={crop.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
                   <td className="px-6 py-4 font-bold text-foreground">{crop.name}</td>
                   <td className="px-6 py-4">{crop.variety}</td>
                   <td className="px-6 py-4 font-medium text-emerald-700 dark:text-emerald-400">
