@@ -62,7 +62,7 @@ export function OverviewClient({
         {activeToasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-bounce duration-300 ${
+            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-slide-in-bottom ${
               toast.severity === "CRITICAL"
                 ? "border-destructive/30 bg-destructive/5 text-destructive-foreground"
                 : "border-amber-500/30 bg-amber-500/5 text-amber-900 dark:text-amber-100"
