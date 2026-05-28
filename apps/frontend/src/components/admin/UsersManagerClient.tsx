@@ -16,7 +16,13 @@ export function UsersManagerClient() {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<SystemUser | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "USER", status: "ACTIVE" });
+  const [form, setForm] = useState<{
+    name: string;
+    email: string;
+    password?: string;
+    role: "ADMIN" | "USER";
+    status: "ACTIVE" | "INACTIVE";
+  }>({ name: "", email: "", password: "", role: "USER", status: "ACTIVE" });
   const [saving, setSaving] = useState(false);
 
   // Import Modal State
@@ -305,7 +311,7 @@ export function UsersManagerClient() {
                   <label className="text-sm font-medium">Quyền hạn</label>
                   <select
                     value={form.role}
-                    onChange={(e) => setForm({...form, role: e.target.value})}
+                    onChange={(e) => setForm({...form, role: e.target.value as "ADMIN" | "USER"})}
                     className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   >
                     <option value="USER">Nông dân (USER)</option>
@@ -317,7 +323,7 @@ export function UsersManagerClient() {
                   <label className="text-sm font-medium">Trạng thái</label>
                   <select
                     value={form.status}
-                    onChange={(e) => setForm({...form, status: e.target.value})}
+                    onChange={(e) => setForm({...form, status: e.target.value as "ACTIVE" | "INACTIVE"})}
                     className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   >
                     <option value="ACTIVE">Hoạt động (ACTIVE)</option>

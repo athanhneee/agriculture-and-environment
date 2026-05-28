@@ -278,7 +278,7 @@ export const farmZonesApi = {
     const payload = await apiRequest<FarmZone[] | PaginatedResponse<FarmZone>>(
       "/api/farm-zones?limit=1000",
     );
-    return unwrapList(payload);
+    return unwrapList<FarmZone>(payload);
   },
   detail: (id: string) => apiRequest<FarmZone>(`/api/farm-zones/${id}`),
   create: (payload: FarmZoneFormValues) =>
@@ -552,7 +552,7 @@ export const cropsApi = {
     const payload = await apiRequest<Crop[] | PaginatedResponse<Crop>>(
       `/api/crops?${cleanParams(params)}`,
     );
-    return unwrapList(payload);
+    return unwrapList<Crop>(payload);
   },
   create: (payload: Partial<Crop>) =>
     apiRequest<Crop>("/api/crops", {
@@ -573,7 +573,7 @@ export const sensorsApi = {
     const payload = await apiRequest<Sensor[] | PaginatedResponse<Sensor>>(
       `/api/sensors?${cleanParams(params)}`,
     );
-    return unwrapList(payload);
+    return unwrapList<Sensor>(payload);
   },
   create: (payload: Partial<Sensor>) =>
     apiRequest<Sensor>("/api/sensors", {
@@ -636,7 +636,7 @@ export const sensorReadingsApi = {
     const payload = await apiRequest<
       SensorReading[] | PaginatedResponse<SensorReading>
     >(`/api/sensor-readings?${cleanParams(params)}`);
-    return unwrapList(payload);
+    return unwrapList<SensorReading>(payload);
   },
   latest: () => apiRequest<SensorReading[]>("/api/sensor-readings/latest"),
   exportUrl: (params?: Record<string, string>) =>
@@ -675,7 +675,7 @@ export const usersApi = {
   list: async (role?: string) => {
     const params = role ? `?role=${role}` : "";
     const payload = await apiRequest<SystemUser[]>(`/api/users${params}`);
-    return unwrapList(payload);
+    return unwrapList<SystemUser>(payload);
   },
   create: (payload: Partial<SystemUser> & { password?: string }) =>
     apiRequest<SystemUser>("/api/users", {
