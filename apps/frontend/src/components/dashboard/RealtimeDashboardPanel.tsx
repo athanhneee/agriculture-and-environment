@@ -55,6 +55,11 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
   );
 
   useEffect(() => {
+    if (!accessToken) {
+      setStatus("offline");
+      return;
+    }
+
     const socket = getSocket(accessToken);
 
     const handleConnect = () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getSocket } from "@/lib/socket";
+import { disconnectSocket, getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRealtimeStore } from "@/stores/realtime.store";
 
@@ -19,6 +19,12 @@ export function useSocket(onAlertCreated?: (alert: any) => void) {
   }, [onAlertCreated]);
 
   useEffect(() => {
+    if (!accessToken) {
+      disconnectSocket();
+      setIsConnected(false);
+      return;
+    }
+
     const socket = getSocket(accessToken);
 
     const handleConnect = () => {

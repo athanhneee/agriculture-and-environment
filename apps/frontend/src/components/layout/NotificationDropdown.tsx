@@ -6,7 +6,8 @@ import { Bell, AlertTriangle, X } from "lucide-react";
 import { alertsApi, statisticsApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { io } from "socket.io-client";
+import { getSocket } from "@/lib/socket";
+import { useAuthStore } from "@/stores/auth.store";
 
 const severityConfig: Record<string, { label: string; badgeClass: string; iconClass: string }> = {
   LOW: {
@@ -61,6 +62,7 @@ export function NotificationDropdown() {
   const [toastAlert, setToastAlert] = useState<any | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   const fetchAlerts = async () => {
     try {
@@ -85,17 +87,17 @@ export function NotificationDropdown() {
 
   // Socket.IO Real-time alerts
   useEffect(() => {
-    const socketUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-    const socket = io(socketUrl, {
-      withCredentials: true,
-      transports: ["websocket", "polling"],
-    });
+    if (!accessToken) {
+      return;
+    }
 
-    socket.on("connect", () => {
+    const socket = getSocket(accessToken);
+
+    const handleConnect = () => {
       console.log("Connected to Realtime Alerts Socket");
-    });
+    };
 
-    socket.on("alert:global-created", (newAlert: any) => {
+    const handleAlertCreated = (newAlert: any) => {
       // 1. Show Toast
       setToastAlert(newAlert);
       setTimeout(() => setToastAlert(null), 5000);
@@ -105,12 +107,20 @@ export function NotificationDropdown() {
 
       // 3. Increment unread count
       setUnreadCount((prev) => prev + 1);
-    });
+    };
+
+    socket.on("connect", handleConnect);
+    socket.on("alert:global-created", handleAlertCreated);
+
+    if (!socket.connected) {
+      socket.connect();
+    }
 
     return () => {
-      socket.disconnect();
+      socket.off("connect", handleConnect);
+      socket.off("alert:global-created", handleAlertCreated);
     };
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

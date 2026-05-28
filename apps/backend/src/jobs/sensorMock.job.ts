@@ -1,5 +1,5 @@
 import prisma from '../config/prisma';
-import { getIO } from '../sockets/socket';
+import { emitFarmZoneScopedEvent } from '../sockets/socket';
 import { env } from '../config/env';
 import { AlertService } from '../modules/alerts/alerts.service';
 
@@ -39,17 +39,14 @@ const generateMockData = async () => {
       // Đánh giá cảnh báo ngay sau khi tạo reading
       await AlertService.processNewReading(reading.id);
 
-      const io = getIO();
       const payload = {
         farmZoneId: zone.id,
         reading,
         timestamp: reading.recordedAt
       };
 
-      // Emit to farm-zone specific room
-      io.to(`farm-zone:${zone.id}`).emit('sensor:reading-created', payload);
-      // Emit globally for overview dashboard
-      io.emit('sensor:global-reading', payload);
+      emitFarmZoneScopedEvent(zone.id, zone.ownerId, 'sensor:reading-created', payload);
+      emitFarmZoneScopedEvent(zone.id, zone.ownerId, 'sensor:global-reading', payload);
     }
   } catch (error) {
     console.error('Error generating mock sensor data:', error);
