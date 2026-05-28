@@ -34,11 +34,9 @@ export function GlobalSearch() {
       setIsLoading(true);
       try {
         const response = await searchApi.global(debouncedQuery);
-        if (response.success) {
-          setResults(response.data);
-          // Auto-open if query is not empty, otherwise let focus handle it
-          if (debouncedQuery.trim()) setIsOpen(true);
-        }
+        setResults(response as any);
+        // Auto-open if query is not empty, otherwise let focus handle it
+        if (debouncedQuery.trim()) setIsOpen(true);
       } catch (error) {
         console.error("Lỗi khi tìm kiếm:", error);
       } finally {
