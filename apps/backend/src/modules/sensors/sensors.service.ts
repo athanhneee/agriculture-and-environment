@@ -5,7 +5,7 @@ import { JwtPayload } from '../../utils/jwt';
 
 export class SensorService {
   static async getSensors(query: any, user: JwtPayload) {
-    const { page = 1, limit = 10, farmZoneId, type, status } = query;
+    const { page = 1, limit = 10, farmZoneId, type, status, search } = query;
     const skip = (Number(page) - 1) * Number(limit);
     const take = Number(limit);
 
@@ -21,6 +21,13 @@ export class SensorService {
 
     if (status) {
       where.status = status as any;
+    }
+
+    if (search) {
+      where.OR = [
+        { name: { contains: String(search), mode: 'insensitive' } },
+        { code: { contains: String(search), mode: 'insensitive' } },
+      ];
     }
 
     // Access control

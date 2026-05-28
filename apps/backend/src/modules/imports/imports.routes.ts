@@ -27,13 +27,52 @@ const upload = multer({
   },
 });
 
+// Template download — không cần auth (public)
+router.get(
+  "/farm-zones/template",
+  asyncHandler(ImportsController.downloadTemplate),
+);
+
+router.get(
+  "/crops/template",
+  asyncHandler(ImportsController.downloadCropsTemplate),
+);
+
+router.get(
+  "/sensors/template",
+  asyncHandler(ImportsController.downloadSensorsTemplate),
+);
+
+router.get(
+  "/users/template",
+  asyncHandler(ImportsController.downloadUsersTemplate),
+);
+
 router.use(authenticate);
 
 router.post(
   "/farm-zones",
-  authorize(["ADMIN"]),
   upload.single("file"),
   asyncHandler(ImportsController.importFarmZones),
 );
 
+router.post(
+  "/crops",
+  upload.single("file"),
+  asyncHandler(ImportsController.importCrops),
+);
+
+router.post(
+  "/sensors",
+  upload.single("file"),
+  asyncHandler(ImportsController.importSensors),
+);
+
+router.post(
+  "/users",
+  upload.single("file"),
+  asyncHandler(ImportsController.importUsers),
+);
+
 export default router;
+

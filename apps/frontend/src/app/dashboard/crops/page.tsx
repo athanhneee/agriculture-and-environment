@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { getFarmZones } from "@/lib/farm-zones-server";
 import { CropsClient } from "@/components/dashboard/CropsClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: "Quản lý Cây Trồng | Smart Farm Monitoring System",

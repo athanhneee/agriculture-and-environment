@@ -13,10 +13,32 @@ import {
 import { RealtimeDashboardPanel } from "@/components/dashboard/RealtimeDashboardPanel";
 import { alerts, cropZones } from "@/lib/farm-data";
 import { getFarmZones } from "@/lib/farm-zones-server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
+
+function getRoleFromToken(token?: string) {
+  if (!token) return null;
+  try {
+    const payloadBase64 = token.split(".")[1];
+    const payloadStr = Buffer.from(payloadBase64, "base64").toString("utf-8");
+    const payload = JSON.parse(payloadStr);
+    return payload.role;
+  } catch (e) {
+    return null;
+  }
+}
 
 export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  const role = getRoleFromToken(token);
+  
+  if (role === "ADMIN") {
+    redirect("/dashboard/admin");
+  }
+
   const apiZones = await getFarmZones();
   const dashboardZones =
     apiZones.length > 0
@@ -57,6 +79,7 @@ export default async function DashboardPage() {
       note: "Đang theo dõi",
       icon: Leaf,
       tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
+      href: "/dashboard/zones",
     },
     {
       label: "Sensor online",
@@ -64,6 +87,7 @@ export default async function DashboardPage() {
       note: "98% uptime",
       icon: Gauge,
       tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
+      href: "/dashboard/sensors",
     },
     {
       label: "Nhiệt độ TB",
@@ -71,6 +95,7 @@ export default async function DashboardPage() {
       note: "Trong ngưỡng",
       icon: ThermometerSun,
       tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
+      href: null,
     },
     {
       label: "Cảnh báo",
@@ -81,6 +106,7 @@ export default async function DashboardPage() {
       note: "Cần xem trong ngày",
       icon: AlertTriangle,
       tone: "bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-200",
+      href: "/dashboard/alerts",
     },
   ];
 
@@ -110,26 +136,37 @@ export default async function DashboardPage() {
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {summaryCards.map((card) => {
           const Icon = card.icon;
+          const cardContent = (
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">{card.label}</p>
+                <p className="mt-2 text-3xl font-bold">{card.value}</p>
+                <p className="mt-1 text-xs font-medium text-muted-foreground">
+                  {card.note}
+                </p>
+              </div>
+              <span
+                className={`flex size-11 items-center justify-center rounded-xl ${card.tone}`}
+              >
+                <Icon className="size-5" aria-hidden="true" />
+              </span>
+            </div>
+          );
 
-          return (
+          return card.href ? (
+            <Link
+              key={card.label}
+              href={card.href}
+              className="rounded-2xl border bg-card p-5 shadow-sm block transition hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5"
+            >
+              {cardContent}
+            </Link>
+          ) : (
             <article
               key={card.label}
               className="rounded-2xl border bg-card p-5 shadow-sm"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">{card.label}</p>
-                  <p className="mt-2 text-3xl font-bold">{card.value}</p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    {card.note}
-                  </p>
-                </div>
-                <span
-                  className={`flex size-11 items-center justify-center rounded-xl ${card.tone}`}
-                >
-                  <Icon className="size-5" aria-hidden="true" />
-                </span>
-              </div>
+              {cardContent}
             </article>
           );
         })}

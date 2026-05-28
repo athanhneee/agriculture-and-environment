@@ -25,12 +25,12 @@ function mapFarmZoneDto(zone: any) {
     cropName: latestCrop?.name ?? null,
     latestSensorSummary: latestReading
       ? {
-          temperature: latestReading.temperature,
-          airHumidity: latestReading.airHumidity,
-          soilMoisture: latestReading.soilMoisture,
-          lightIntensity: latestReading.lightIntensity,
-          recordedAt: latestReading.recordedAt,
-        }
+        temperature: latestReading.temperature,
+        airHumidity: latestReading.airHumidity,
+        soilMoisture: latestReading.soilMoisture,
+        lightIntensity: latestReading.lightIntensity,
+        recordedAt: latestReading.recordedAt,
+      }
       : null,
     openAlertsCount,
   };
@@ -149,6 +149,20 @@ export class FarmZoneService {
   }
 
   static async createFarmZone(data: CreateFarmZoneInput, user: JwtPayload) {
+    const existingName = await prisma.farmZone.findFirst({
+      where: { ownerId: user.id, name: data.name }
+    });
+    if (existingName) {
+      throw new Error(`Tên vùng trồng "${data.name}" đã tồn tại.`);
+    }
+
+    const existingLocation = await prisma.farmZone.findFirst({
+      where: { ownerId: user.id, latitude: data.latitude, longitude: data.longitude }
+    });
+    if (existingLocation) {
+      throw new Error(`Vị trí (vĩ độ: ${data.latitude}, kinh độ: ${data.longitude}) đã được đăng ký cho vùng trồng khác.`);
+    }
+
     return prisma.farmZone.create({
       data: {
         ...data,
@@ -170,6 +184,23 @@ export class FarmZoneService {
 
     if (user.role !== "ADMIN" && existingZone.ownerId !== user.id) {
       throw new Error("Bạn không có quyền chỉnh sửa vùng canh tác này");
+    }
+
+    if (data.name && data.name !== existingZone.name) {
+      const duplicateName = await prisma.farmZone.findFirst({
+        where: { ownerId: existingZone.ownerId, name: data.name }
+      });
+      if (duplicateName) throw new Error(`Tên vùng trồng "${data.name}" đã tồn tại.`);
+    }
+
+    const checkLat = data.latitude !== undefined ? data.latitude : existingZone.latitude;
+    const checkLng = data.longitude !== undefined ? data.longitude : existingZone.longitude;
+
+    if (checkLat !== existingZone.latitude || checkLng !== existingZone.longitude) {
+      const duplicateLocation = await prisma.farmZone.findFirst({
+        where: { ownerId: existingZone.ownerId, latitude: checkLat, longitude: checkLng }
+      });
+      if (duplicateLocation) throw new Error(`Vị trí (vĩ độ: ${checkLat}, kinh độ: ${checkLng}) đã được đăng ký cho vùng trồng khác.`);
     }
 
     return prisma.farmZone.update({

@@ -55,7 +55,7 @@ export function FarmZoneCard({ zone }: FarmZoneCardProps) {
               </p>
             )}
           </div>
-          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${currentStatus.className}`}>
+          <span className={`inline-flex items-center shrink-0 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${currentStatus.className}`}>
             {currentStatus.label}
           </span>
         </div>

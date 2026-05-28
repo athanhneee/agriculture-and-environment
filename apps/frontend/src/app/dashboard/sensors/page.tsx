@@ -3,7 +3,7 @@ import { getFarmZones } from "@/lib/farm-zones-server";
 import { SensorsClient } from "@/components/dashboard/SensorsClient";
 import { ExportExcelButtons } from "@/components/dashboard/ExportExcelButtons";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: "Quản lý Cảm biến | Smart Farm Monitoring System",

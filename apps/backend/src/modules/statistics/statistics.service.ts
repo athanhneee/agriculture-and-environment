@@ -5,50 +5,36 @@ export class StatisticsService {
   static async getOverview(user: JwtPayload) {
     const farmZoneFilter = user.role === 'ADMIN' ? {} : { ownerId: user.id };
 
-    const totalFarmZones = await prisma.farmZone.count({
-      where: farmZoneFilter,
-    });
-
-    const totalCrops = await prisma.crop.count({
-      where: {
-        farmZone: farmZoneFilter,
-      },
-    });
-
-    const totalSensors = await prisma.sensor.count({
-      where: {
-        farmZone: farmZoneFilter,
-      },
-    });
-
-    const openAlerts = await prisma.alert.count({
-      where: {
-        farmZone: farmZoneFilter,
-        status: 'OPEN',
-      },
-    });
-
-    const criticalAlerts = await prisma.alert.count({
-      where: {
-        farmZone: farmZoneFilter,
-        severity: 'CRITICAL',
-        status: 'OPEN',
-      },
-    });
-
-    const readingsAgg = await prisma.sensorReading.aggregate({
-      where: {
-        farmZone: farmZoneFilter,
-      },
-      _avg: {
-        temperature: true,
-        airHumidity: true,
-        soilMoisture: true,
-        lightIntensity: true,
-      },
-    });
+    const [
+      totalUsers,
+      totalFarmZones,
+      totalCrops,
+      totalSensors,
+      openAlerts,
+      criticalAlerts,
+      readingsAgg
+    ] = await Promise.all([
+      user.role === 'ADMIN' ? prisma.user.count() : Promise.resolve(0),
+      prisma.farmZone.count({ where: farmZoneFilter }),
+      prisma.crop.count({ where: { farmZone: farmZoneFilter } }),
+      prisma.sensor.count({ where: { farmZone: farmZoneFilter } }),
+      prisma.alert.count({ where: { farmZone: farmZoneFilter, status: 'OPEN' } }),
+      prisma.alert.count({
+        where: { farmZone: farmZoneFilter, severity: 'CRITICAL', status: 'OPEN' },
+      }),
+      prisma.sensorReading.aggregate({
+        where: { farmZone: farmZoneFilter },
+        _avg: {
+          temperature: true,
+          airHumidity: true,
+          soilMoisture: true,
+          lightIntensity: true,
+        },
+      })
+    ]);
 
     return {
+      totalUsers,
       totalFarmZones,
       totalCrops,
       totalSensors,
@@ -74,29 +60,23 @@ export class StatisticsService {
       if (to) whereClause.createdAt.lte = new Date(to);
     }
 
-    const byType = await prisma.alert.groupBy({
-      by: ['type'],
-      where: whereClause,
-      _count: {
-        _all: true,
-      },
-    });
-
-    const bySeverity = await prisma.alert.groupBy({
-      by: ['severity'],
-      where: whereClause,
-      _count: {
-        _all: true,
-      },
-    });
-
-    const byStatus = await prisma.alert.groupBy({
-      by: ['status'],
-      where: whereClause,
-      _count: {
-        _all: true,
-      },
-    });
+    const [byType, bySeverity, byStatus] = await Promise.all([
+      prisma.alert.groupBy({
+        by: ['type'],
+        where: whereClause,
+        _count: { _all: true },
+      }),
+      prisma.alert.groupBy({
+        by: ['severity'],
+        where: whereClause,
+        _count: { _all: true },
+      }),
+      prisma.alert.groupBy({
+        by: ['status'],
+        where: whereClause,
+        _count: { _all: true },
+      })
+    ]);
 
     return {
       byType: byType.map((item) => ({ type: item.type, count: item._count._all })),

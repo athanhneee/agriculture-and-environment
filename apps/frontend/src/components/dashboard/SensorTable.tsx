@@ -97,8 +97,8 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               <th className="px-6 py-4">Vùng trồng</th>
               <th className="px-6 py-4">Loại cảm biến</th>
               <th className="px-6 py-4">Đơn vị</th>
-              <th className="px-6 py-4">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
+              <th className="px-6 py-4 text-center">Trạng thái</th>
+              {(!isAdmin) && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -107,20 +107,22 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               const typeLabel = typeConfig[sensor.type] || sensor.type;
               return (
                 <tr key={sensor.id} className="hover:bg-muted/30 transition-all duration-150">
-                  <td className="px-6 py-4 font-bold text-foreground">{sensor.name}</td>
-                  <td className="px-6 py-4 font-mono text-xs">{sensor.code}</td>
-                  <td className="px-6 py-4 font-medium text-emerald-700 dark:text-emerald-400">
+                  <td className="px-6 py-4 align-middle font-bold text-foreground">{sensor.name}</td>
+                  <td className="px-6 py-4 align-middle font-mono text-xs">{sensor.code}</td>
+                  <td className="px-6 py-4 align-middle font-medium text-emerald-700 dark:text-emerald-400">
                     {sensor.farmZone?.name || "N/A"}
                   </td>
-                  <td className="px-6 py-4">{typeLabel}</td>
-                  <td className="px-6 py-4 font-semibold">{sensor.unit}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
-                      {status.label}
-                    </span>
+                  <td className="px-6 py-4 align-middle">{typeLabel}</td>
+                  <td className="px-6 py-4 align-middle font-semibold">{sensor.unit}</td>
+                  <td className="px-6 py-4 align-middle">
+                    <div className="flex justify-center">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
+                        {status.label}
+                      </span>
+                    </div>
                   </td>
-                  {isAdmin && (
-                    <td className="px-6 py-4 text-right">
+                  {(!isAdmin) && (
+                    <td className="px-6 py-4 align-middle text-right">
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => onEdit(sensor)}
@@ -183,7 +185,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                 </div>
               </div>
 
-              {isAdmin && (
+              {(!isAdmin) && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(sensor)}

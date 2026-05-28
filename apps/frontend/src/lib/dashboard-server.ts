@@ -19,6 +19,7 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 }
 
 export interface OverviewStats {
+  usersCount: number;
   zonesCount: number;
   cropsCount: number;
   sensorsCount: number;
@@ -31,6 +32,7 @@ export interface OverviewStats {
 }
 
 const emptyOverview: OverviewStats = {
+  usersCount: 0,
   zonesCount: 0,
   cropsCount: 0,
   sensorsCount: 0,
@@ -44,6 +46,7 @@ const emptyOverview: OverviewStats = {
 
 function normalizeOverview(data: any): OverviewStats {
   return {
+    usersCount: data?.totalUsers ?? 0,
     zonesCount: data?.zonesCount ?? data?.totalFarmZones ?? 0,
     cropsCount: data?.cropsCount ?? data?.totalCrops ?? 0,
     sensorsCount: data?.sensorsCount ?? data?.totalSensors ?? 0,
@@ -62,7 +65,7 @@ export async function getOverviewStats(): Promise<OverviewStats> {
 
     const res = await fetch(`${API_URL}/api/statistics/overview`, {
       headers,
-      cache: "no-store",
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
@@ -89,7 +92,7 @@ export async function getLatestSensorReading(): Promise<any> {
 
     const res = await fetch(`${API_URL}/api/sensor-readings/latest`, {
       headers,
-      cache: "no-store",
+      next: { revalidate: 10 },
     });
 
     if (!res.ok) {
@@ -112,7 +115,7 @@ export async function getOpenAlerts(): Promise<Alert[]> {
 
     const res = await fetch(`${API_URL}/api/alerts?status=OPEN`, {
       headers,
-      cache: "no-store",
+      next: { revalidate: 15 },
     });
 
     if (!res.ok) {

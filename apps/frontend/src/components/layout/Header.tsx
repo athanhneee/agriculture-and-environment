@@ -2,12 +2,28 @@
 
 import { Bell, Loader2, LogOut, Search, UserCircle } from "lucide-react";
 
+import { useState, useRef, useEffect } from "react";
 import { useLogout } from "@/hooks/useLogout";
 import { useAuthStore } from "@/stores/auth.store";
+import Link from "next/link";
+import { NotificationDropdown } from "./NotificationDropdown";
 
 export function Header() {
   const user = useAuthStore((state) => state.user);
   const { logout, isLoggingOut } = useLogout({ redirectTo: "/auth/login" });
+  
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="sticky top-0 z-20 border-b bg-background/88 backdrop-blur">
@@ -22,35 +38,44 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden h-10 w-72 items-center gap-2 rounded-xl border bg-card px-3 text-sm text-muted-foreground lg:flex">
-            <Search className="size-4" aria-hidden="true" />
-            Tìm vùng trồng, cảm biến...
-          </div>
-          <button
-            type="button"
-            aria-label="Thông báo"
-            className="flex size-10 items-center justify-center rounded-xl border bg-card text-muted-foreground transition hover:text-foreground"
-          >
-            <Bell className="size-5" aria-hidden="true" />
-          </button>
-          <div className="hidden h-10 max-w-48 items-center gap-2 rounded-xl border bg-card px-3 text-sm font-medium sm:flex">
-            <UserCircle className="size-5 shrink-0 text-emerald-700 dark:text-emerald-300" />
-            <span className="truncate">{user?.name ?? "Tài khoản"}</span>
-          </div>
-          <button
-            type="button"
-            onClick={logout}
-            disabled={isLoggingOut}
-            aria-label="Đăng xuất"
-            className="flex h-10 items-center justify-center gap-2 rounded-xl border bg-card px-3 text-sm font-medium transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {isLoggingOut ? (
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-            ) : (
-              <LogOut className="size-4" aria-hidden="true" />
+          <NotificationDropdown />
+          
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="hidden h-10 max-w-48 items-center gap-2 rounded-full border bg-card px-3 text-sm font-medium sm:flex transition hover:bg-muted"
+            >
+              <UserCircle className="size-5 shrink-0 text-emerald-700 dark:text-emerald-300" />
+              <span className="truncate">{user?.name ?? "Tài khoản"}</span>
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-2xl border bg-card p-1 shadow-lg animate-in fade-in zoom-in-95">
+                <Link
+                  href="/dashboard/profile"
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium hover:bg-muted"
+                >
+                  <UserCircle className="size-4" />
+                  Hồ sơ cá nhân
+                </Link>
+                <div className="my-1 h-px bg-muted" />
+                <button
+                  type="button"
+                  onClick={logout}
+                  disabled={isLoggingOut}
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isLoggingOut ? (
+                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <LogOut className="size-4" aria-hidden="true" />
+                  )}
+                  Đăng xuất
+                </button>
+              </div>
             )}
-            <span className="hidden sm:inline">Đăng xuất</span>
-          </button>
+          </div>
         </div>
       </div>
     </header>

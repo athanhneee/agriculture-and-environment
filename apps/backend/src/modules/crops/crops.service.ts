@@ -5,7 +5,7 @@ import { JwtPayload } from '../../utils/jwt';
 
 export class CropService {
   static async getCrops(query: any, user: JwtPayload) {
-    const { page = 1, limit = 10, farmZoneId, status } = query;
+    const { page = 1, limit = 10, farmZoneId, status, search } = query;
     const skip = (Number(page) - 1) * Number(limit);
     const take = Number(limit);
 
@@ -17,6 +17,13 @@ export class CropService {
 
     if (status) {
       where.status = status as any;
+    }
+
+    if (search) {
+      where.OR = [
+        { name: { contains: String(search), mode: 'insensitive' } },
+        { variety: { contains: String(search), mode: 'insensitive' } },
+      ];
     }
 
     if (user.role !== 'ADMIN') {
