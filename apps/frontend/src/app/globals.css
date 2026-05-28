@@ -153,3 +153,72 @@
     transform: scale(0.96) !important;
   }
 }
+ 
+/* Tối ưu hóa cấu trúc CSS Print để xuất PDF chuyên nghiệp */
+@media print {
+  /* Ẩn các thành phần giao diện không cần in */
+  .no-print,
+  iframe,
+  aside,
+  nav,
+  header,
+  footer,
+  [data-sidebar="sidebar"],
+  .sidebar-container,
+  button:not(.print-visible),
+  a[href="/dashboard/zones"],
+  div[role="navigation"] {
+    display: none !important;
+  }
+ 
+  /* Định cấu hình trang in */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+ 
+  /* Định dạng lại khối nội dung chính khi in */
+  main,
+  .main-content,
+  #dashboard-main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+ 
+  /* Ép buộc in màu nền và màu sắc rực rỡ */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+ 
+  /* Tránh ngắt trang xấu */
+  .card, 
+  section, 
+  article,
+  tr {
+    page-break-inside: avoid !important; /* Tránh cắt đôi thẻ khi chuyển trang in */
+  }
+ 
+  /* Định dạng lại bảng khi in */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+ 
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px !important;
+    text-align: left !important;
+    font-size: 10pt !important;
+  }
+}
