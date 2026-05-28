@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FileSpreadsheet, Loader2, UploadCloud, Sprout, Cpu, Layers } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
-import { apiBaseUrl } from "@/lib/api";
+import { apiBaseUrl, importsApi } from "@/lib/api";
 
 export function ImportFarmZonesClient() {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -28,35 +28,39 @@ export function ImportFarmZonesClient() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     setSubmitting(true);
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/imports/farm-zones`, {
-        method: "POST",
-        headers: accessToken
-          ? {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          : undefined,
-        credentials: "include",
-        body: formData,
-      });
-
-      const body = await response.json();
-
-      if (!response.ok || !body.success) {
-        throw new Error(body.message || "Import thất bại");
+      let result;
+      if (activeTab === "zones") {
+        result = await importsApi.uploadFarmZones(file);
+        setMessage(`Import thành công ${result.imported} vùng trồng.`);
+      } else if (activeTab === "crops") {
+        result = await importsApi.uploadCrops(file);
+        setMessage(`Import thành công ${result.imported} cây trồng.`);
+      } else {
+        result = await importsApi.uploadSensors(file);
+        setMessage(`Import thành công ${result.imported} thiết bị cảm biến.`);
       }
-
-      setMessage(`Import thành công ${body.data.imported} vùng trồng.`);
       setFile(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Import thất bại");
+    } catch (err: any) {
+      setError(err.message || "Import thất bại");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDownloadTemplate = async () => {
+    try {
+      if (activeTab === "zones") {
+        await importsApi.downloadTemplate();
+      } else if (activeTab === "crops") {
+        await importsApi.downloadCropsTemplate();
+      } else {
+        await importsApi.downloadSensorsTemplate();
+      }
+    } catch (err: any) {
+      setError("Không thể tải file mẫu.");
     }
   };
 
@@ -201,23 +205,133 @@ export function ImportFarmZonesClient() {
       )}
 
       {activeTab === "crops" && (
-        <div className="rounded-2xl border bg-card p-6 shadow-sm text-center py-12 space-y-4">
-          <Sprout className="size-10 text-muted-foreground/60 mx-auto animate-pulse" />
-          <h3 className="text-lg font-bold">Import Cây Trồng</h3>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            Vui lòng sử dụng tính năng kéo thả file import trực tiếp trên trang quản lý Cây Trồng hoặc đợi tích hợp inline ở bước tiếp theo.
-          </p>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border bg-card p-6 shadow-sm space-y-4"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold">Nhập dữ liệu Cây Trồng</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Header bắt buộc: <code className="font-mono font-bold text-foreground">name, variety, plantedDate, status, farmZoneName</code>
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleDownloadTemplate}
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
+            >
+              Tải file mẫu (.xlsx)
+            </button>
+          </div>
+
+          <label className="block">
+            <span className="text-sm font-semibold">Chọn file dữ liệu</span>
+            <input
+              type="file"
+              accept=".xlsx,.csv,.txt"
+              className="mt-3 block w-full rounded-xl border bg-background px-3 py-2 text-sm"
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+          </label>
+
+          <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+            <p className="font-semibold text-foreground">Mẫu header:</p>
+            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-lg border">
+              name,variety,plantedDate,expectedHarvestDate,status,farmZoneName
+            </code>
+          </div>
+
+          {message && (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+              {message}
+            </div>
+          )}
+
+          {error && (
+            <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70 cursor-pointer"
+          >
+            {submitting ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <UploadCloud className="size-4" />
+            )}
+            {submitting ? "Đang import..." : "Import dữ liệu"}
+          </button>
+        </form>
       )}
 
       {activeTab === "sensors" && (
-        <div className="rounded-2xl border bg-card p-6 shadow-sm text-center py-12 space-y-4">
-          <Cpu className="size-10 text-muted-foreground/60 mx-auto animate-pulse" />
-          <h3 className="text-lg font-bold">Import Thiết Bị Cảm Biến</h3>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            Vui lòng sử dụng tính năng kéo thả file import trực tiếp trên trang quản lý Cảm Biến hoặc đợi tích hợp inline ở bước tiếp theo.
-          </p>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border bg-card p-6 shadow-sm space-y-4"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold">Nhập dữ liệu Thiết Bị Cảm Biến</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Header bắt buộc: <code className="font-mono font-bold text-foreground">name, code, type, unit, status, farmZoneName</code>
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleDownloadTemplate}
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
+            >
+              Tải file mẫu (.xlsx)
+            </button>
+          </div>
+
+          <label className="block">
+            <span className="text-sm font-semibold">Chọn file dữ liệu</span>
+            <input
+              type="file"
+              accept=".xlsx,.csv,.txt"
+              className="mt-3 block w-full rounded-xl border bg-background px-3 py-2 text-sm"
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+          </label>
+
+          <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+            <p className="font-semibold text-foreground">Mẫu header:</p>
+            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-lg border">
+              name,code,type,unit,status,farmZoneName
+            </code>
+          </div>
+
+          {message && (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+              {message}
+            </div>
+          )}
+
+          {error && (
+            <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70 cursor-pointer"
+          >
+            {submitting ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <UploadCloud className="size-4" />
+            )}
+            {submitting ? "Đang import..." : "Import dữ liệu"}
+          </button>
+        </form>
       )}
     </div>
   );
