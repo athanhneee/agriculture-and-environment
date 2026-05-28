@@ -25,6 +25,7 @@ RUN apk add --no-cache openssl
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
+# RUN npm install
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/prisma ./prisma
@@ -37,4 +38,4 @@ RUN npx prisma generate
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 5000
-CMD ["npm", "start"]
+CMD ["npm", "run" , "start"]
