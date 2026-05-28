@@ -230,10 +230,10 @@ export function AIAssistantChat() {
                 <div className="flex size-8 items-center justify-center rounded-full bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
                   <Bot className="size-4" />
                 </div>
-                <div className="max-w-[75%] bg-card border rounded-2xl rounded-tl-none px-4 py-3 text-sm shadow-sm flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce"></span>
+                <div className="max-w-[75%] bg-card border rounded-2xl rounded-tl-none px-4.5 py-3 text-sm shadow-sm flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-teal-500/80 animate-bounce [animation-delay:-0.3s]"></span>
+                  <span className="h-2 w-2 rounded-full bg-teal-500/80 animate-bounce [animation-delay:-0.15s]"></span>
+                  <span className="h-2 w-2 rounded-full bg-teal-500/80 animate-bounce"></span>
                 </div>
               </div>
             )}
