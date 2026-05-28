@@ -1,9 +1,101 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FileSpreadsheet, Loader2, UploadCloud, Sprout, Cpu, Layers } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 import { apiBaseUrl, importsApi } from "@/lib/api";
+
+function DragDropZone({
+  selectedFile,
+  onFileAccept,
+  onFileRemove,
+}: {
+  selectedFile: File | null;
+  onFileAccept: (file: File) => void;
+  onFileRemove: () => void;
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDropZoneClick = () => fileInputRef.current?.click();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) onFileAccept(file);
+    e.target.value = "";
+  };
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+  const handleDragLeave = () => setIsDragging(false);
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) onFileAccept(file);
+  };
+
+  return (
+    <div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".xlsx,.csv,.txt"
+        className="hidden"
+        onChange={handleInputChange}
+      />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={handleDropZoneClick}
+        onKeyDown={(e) => e.key === "Enter" && handleDropZoneClick()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={[
+          "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-10 text-center transition-all outline-none focus-visible:border-emerald-500",
+          isDragging
+            ? "border-emerald-500 bg-emerald-50/40 dark:bg-emerald-950/20"
+            : selectedFile
+            ? "border-emerald-400/60 bg-emerald-50/10 dark:bg-emerald-900/10"
+            : "border-border bg-muted/20 hover:border-emerald-400/60 hover:bg-muted/40",
+        ].join(" ")}
+      >
+        {selectedFile ? (
+          <div className="space-y-2">
+            <UploadCloud className="size-10 text-emerald-600 dark:text-emerald-400 mx-auto" />
+            <p className="max-w-[320px] truncate text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+              {selectedFile.name}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {(selectedFile.size / 1024).toFixed(1)} KB — Nhấn để đổi file
+            </p>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onFileRemove();
+              }}
+              className="text-xs text-destructive hover:underline font-semibold mt-1 cursor-pointer"
+            >
+              Gỡ bỏ file
+            </button>
+          </div>
+        ) : (
+          <>
+            <UploadCloud className="size-10 text-muted-foreground/60" />
+            <div>
+              <p className="text-sm font-medium">Kéo thả file vào đây hoặc nhấn để chọn</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Hỗ trợ .xlsx, .csv, .txt (Tối đa 2MB)
+              </p>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function ImportFarmZonesClient() {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -160,15 +252,14 @@ export function ImportFarmZonesClient() {
             </p>
           </div>
 
-          <label className="block">
+          <div className="space-y-2">
             <span className="text-sm font-semibold">Chọn file dữ liệu</span>
-            <input
-              type="file"
-              accept=".xlsx,.csv,.txt"
-              className="mt-3 block w-full rounded-xl border bg-background px-3 py-2 text-sm"
-              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            <DragDropZone
+              selectedFile={file}
+              onFileAccept={(f) => setFile(f)}
+              onFileRemove={() => setFile(null)}
             />
-          </label>
+          </div>
 
           <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
@@ -225,15 +316,14 @@ export function ImportFarmZonesClient() {
             </button>
           </div>
 
-          <label className="block">
+          <div className="space-y-2">
             <span className="text-sm font-semibold">Chọn file dữ liệu</span>
-            <input
-              type="file"
-              accept=".xlsx,.csv,.txt"
-              className="mt-3 block w-full rounded-xl border bg-background px-3 py-2 text-sm"
-              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            <DragDropZone
+              selectedFile={file}
+              onFileAccept={(f) => setFile(f)}
+              onFileRemove={() => setFile(null)}
             />
-          </label>
+          </div>
 
           <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
@@ -290,15 +380,14 @@ export function ImportFarmZonesClient() {
             </button>
           </div>
 
-          <label className="block">
+          <div className="space-y-2">
             <span className="text-sm font-semibold">Chọn file dữ liệu</span>
-            <input
-              type="file"
-              accept=".xlsx,.csv,.txt"
-              className="mt-3 block w-full rounded-xl border bg-background px-3 py-2 text-sm"
-              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            <DragDropZone
+              selectedFile={file}
+              onFileAccept={(f) => setFile(f)}
+              onFileRemove={() => setFile(null)}
             />
-          </label>
+          </div>
 
           <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
