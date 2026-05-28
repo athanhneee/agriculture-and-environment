@@ -158,6 +158,22 @@ export async function apiRequest<T>(
   return body.data as T;
 }
 
+function getFilenameFromContentDisposition(contentDisposition: string | null) {
+  if (!contentDisposition) return null;
+
+  const encodedMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (encodedMatch?.[1]) {
+    try {
+      return decodeURIComponent(encodedMatch[1].replace(/^"|"$/g, '').trim());
+    } catch {
+      return encodedMatch[1].replace(/^"|"$/g, '').trim();
+    }
+  }
+
+  const filenameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return filenameMatch?.[1]?.trim() || null;
+}
+
 export async function downloadApiFile(
   path: string,
   filename: string,
@@ -201,9 +217,11 @@ export async function downloadApiFile(
 
   const blob = await response.blob();
   const url = URL.createObjectURL(blob);
+  const responseFilename =
+    getFilenameFromContentDisposition(response.headers.get("Content-Disposition")) ?? filename;
   const link = document.createElement("a");
   link.href = url;
-  link.download = filename;
+  link.download = responseFilename;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -292,12 +310,12 @@ export const exportsApi = {
   readings: (params?: URLSearchParams) =>
     downloadApiFile(
       `/api/exports/readings.xlsx${params ? `?${params.toString()}` : ""}`,
-      "readings.xlsx",
+      "smart-farm-report.xlsx",
     ),
   alerts: (params?: URLSearchParams) =>
     downloadApiFile(
       `/api/exports/alerts.xlsx${params ? `?${params.toString()}` : ""}`,
-      "alerts.xlsx",
+      "smart-farm-report.xlsx",
     ),
 };
 

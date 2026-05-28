@@ -5,8 +5,11 @@ const dateLike = z.string().refine((value) => {
   return !Number.isNaN(date.getTime());
 }, 'Ngày không hợp lệ');
 
+const farmZoneId = z.string().uuid('farmZoneId không hợp lệ');
+
 export const exportAlertsSchema = z.object({
   query: z.object({
+    farmZoneId: farmZoneId.optional(),
     from: dateLike.optional(),
     to: dateLike.optional(),
   }),
@@ -14,7 +17,7 @@ export const exportAlertsSchema = z.object({
 
 export const exportReadingsSchema = z.object({
   query: z.object({
-    farmZoneId: z.string().uuid('farmZoneId không hợp lệ').optional(),
+    farmZoneId: farmZoneId.optional(),
     from: dateLike.optional(),
     to: dateLike.optional(),
   }),
