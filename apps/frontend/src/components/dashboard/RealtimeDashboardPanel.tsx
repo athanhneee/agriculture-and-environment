@@ -114,8 +114,8 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
     status === "connected"
       ? ""
       : status === "connecting"
-        ? "Dang ket noi"
-        : "Socket offline";
+        ? "Đang kết nối..."
+        : "Ngoại tuyến";
 
   return (
     <div className="space-y-6">
@@ -143,16 +143,16 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
                   <p className="text-sm font-semibold">{zone.name}</p>
                   <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
                     <span className="rounded-xl bg-muted px-3 py-2">
-                      Dat {reading?.soilMoisture ?? "--"}%
+                      Đất {reading?.soilMoisture ?? "--"}%
                     </span>
                     <span className="rounded-xl bg-muted px-3 py-2">
-                      Nhiet {reading?.temperature ?? "--"}C
+                      Nhiệt {reading?.temperature ?? "--"}°C
                     </span>
                     <span className="rounded-xl bg-muted px-3 py-2">
-                      Am {reading?.airHumidity ?? "--"}%
+                      Ẩm {reading?.airHumidity ?? "--"}%
                     </span>
                     <span className="rounded-xl bg-muted px-3 py-2">
-                      Sang {reading?.lightIntensity ?? "--"}
+                      Sáng {reading?.lightIntensity ?? "--"} lx
                     </span>
                   </div>
                 </div>
@@ -174,12 +174,12 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
         <div className="mt-4 rounded-2xl border bg-background p-4">
                                                           
           <p className="mt-3 font-semibold">
-            {latestAlert?.title ?? "Chua nhan alert moi"}
+            {latestAlert?.title ?? "Chưa nhận cảnh báo mới"}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
             {latestAlert?.severity
               ? `Mức ${severityLabels[latestAlert.severity] ?? latestAlert.severity}`
-              : "Dang xay ra loi"}
+              : "Đang xảy ra lỗi"}
           </p>
         </div>
       </div>
