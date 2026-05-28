@@ -589,13 +589,46 @@ export const sensorsApi = {
     apiRequest<void>(`/api/sensors/${id}`, { method: "DELETE" }),
 };
 
+export type AlertSeverity = "INFO" | "WARNING" | "CRITICAL";
+export type AlertStatus = "OPEN" | "ACKNOWLEDGED" | "RESOLVED";
+
+export type AlertItem = {
+  id: string;
+  farmZoneId: string;
+  sensorReadingId?: string | null;
+  farmZone?: {
+    id: string;
+    name: string;
+    ownerId?: string;
+  };
+  type: string;
+  severity: AlertSeverity | string;
+  title: string;
+  message: string;
+  status: AlertStatus | string;
+  createdAt: string;
+  resolvedAt?: string | null;
+};
+
 export const alertsApi = {
   list: async (params?: Record<string, string>) => {
-    const payload = await apiRequest<any[] | PaginatedResponse<any>>(
+    const payload = await apiRequest<AlertItem[] | PaginatedResponse<AlertItem>>(
       `/api/alerts?${cleanParams(params)}`,
     );
-    return unwrapList(payload);
+    return unwrapList<AlertItem>(payload);
   },
+  acknowledge: (id: string) =>
+    apiRequest<AlertItem>(`/api/alerts/${id}/acknowledge`, {
+      method: "PATCH",
+    }),
+  resolve: (id: string) =>
+    apiRequest<AlertItem>(`/api/alerts/${id}/resolve`, {
+      method: "PATCH",
+    }),
+  delete: (id: string) =>
+    apiRequest<{ message: string }>(`/api/alerts/${id}`, {
+      method: "DELETE",
+    }),
 };
 
 export const sensorReadingsApi = {
