@@ -122,8 +122,8 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           </p>
         </div>
 
-        {/* Nút thao tác - KHÔNG cho ADMIN */}
-        {!isAdmin && (
+        {/* Nút thao tác - chỉ cho phép ADMIN */}
+        {isAdmin && (
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setIsImportOpen(true)}
