@@ -12,6 +12,7 @@ import {
   RefreshCw,
   ShieldCheck,
   Trash2,
+  X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -129,6 +130,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<AlertItem | null>(null);
 
   const criticalCount = alerts.filter(
     (alert) => alert.severity === "CRITICAL",
@@ -172,13 +174,14 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
   };
 
   const handleAction = async (alert: AlertItem, action: ActionType) => {
-    if (
-      action === "delete" &&
-      !window.confirm("Bạn chắc chắn muốn xóa cảnh báo này?")
-    ) {
+    if (action === "delete") {
+      setConfirmDelete(alert);
       return;
     }
+    await executeAction(alert, action);
+  };
 
+  const executeAction = async (alert: AlertItem, action: ActionType) => {
     const actionKey = `${action}:${alert.id}`;
     setPendingAction(actionKey);
 
@@ -209,8 +212,60 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
     }
   };
 
+  const handleConfirmDelete = async () => {
+    if (!confirmDelete) return;
+    const target = confirmDelete;
+    setConfirmDelete(null);
+    await executeAction(target, "delete");
+  };
+
   return (
     <div className="space-y-6 relative">
+      {/* Confirm Delete Modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
+          <div className="relative z-10 w-full max-w-md rounded-2xl border bg-card p-6 shadow-2xl">
+            <div className="flex items-start gap-4">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
+                <Trash2 className="size-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-base text-foreground">Xác nhận xóa cảnh báo</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+                  Bạn sắp xóa cảnh báo{" "}
+                  <span className="font-semibold text-foreground">&ldquo;{confirmDelete.title}&rdquo;</span>.
+                  Hành động này không thể hoàn tác.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(null)}
+                className="shrink-0 rounded-lg p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(null)}
+                className="inline-flex h-9 items-center justify-center rounded-xl border bg-card px-4 text-sm font-semibold text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              >
+                Hủy
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDelete}
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-destructive px-4 text-sm font-semibold text-white transition hover:bg-destructive/90"
+              >
+                <Trash2 className="size-3.5" />
+                Xác nhận xóa
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {toast && (
         <div
           className={`fixed bottom-5 right-5 z-50 rounded-xl border px-4 py-3 text-sm font-semibold shadow-lg animate-in fade-in slide-in-from-bottom-5 ${

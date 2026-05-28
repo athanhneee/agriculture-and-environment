@@ -53,6 +53,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   const [readingsStats, setReadingsStats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
 
   const fetchStats = useCallback(async () => {
     setLoading(true);
@@ -112,9 +113,10 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (new Date(from) > new Date(to)) {
-      alert("Ngày bắt đầu không được sau ngày kết thúc.");
+      setDateError("Ngày bắt đầu không được sau ngày kết thúc.");
       return;
     }
+    setDateError(null);
     fetchStats();
   };
 
@@ -181,6 +183,12 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
             </button>
           </div>
         </form>
+        {dateError && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-destructive">
+            <AlertTriangle className="size-3.5 shrink-0" />
+            {dateError}
+          </p>
+        )}
       </div>
 
       {/* Loader */}
