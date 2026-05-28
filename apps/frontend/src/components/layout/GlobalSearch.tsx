@@ -3,17 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Loader2, MapPin, Leaf, Activity } from "lucide-react";
 import { searchApi } from "@/lib/api";
+import type { GlobalSearchResults } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 export function GlobalSearch() {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<{
-    zones: any[];
-    crops: any[];
-    sensors: any[];
-  } | null>(null);
+  const [results, setResults] = useState<GlobalSearchResults | null>(null);
   
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);

@@ -618,13 +618,15 @@ export const statisticsApi = {
     apiRequest<any[]>(`/api/statistics/readings?${cleanParams(params)}`),
 };
 
+export type GlobalSearchResults = {
+  zones: Array<Pick<FarmZone, "id" | "name" | "soilType">>;
+  crops: Array<Pick<Crop, "id" | "name" | "variety" | "farmZone">>;
+  sensors: Array<Pick<Sensor, "id" | "name" | "code" | "farmZone">>;
+};
+
 export const searchApi = {
   global: (query: string) =>
-    apiRequest<{
-      zones: any[];
-      crops: any[];
-      sensors: any[];
-    }>(`/api/search?q=${encodeURIComponent(query)}`),
+    apiRequest<GlobalSearchResults>(`/api/search?q=${encodeURIComponent(query)}`),
 };
 
 export type SystemUser = {
