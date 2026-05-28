@@ -6,23 +6,19 @@ import { Bell, AlertTriangle, X } from "lucide-react";
 import { alertsApi, statisticsApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { io } from "socket.io-client";
+import { getSocket } from "@/lib/socket";
+import { useAuthStore } from "@/stores/auth.store";
 
 const severityConfig: Record<string, { label: string; badgeClass: string; iconClass: string }> = {
-  LOW: {
-    label: "Thấp",
+  INFO: {
+    label: "Thông tin",
     badgeClass: "border-sky-500/20 bg-sky-500/10 text-sky-700 dark:text-sky-300",
     iconClass: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
   },
-  MEDIUM: {
-    label: "Trung bình",
+  WARNING: {
+    label: "Cảnh báo",
     badgeClass: "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-300",
     iconClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  },
-  HIGH: {
-    label: "Cao",
-    badgeClass: "border-orange-500/20 bg-orange-500/10 text-orange-700 dark:text-orange-300",
-    iconClass: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
   },
   CRITICAL: {
     label: "Nghiêm trọng",
@@ -32,7 +28,7 @@ const severityConfig: Record<string, { label: string; badgeClass: string; iconCl
 };
 
 function ToastNotification({ alert, onClose }: { alert: any; onClose: () => void }) {
-  const sev = severityConfig[alert.severity] || severityConfig.LOW;
+  const sev = severityConfig[alert.severity] || severityConfig.INFO;
 
   return createPortal(
     <div className="fixed bottom-[30px] right-4 sm:right-6 lg:right-8 z-[9999] flex w-80 sm:w-96 items-start gap-3 rounded-xl border bg-card p-4 shadow-xl animate-in fade-in slide-in-from-bottom-5 duration-300">
@@ -61,6 +57,7 @@ export function NotificationDropdown() {
   const [toastAlert, setToastAlert] = useState<any | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   const fetchAlerts = async () => {
     try {
@@ -85,17 +82,17 @@ export function NotificationDropdown() {
 
   // Socket.IO Real-time alerts
   useEffect(() => {
-    const socketUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-    const socket = io(socketUrl, {
-      withCredentials: true,
-      transports: ["websocket", "polling"],
-    });
+    if (!accessToken) {
+      return;
+    }
 
-    socket.on("connect", () => {
+    const socket = getSocket(accessToken);
+
+    const handleConnect = () => {
       console.log("Connected to Realtime Alerts Socket");
-    });
+    };
 
-    socket.on("alert:global-created", (newAlert: any) => {
+    const handleAlertCreated = (newAlert: any) => {
       // 1. Show Toast
       setToastAlert(newAlert);
       setTimeout(() => setToastAlert(null), 5000);
@@ -105,12 +102,20 @@ export function NotificationDropdown() {
 
       // 3. Increment unread count
       setUnreadCount((prev) => prev + 1);
-    });
+    };
+
+    socket.on("connect", handleConnect);
+    socket.on("alert:global-created", handleAlertCreated);
+
+    if (!socket.connected) {
+      socket.connect();
+    }
 
     return () => {
-      socket.disconnect();
+      socket.off("connect", handleConnect);
+      socket.off("alert:global-created", handleAlertCreated);
     };
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -167,7 +172,7 @@ export function NotificationDropdown() {
               ) : (
                 <div className="divide-y">
                   {alerts.map((alert) => {
-                    const sev = severityConfig[alert.severity] || severityConfig.LOW;
+                    const sev = severityConfig[alert.severity] || severityConfig.INFO;
                     return (
                       <button
                         key={alert.id}

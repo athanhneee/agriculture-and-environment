@@ -82,7 +82,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   // Chuẩn hóa dữ liệu cảnh báo theo Severity để vẽ PieChart
   const getSeverityData = () => {
     const nameMap: Record<string, string> = {
-      CRITICAL: "Nguy cấp",
+      CRITICAL: "Nghiêm trọng",
       WARNING: "Cảnh báo",
       INFO: "Thông tin",
     };
@@ -136,7 +136,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
           { label: "Vùng trồng", value: initialOverview.zonesCount, unit: "vùng" },
           { label: "Cảm biến", value: initialOverview.sensorsCount, unit: "thiết bị" },
           { label: "Cảnh báo mở", value: initialOverview.openAlertsCount, unit: "cảnh báo" },
-          { label: "Nguy cấp", value: initialOverview.criticalAlertsCount, unit: "critical" },
+          { label: "Nghiêm trọng", value: initialOverview.criticalAlertsCount, unit: "nghiêm trọng" },
         ].map((kpi) => (
           <div key={kpi.label} className="rounded-2xl border bg-card p-5 shadow-sm">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{kpi.label}</p>

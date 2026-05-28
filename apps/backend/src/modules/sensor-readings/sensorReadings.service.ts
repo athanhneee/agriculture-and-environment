@@ -1,7 +1,7 @@
 import prisma from "../../config/prisma";
 import { JwtPayload } from "../../utils/jwt";
 import { AlertService } from "../alerts/alerts.service";
-import { getIO } from "../../sockets/socket";
+import { emitFarmZoneScopedEvent } from "../../sockets/socket";
 
 export class SensorReadingService {
   static async getReadings(
@@ -115,18 +115,24 @@ export class SensorReadingService {
     await AlertService.processNewReading(reading.id);
 
     try {
-      const io = getIO();
       const payload = {
         farmZoneId: reading.farmZoneId,
         reading,
         timestamp: reading.recordedAt,
       };
 
-      io.to(`farm-zone:${reading.farmZoneId}`).emit(
+      emitFarmZoneScopedEvent(
+        reading.farmZoneId,
+        sensor.farmZone.ownerId,
         "sensor:reading-created",
         payload,
       );
-      io.emit("sensor:global-reading", payload);
+      emitFarmZoneScopedEvent(
+        reading.farmZoneId,
+        sensor.farmZone.ownerId,
+        "sensor:global-reading",
+        payload,
+      );
     } catch {
       console.warn("Socket.io chưa khởi tạo, bỏ qua emit realtime");
     }

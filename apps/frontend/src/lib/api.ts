@@ -158,6 +158,22 @@ export async function apiRequest<T>(
   return body.data as T;
 }
 
+function getFilenameFromContentDisposition(contentDisposition: string | null) {
+  if (!contentDisposition) return null;
+
+  const encodedMatch = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (encodedMatch?.[1]) {
+    try {
+      return decodeURIComponent(encodedMatch[1].replace(/^"|"$/g, '').trim());
+    } catch {
+      return encodedMatch[1].replace(/^"|"$/g, '').trim();
+    }
+  }
+
+  const filenameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return filenameMatch?.[1]?.trim() || null;
+}
+
 export async function downloadApiFile(
   path: string,
   filename: string,
@@ -201,9 +217,11 @@ export async function downloadApiFile(
 
   const blob = await response.blob();
   const url = URL.createObjectURL(blob);
+  const responseFilename =
+    getFilenameFromContentDisposition(response.headers.get("Content-Disposition")) ?? filename;
   const link = document.createElement("a");
   link.href = url;
-  link.download = filename;
+  link.download = responseFilename;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -292,12 +310,12 @@ export const exportsApi = {
   readings: (params?: URLSearchParams) =>
     downloadApiFile(
       `/api/exports/readings.xlsx${params ? `?${params.toString()}` : ""}`,
-      "readings.xlsx",
+      "smart-farm-report.xlsx",
     ),
   alerts: (params?: URLSearchParams) =>
     downloadApiFile(
       `/api/exports/alerts.xlsx${params ? `?${params.toString()}` : ""}`,
-      "alerts.xlsx",
+      "smart-farm-report.xlsx",
     ),
 };
 
@@ -589,13 +607,46 @@ export const sensorsApi = {
     apiRequest<void>(`/api/sensors/${id}`, { method: "DELETE" }),
 };
 
+export type AlertSeverity = "INFO" | "WARNING" | "CRITICAL";
+export type AlertStatus = "OPEN" | "ACKNOWLEDGED" | "RESOLVED";
+
+export type AlertItem = {
+  id: string;
+  farmZoneId: string;
+  sensorReadingId?: string | null;
+  farmZone?: {
+    id: string;
+    name: string;
+    ownerId?: string;
+  };
+  type: string;
+  severity: AlertSeverity | string;
+  title: string;
+  message: string;
+  status: AlertStatus | string;
+  createdAt: string;
+  resolvedAt?: string | null;
+};
+
 export const alertsApi = {
   list: async (params?: Record<string, string>) => {
-    const payload = await apiRequest<any[] | PaginatedResponse<any>>(
+    const payload = await apiRequest<AlertItem[] | PaginatedResponse<AlertItem>>(
       `/api/alerts?${cleanParams(params)}`,
     );
-    return unwrapList(payload);
+    return unwrapList<AlertItem>(payload);
   },
+  acknowledge: (id: string) =>
+    apiRequest<AlertItem>(`/api/alerts/${id}/acknowledge`, {
+      method: "PATCH",
+    }),
+  resolve: (id: string) =>
+    apiRequest<AlertItem>(`/api/alerts/${id}/resolve`, {
+      method: "PATCH",
+    }),
+  delete: (id: string) =>
+    apiRequest<{ message: string }>(`/api/alerts/${id}`, {
+      method: "DELETE",
+    }),
 };
 
 export const sensorReadingsApi = {
@@ -618,13 +669,15 @@ export const statisticsApi = {
     apiRequest<any[]>(`/api/statistics/readings?${cleanParams(params)}`),
 };
 
+export type GlobalSearchResults = {
+  zones: Array<Pick<FarmZone, "id" | "name" | "soilType">>;
+  crops: Array<Pick<Crop, "id" | "name" | "variety" | "farmZone">>;
+  sensors: Array<Pick<Sensor, "id" | "name" | "code" | "farmZone">>;
+};
+
 export const searchApi = {
   global: (query: string) =>
-    apiRequest<{
-      zones: any[];
-      crops: any[];
-      sensors: any[];
-    }>(`/api/search?q=${encodeURIComponent(query)}`),
+    apiRequest<GlobalSearchResults>(`/api/search?q=${encodeURIComponent(query)}`),
 };
 
 export type SystemUser = {

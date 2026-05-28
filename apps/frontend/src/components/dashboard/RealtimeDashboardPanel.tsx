@@ -38,6 +38,12 @@ type AlertPayload = {
   createdAt?: string;
 };
 
+const severityLabels: Record<string, string> = {
+  INFO: "Thông tin",
+  WARNING: "Cảnh báo",
+  CRITICAL: "Nghiêm trọng",
+};
+
 export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [status, setStatus] = useState<"connecting" | "connected" | "offline">(
@@ -55,6 +61,11 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
   );
 
   useEffect(() => {
+    if (!accessToken) {
+      setStatus("offline");
+      return;
+    }
+
     const socket = getSocket(accessToken);
 
     const handleConnect = () => {
@@ -167,7 +178,7 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
             {latestAlert?.severity
-              ? `Muc ${latestAlert.severity}`
+              ? `Mức ${severityLabels[latestAlert.severity] ?? latestAlert.severity}`
               : "Dang xay ra loi"}
           </p>
         </div>
