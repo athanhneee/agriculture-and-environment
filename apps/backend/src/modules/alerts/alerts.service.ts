@@ -1,5 +1,5 @@
 import prisma from '../../config/prisma';
-import { getIO } from '../../sockets/socket';
+import { emitFarmZoneScopedEvent } from '../../sockets/socket';
 import { JwtPayload } from '../../utils/jwt';
 import { evaluateReadingForAlerts } from './alertRules';
 
@@ -185,12 +185,25 @@ export class AlertService {
     }
 
     try {
-      const io = getIO();
-
       for (const alert of createdAlerts) {
-        io.to(`farm-zone:${alert.farmZoneId}`).emit('alert:created', alert);
-        io.emit('alert:global-created', alert);
-        io.emit('alert:global', alert);
+        emitFarmZoneScopedEvent(
+          alert.farmZoneId,
+          alert.farmZone.ownerId,
+          'alert:created',
+          alert,
+        );
+        emitFarmZoneScopedEvent(
+          alert.farmZoneId,
+          alert.farmZone.ownerId,
+          'alert:global-created',
+          alert,
+        );
+        emitFarmZoneScopedEvent(
+          alert.farmZoneId,
+          alert.farmZone.ownerId,
+          'alert:global',
+          alert,
+        );
       }
     } catch {
       // Socket chưa khởi tạo thì bỏ qua, không làm hỏng luồng tạo reading.
