@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Leaf, RadioTower, ShieldAlert } from "lucide-react";
+import { AIAssistantChat } from "./AIAssistantChat";
 
 export const revalidate = 3600;
 
@@ -77,6 +78,7 @@ export default function FarmGuidePage() {
                         );
                     })}
                 </section>
+                <AIAssistantChat />
             </div>
         </main>
     );
