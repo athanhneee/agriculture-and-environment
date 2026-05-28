@@ -47,7 +47,7 @@ export class UsersController {
        return res.status(400).json(ApiResponse.error('Trạng thái không hợp lệ'));
     }
 
-    const updatedUser = await UsersService.updateUser(id, {
+    const updatedUser = await UsersService.updateUser(id as string, {
       name,
       email,
       password,
@@ -59,7 +59,7 @@ export class UsersController {
 
   static async deleteUser(req: Request, res: Response) {
     const { id } = req.params;
-    await UsersService.deleteUser(id);
+    await UsersService.deleteUser(id as string);
     res.status(200).json(ApiResponse.success('Xóa người dùng thành công'));
   }
 }

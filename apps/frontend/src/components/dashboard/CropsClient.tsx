@@ -59,7 +59,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
         status: filterStatus,
         search: debouncedSearch,
       });
-      setCrops(data);
+      setCrops(data as Crop[]);
     } catch (err: any) {
       console.error("Fetch crops failed:", err);
       setError("Không thể tải danh sách cây trồng. Vui lòng thử lại.");

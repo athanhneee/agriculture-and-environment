@@ -91,7 +91,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
 
     try {
       const result = await importsApi.uploadSensors(file);
-      setImportResult(result);
+      setImportResult(result as any);
     } catch (err: any) {
       setError(err.message || "Đã xảy ra lỗi trong quá trình upload.");
     } finally {

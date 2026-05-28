@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../../config/prisma';
 import { JwtPayload } from '../../utils/jwt';
 
@@ -8,7 +9,7 @@ export class SearchService {
     const ownerFilter = isUser ? { ownerId: user.id } : {};
     const cropSensorOwnerFilter = isUser ? { farmZone: { ownerId: user.id } } : {};
 
-    const zoneSearchFilter = q ? {
+    const zoneSearchFilter: Prisma.FarmZoneWhereInput = q ? {
       OR: [
         { name: { contains: q, mode: 'insensitive' } },
         { description: { contains: q, mode: 'insensitive' } },
@@ -16,14 +17,14 @@ export class SearchService {
       ]
     } : {};
 
-    const cropSearchFilter = q ? {
+    const cropSearchFilter: Prisma.CropWhereInput = q ? {
       OR: [
         { name: { contains: q, mode: 'insensitive' } },
         { variety: { contains: q, mode: 'insensitive' } },
       ]
     } : {};
 
-    const sensorSearchFilter = q ? {
+    const sensorSearchFilter: Prisma.SensorWhereInput = q ? {
       OR: [
         { name: { contains: q, mode: 'insensitive' } },
         { code: { contains: q, mode: 'insensitive' } },
