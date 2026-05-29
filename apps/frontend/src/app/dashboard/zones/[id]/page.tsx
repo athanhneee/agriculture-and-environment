@@ -102,24 +102,50 @@ export default async function ZoneDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       {/* Header breadcrumb & actions */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/dashboard/zones"
-            className="flex size-9 items-center justify-center rounded-xl border bg-card hover:bg-muted transition"
-          >
-            <ArrowLeft className="size-4" />
-          </Link>
-          <div>
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Chi tiết vùng trồng
-            </span>
-            <h1 className="text-2xl font-bold tracking-tight">{zone.name}</h1>
-          </div>
-        </div>
+      <div className="space-y-2">
+        <nav aria-label="Breadcrumb" className="text-xs font-medium text-muted-foreground">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link href="/dashboard" className="transition hover:text-foreground">
+                Dashboard
+              </Link>
+            </li>
+            <li className="after:content-['/'] after:opacity-40 flex items-center gap-2">
+              <span className="sr-only">Separator</span>
+            </li>
+            <li>
+              <Link href="/dashboard/zones" className="transition hover:text-foreground">
+                Vùng trồng
+              </Link>
+            </li>
+            <li className="after:content-['/'] after:opacity-40 flex items-center gap-2">
+              <span className="sr-only">Separator</span>
+            </li>
+            <li className="text-foreground font-semibold truncate max-w-[200px]" aria-current="page">
+              {zone.name}
+            </li>
+          </ol>
+        </nav>
 
-        {/* Edit/Delete actions (Demo permission) */}
-        <ZoneActionButtons zoneId={id} />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/zones"
+              className="flex size-9 items-center justify-center rounded-xl border bg-card hover:bg-muted transition"
+            >
+              <ArrowLeft className="size-4" />
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">{zone.name}</h1>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Quản lý chi tiết cảm biến, cây trồng và cấu hình vùng trồng.
+              </p>
+            </div>
+          </div>
+
+          {/* Edit/Delete actions (Demo permission) */}
+          <ZoneActionButtons zoneId={id} />
+        </div>
       </div>
 
       {/* Main Stats Summary */}
@@ -248,9 +274,13 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                 </div>
               ))
             ) : (
-              <p className="py-4 text-sm text-muted-foreground text-center">
-                Chưa kết nối thiết bị cảm biến nào.
-              </p>
+              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-xl">
+                <Cpu className="size-8 text-muted-foreground/40 stroke-[1.5]" />
+                <p className="mt-2 text-xs font-semibold text-foreground">Không có cảm biến liên kết</p>
+                <p className="text-[11px] text-muted-foreground/80 mt-1 max-w-[280px]">
+                  Vùng trồng này chưa liên kết với thiết bị cảm biến IoT nào để đo đạc chỉ số.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -279,9 +309,13 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                 </div>
               ))
             ) : (
-              <p className="py-4 text-sm text-muted-foreground text-center">
-                Chưa ghi nhận thông tin loại cây trồng.
-              </p>
+              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-xl">
+                <Sprout className="size-8 text-muted-foreground/40 stroke-[1.5]" />
+                <p className="mt-2 text-xs font-semibold text-foreground">Chưa có cây trồng</p>
+                <p className="text-[11px] text-muted-foreground/80 mt-1 max-w-[280px]">
+                  Vùng trồng này hiện đang để trống hoặc chưa khai báo thông tin cây trồng canh tác.
+                </p>
+              </div>
             )}
           </div>
         </div>

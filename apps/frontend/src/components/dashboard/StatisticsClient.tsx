@@ -53,6 +53,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   const [readingsStats, setReadingsStats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
 
   const fetchStats = useCallback(async () => {
     setLoading(true);
@@ -112,9 +113,10 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (new Date(from) > new Date(to)) {
-      alert("Ngày bắt đầu không được sau ngày kết thúc.");
+      setDateError("Ngày bắt đầu không được sau ngày kết thúc.");
       return;
     }
+    setDateError(null);
     fetchStats();
   };
 
@@ -132,18 +134,26 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
 
       {/* Overview KPI row */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          { label: "Vùng trồng", value: initialOverview.zonesCount, unit: "vùng" },
-          { label: "Cảm biến", value: initialOverview.sensorsCount, unit: "thiết bị" },
-          { label: "Cảnh báo mở", value: initialOverview.openAlertsCount, unit: "cảnh báo" },
-          { label: "Nghiêm trọng", value: initialOverview.criticalAlertsCount, unit: "nghiêm trọng" },
-        ].map((kpi) => (
-          <div key={kpi.label} className="rounded-2xl border bg-card p-5 shadow-sm">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{kpi.label}</p>
-            <p className="mt-2 text-3xl font-bold">{kpi.value}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{kpi.unit}</p>
-          </div>
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-2xl border bg-card p-5 shadow-sm animate-pulse">
+                <div className="h-3 w-20 rounded bg-muted" />
+                <div className="mt-3 h-8 w-12 rounded bg-muted" />
+                <div className="mt-2 h-3.5 w-10 rounded bg-muted" />
+              </div>
+            ))
+          : [
+              { label: "Vùng trồng", value: initialOverview.zonesCount, unit: "vùng" },
+              { label: "Cảm biến", value: initialOverview.sensorsCount, unit: "thiết bị" },
+              { label: "Cảnh báo mở", value: initialOverview.openAlertsCount, unit: "cảnh báo" },
+              { label: "Nghiêm trọng", value: initialOverview.criticalAlertsCount, unit: "nghiêm trọng" },
+            ].map((kpi) => (
+              <div key={kpi.label} className="rounded-2xl border bg-card p-5 shadow-sm">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{kpi.label}</p>
+                <p className="mt-2 text-3xl font-bold">{kpi.value}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{kpi.unit}</p>
+              </div>
+            ))}
       </div>
 
       {/* Date Filter Form */}
@@ -181,6 +191,12 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
             </button>
           </div>
         </form>
+        {dateError && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-destructive">
+            <AlertTriangle className="size-3.5 shrink-0" />
+            {dateError}
+          </p>
+        )}
       </div>
 
       {/* Loader */}

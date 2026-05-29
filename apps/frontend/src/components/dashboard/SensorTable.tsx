@@ -98,7 +98,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               <th className="px-6 py-4">Loại cảm biến</th>
               <th className="px-6 py-4">Đơn vị</th>
               <th className="px-6 py-4 text-center">Trạng thái</th>
-              {(!isAdmin) && <th className="px-6 py-4 text-right">Thao tác</th>}
+              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -106,7 +106,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               const status = statusConfig[sensor.status] || { label: sensor.status, className: "" };
               const typeLabel = typeConfig[sensor.type] || sensor.type;
               return (
-                <tr key={sensor.id} className="hover:bg-muted/30 transition-all duration-150">
+                <tr key={sensor.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
                   <td className="px-6 py-4 align-middle font-bold text-foreground">{sensor.name}</td>
                   <td className="px-6 py-4 align-middle font-mono text-xs">{sensor.code}</td>
                   <td className="px-6 py-4 align-middle font-medium text-emerald-700 dark:text-emerald-400">
@@ -121,7 +121,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                       </span>
                     </div>
                   </td>
-                  {(!isAdmin) && (
+                  {isAdmin && (
                     <td className="px-6 py-4 align-middle text-right">
                       <div className="flex justify-end gap-2">
                         <button
@@ -185,7 +185,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                 </div>
               </div>
 
-              {(!isAdmin) && (
+              {isAdmin && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(sensor)}

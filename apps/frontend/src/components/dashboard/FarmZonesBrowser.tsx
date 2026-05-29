@@ -40,7 +40,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
           </p>
         </div>
 
-        {!isAdmin && (
+        {isAdmin && (
           <Link
             href="/dashboard/zones/new"
             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"

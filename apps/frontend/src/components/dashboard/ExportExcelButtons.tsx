@@ -23,7 +23,7 @@ export function ExportExcelButtons() {
       setError(
         err instanceof ApiError
           ? err.message
-          : "Khong the tai file Excel. Vui long thu lai.",
+          : "Không thể tải file Excel. Vui lòng thử lại.",
       );
     } finally {
       setLoading(null);
@@ -34,8 +34,7 @@ export function ExportExcelButtons() {
     <div className="rounded-2xl border bg-card p-5 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Export Excel</h3>
-          
+          <h3 className="text-lg font-semibold">Xuất dữ liệu Excel</h3>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -49,7 +48,7 @@ export function ExportExcelButtons() {
             ) : (
               <Download className="size-4" aria-hidden="true" />
             )}
-            Readings
+            Xuất dữ liệu đo
           </button>
           <button
             type="button"
@@ -62,7 +61,7 @@ export function ExportExcelButtons() {
             ) : (
               <Download className="size-4" aria-hidden="true" />
             )}
-            Alerts
+            Xuất cảnh báo
           </button>
         </div>
       </div>

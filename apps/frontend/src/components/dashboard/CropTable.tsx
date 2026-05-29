@@ -94,14 +94,14 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
               <th className="px-6 py-4">Ngày gieo trồng</th>
               <th className="px-6 py-4">Thu hoạch dự kiến</th>
               <th className="px-6 py-4">Trạng thái</th>
-              {(!isAdmin) && <th className="px-6 py-4 text-right">Thao tác</th>}
+              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
             {crops.map((crop) => {
               const status = statusConfig[crop.status] || { label: crop.status, className: "" };
               return (
-                <tr key={crop.id} className="hover:bg-muted/30 transition-all duration-150">
+                <tr key={crop.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
                   <td className="px-6 py-4 font-bold text-foreground">{crop.name}</td>
                   <td className="px-6 py-4">{crop.variety}</td>
                   <td className="px-6 py-4 font-medium text-emerald-700 dark:text-emerald-400">
@@ -120,7 +120,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                       {status.label}
                     </span>
                   </td>
-                  {(!isAdmin) && (
+                  {isAdmin && (
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
@@ -193,7 +193,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                 )}
               </div>
 
-              {(!isAdmin) && (
+              {isAdmin && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(crop)}
