@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   output: "standalone",
 
+  // Turbopack: chỉ định đúng thư mục gốc của frontend để tránh scan toàn bộ folder cha
+  turbopack: {
+    root: __dirname,
+  },
+
   // Cấu hình security headers bảo vệ ứng dụng khỏi các lỗ hổng bảo mật cơ bản
   async headers() {
     return [
