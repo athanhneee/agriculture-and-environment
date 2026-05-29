@@ -33,7 +33,7 @@ export function UsersManagerClient() {
       setLoading(true);
       setError(null);
       const data = await usersApi.list();
-      setUsers(data);
+      setUsers(data as SystemUser[]);
     } catch (err: any) {
       setError(err.message || "Không thể tải danh sách người dùng.");
     } finally {
@@ -80,7 +80,7 @@ export function UsersManagerClient() {
         alert("Cập nhật thông tin thành công!");
       } else {
         // Thêm mới
-        await usersApi.create(form);
+        await usersApi.create(form as any);
         alert("Thêm mới người dùng thành công!");
       }
       closeModal();

@@ -14,7 +14,7 @@ const startServer = async () => {
     const server = http.createServer(app);
     initSocket(server);
 
-    server.listen(env.port, () => {
+    server.listen(env.port, env.host, () => {
       console.log(`🚀 Server is running on port ${env.port} in ${env.nodeEnv} mode`);
       startSensorMockJob();
     });

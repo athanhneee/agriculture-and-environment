@@ -60,7 +60,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
         status: filterStatus,
         search: debouncedSearch,
       });
-      setSensors(data);
+      setSensors(data as Sensor[]);
     } catch (err: any) {
       console.error("Fetch sensors failed:", err);
       setError("Không thể tải danh sách thiết bị cảm biến. Vui lòng thử lại.");

@@ -39,7 +39,7 @@ export function HistoryClient({ initialZones }: HistoryClientProps) {
     setError(null);
     try {
       const data = await sensorReadingsApi.list(filters);
-      setReadings(data);
+      setReadings(data as SensorReading[]);
     } catch (err: any) {
       console.error("Fetch sensor readings history failed:", err);
       setError("Không thể tải dữ liệu lịch sử cảm biến. Vui lòng thử lại.");

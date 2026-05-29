@@ -7,9 +7,11 @@ export class ExportsController {
     const { farmZoneId, from, to } = req.query as { farmZoneId?: string; from?: string; to?: string };
     
     const workbook = await ExportsService.exportReadings(user, farmZoneId, from, to);
+    const filename = ExportsService.buildReportFilename();
     
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=readings.xlsx');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
     
     await workbook.xlsx.write(res);
     res.end();
@@ -17,12 +19,14 @@ export class ExportsController {
 
   static async exportAlerts(req: Request, res: Response) {
     const user = req.user!;
-    const { from, to } = req.query as { from?: string; to?: string };
+    const { farmZoneId, from, to } = req.query as { farmZoneId?: string; from?: string; to?: string };
     
-    const workbook = await ExportsService.exportAlerts(user, from, to);
+    const workbook = await ExportsService.exportAlerts(user, from, to, farmZoneId);
+    const filename = ExportsService.buildReportFilename();
     
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=alerts.xlsx');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
     
     await workbook.xlsx.write(res);
     res.end();
