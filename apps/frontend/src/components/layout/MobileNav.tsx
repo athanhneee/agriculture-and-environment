@@ -2,32 +2,43 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BellRing, Home, Leaf, MapPinned, RadioTower } from "lucide-react";
+import {
+  BellRing,
+  LayoutDashboard,
+  Leaf,
+  MapPinned,
+  RadioTower,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const items = [
-  { title: "Home", href: "/dashboard", match: "/dashboard", icon: Home },
   {
-    title: "Vùng",
+    title: "Tổng quan",
+    href: "/dashboard",
+    match: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Vùng trồng",
     href: "/dashboard/zones",
     match: "/dashboard/zones",
     icon: Leaf,
   },
   {
-    title: "Sensor",
+    title: "Cảm biến",
     href: "/dashboard/sensors",
     match: "/dashboard/sensors",
     icon: RadioTower,
   },
   {
-    title: "Alert",
+    title: "Cảnh báo",
     href: "/dashboard/alerts",
     match: "/dashboard/alerts",
     icon: BellRing,
   },
   {
-    title: "Map",
+    title: "Bản đồ",
     href: "/dashboard/map",
     match: "/dashboard/map",
     icon: MapPinned,
@@ -51,7 +62,7 @@ export function MobileNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex h-12 flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-medium transition",
+              "flex h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center text-[10px] font-medium leading-none transition sm:text-[11px]",
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
