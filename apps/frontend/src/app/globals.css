@@ -294,3 +294,56 @@
 .animation-delay-400 { animation-delay: 400ms; }
 .animation-delay-500 { animation-delay: 500ms; }
 
+/* =============================================
+   Weather scene animations (homepage hero)
+   Mây trôi, mặt trời, mưa rơi
+   ============================================= */
+
+/* Mặt trời: phát sáng nhịp nhàng */
+@keyframes sun-pulse {
+  0%, 100% { box-shadow: 0 0 18px 8px rgba(253,224,71,0.35), 0 0 40px 20px rgba(253,224,71,0.15); transform: scale(1); }
+  50%       { box-shadow: 0 0 28px 14px rgba(253,224,71,0.55), 0 0 60px 30px rgba(253,224,71,0.25); transform: scale(1.06); }
+}
+.animate-sun-pulse {
+  animation: sun-pulse 3s ease-in-out infinite;
+}
+
+/* Tia nắng quay chậm */
+@keyframes sun-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-sun-rotate {
+  animation: sun-rotate 18s linear infinite;
+}
+
+/* Mây 1: trôi sang phải rồi trái */
+@keyframes cloud-float-1 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(14px); }
+}
+.animate-cloud-1 {
+  animation: cloud-float-1 6s ease-in-out infinite;
+}
+
+/* Mây 2: trôi sang trái rồi phải */
+@keyframes cloud-float-2 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(-10px); }
+}
+.animate-cloud-2 {
+  animation: cloud-float-2 8s ease-in-out infinite;
+}
+
+/* Mưa rơi chéo xuống */
+@keyframes rain-fall {
+  0%   { transform: translateY(-12px) translateX(0px); opacity: 0; }
+  8%   { opacity: 0.65; }
+  92%  { opacity: 0.55; }
+  100% { transform: translateY(260px) translateX(-18px); opacity: 0; }
+}
+.animate-rain {
+  animation: rain-fall linear infinite;
+}
+
+

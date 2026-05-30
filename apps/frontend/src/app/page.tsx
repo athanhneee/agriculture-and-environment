@@ -131,7 +131,7 @@ export default async function HomePage() {
 
           {/* Ảnh hero — trượt vào từ bên phải */}
           <div className="animate-fade-up animation-delay-200 relative">
-            <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 shadow-2xl shadow-emerald-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 shadow-2xl shadow-emerald-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
               <Image
                 src="/smart-farm-hero.png"
                 alt="Minh họa nông trại thông minh với nhà kính và cảm biến"
@@ -140,6 +140,92 @@ export default async function HomePage() {
                 priority
                 className="aspect-[11/7] w-full object-cover"
               />
+
+              {/* ===== WEATHER SCENE OVERLAY ===== */}
+              <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-t-[1.75rem]">
+
+                {/* Mặt trời */}
+                <div className="absolute left-5 top-4">
+                  {/* Tia nắng quay */}
+                  <div className="animate-sun-rotate absolute inset-0 m-auto" style={{width:44, height:44}}>
+                    {[0,45,90,135].map((deg) => (
+                      <div
+                        key={deg}
+                        className="absolute left-1/2 top-1/2 h-1 w-7 -translate-y-1/2 rounded-full bg-yellow-300/60"
+                        style={{transformOrigin:"0 50%", transform:`rotate(${deg}deg) translateX(24px)`}}
+                      />
+                    ))}
+                  </div>
+                  {/* Lõi mặt trời */}
+                  <div className="animate-sun-pulse relative size-11 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400" />
+                </div>
+
+                {/* Mây 1 — to hơn ở trên */}
+                <div className="animate-cloud-1 absolute left-14 top-3">
+                  <div className="relative h-8 w-28">
+                    <div className="absolute bottom-0 left-0 h-5 w-20 rounded-full bg-white/80" />
+                    <div className="absolute bottom-2 left-4 h-7 w-14 rounded-full bg-white/90" />
+                    <div className="absolute bottom-0 right-0 h-4 w-12 rounded-full bg-white/75" />
+                  </div>
+                </div>
+
+                {/* Mây 2 — nhỏ hơn, xa hơn */}
+                <div className="animate-cloud-2 absolute right-10 top-8">
+                  <div className="relative h-6 w-20">
+                    <div className="absolute bottom-0 left-0 h-4 w-14 rounded-full bg-white/70" />
+                    <div className="absolute bottom-1 left-3 h-5 w-10 rounded-full bg-white/80" />
+                    <div className="absolute bottom-0 right-0 h-3 w-8 rounded-full bg-white/65" />
+                  </div>
+                </div>
+
+                {/* Mưa rơi — 12 hạt chéo xuống */}
+                {[8,14,22,30,38,46,54,62,70,78,86,92].map((left, i) => (
+                  <div
+                    key={left}
+                    className="animate-rain absolute top-0 h-5 w-px rounded-full bg-sky-400/55"
+                    style={{
+                      left: `${left}%`,
+                      animationDuration: `${0.75 + (i % 5) * 0.12}s`,
+                      animationDelay: `${(i * 0.18) % 1.4}s`,
+                    }}
+                  />
+                ))}
+              </div>
+              {/* ===== END WEATHER SCENE ===== */}
+
+              {/* ===== SMART FARM INFO CARD ===== */}
+              <div className="absolute right-3 top-3 min-w-[160px] overflow-hidden rounded-2xl border border-white/60 bg-white/90 shadow-lg shadow-emerald-900/10 backdrop-blur-md dark:border-white/20 dark:bg-emerald-950/80">
+                {/* Header */}
+                <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 px-3 py-2">
+                  <span className="flex size-5 items-center justify-center rounded-md bg-white/20">
+                    <Sprout className="size-3 text-white" />
+                  </span>
+                  <span className="text-xs font-bold tracking-widest text-white">SMART FARM</span>
+                </div>
+                {/* Data rows */}
+                <div className="space-y-1 p-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-medium text-slate-500">moisture</span>
+                    <span className="text-[11px] font-bold text-sky-600">68%</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-medium text-slate-500">temp</span>
+                    <span className="text-[11px] font-bold text-orange-500">27°C</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-medium text-slate-500">light</span>
+                    <span className="text-[11px] font-bold text-amber-500">820 lux</span>
+                  </div>
+                  <div className="mt-1.5 flex items-center gap-1.5 border-t border-slate-100 pt-1.5">
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
+                    </span>
+                    <span className="text-[10px] font-semibold text-emerald-600">Live</span>
+                  </div>
+                </div>
+              </div>
+              {/* ===== END SMART FARM CARD ===== */}
               <div className="grid gap-3 border-t bg-white/90 p-4 dark:border-white/10 dark:bg-emerald-950/80 sm:grid-cols-3">
                 {/* Stat 1: Sensor online với live dot nhấp nháy */}
                 <div className="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950/60">

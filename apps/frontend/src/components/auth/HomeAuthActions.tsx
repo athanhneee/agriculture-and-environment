@@ -63,7 +63,6 @@ export function HomeHeroAuthActions({
   initialIsAuthenticated,
 }: HomeAuthActionsProps) {
   const isAuthenticated = useIsAuthenticated(initialIsAuthenticated);
-  const { logout, isLoggingOut } = useLogout({ redirectTo: "/" });
 
   return (
     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -75,21 +74,7 @@ export function HomeHeroAuthActions({
         <ArrowRight className="size-4" aria-hidden="true" />
       </Link>
 
-      {isAuthenticated ? (
-        <button
-          type="button"
-          onClick={logout}
-          disabled={isLoggingOut}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white/80 px-6 text-sm font-semibold text-emerald-900 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/15 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
-        >
-          {isLoggingOut ? (
-            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-          ) : (
-            <LogOut className="size-4" aria-hidden="true" />
-          )}
-          Đăng xuất
-        </button>
-      ) : (
+      {!isAuthenticated && (
         <Link
           href="/auth/register"
           className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white/80 px-6 text-sm font-semibold text-emerald-900 transition hover:bg-white dark:border-white/15 dark:bg-white/10 dark:text-emerald-50 dark:hover:bg-white/15"
