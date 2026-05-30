@@ -102,6 +102,25 @@ export default async function HomePage() {
               dõi vùng trồng, dữ liệu cảm biến, cảnh báo môi trường.
             </p>
             <HomeHeroAuthActions initialIsAuthenticated={isAuthenticated} />
+
+            {/* Trust badges */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+              {[
+                { icon: "✓", label: "Dữ liệu thời gian thực" },
+                { icon: "✓", label: "Cảnh báo thông minh" },
+                { icon: "✓", label: "Hỗ trợ đa vùng trồng" },
+              ].map((badge) => (
+                <span
+                  key={badge.label}
+                  className="flex items-center gap-1.5 text-sm font-medium text-emerald-700/80 dark:text-emerald-300/80"
+                >
+                  <span className="flex size-4 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-800/60 dark:text-emerald-300">
+                    {badge.icon}
+                  </span>
+                  {badge.label}
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="relative">
