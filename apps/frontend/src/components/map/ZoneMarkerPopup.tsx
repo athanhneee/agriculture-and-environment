@@ -1,88 +1,135 @@
 import Link from "next/link";
-import { AlertTriangle, Compass, Droplet, Layers, MapPin, Thermometer } from "lucide-react";
+import { AlertTriangle, Compass, Droplet, Layers, MapPin, Thermometer, Wifi } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
 interface ZoneMarkerPopupProps {
   zone: FarmZone;
+  fallbackCoords?: [number, number];
 }
 
-export function ZoneMarkerPopup({ zone }: ZoneMarkerPopupProps) {
-  const statusLabels = {
-    ACTIVE: "Đang hoạt động",
-    INACTIVE: "Ngừng hoạt động",
-    MAINTENANCE: "Đang bảo trì",
+export function ZoneMarkerPopup({ zone, fallbackCoords }: ZoneMarkerPopupProps) {
+  const statusConfig = {
+    ACTIVE:      { label: "Đang hoạt động", cls: "bg-emerald-100 text-emerald-700" },
+    INACTIVE:    { label: "Ngừng hoạt động", cls: "bg-zinc-100 text-zinc-600" },
+    MAINTENANCE: { label: "Đang bảo trì",    cls: "bg-amber-100 text-amber-700" },
   };
 
-  const hasAlerts = zone.openAlertsCount !== undefined && zone.openAlertsCount > 0;
-  const temp = zone.latestSensorSummary?.temperature;
+  const status = statusConfig[zone.status as keyof typeof statusConfig] ?? statusConfig.INACTIVE;
+  const hasAlerts = (zone.openAlertsCount ?? 0) > 0;
+  const temp      = zone.latestSensorSummary?.temperature;
   const soilMoist = zone.latestSensorSummary?.soilMoisture;
+  const lat = zone.latitude || fallbackCoords?.[0];
+  const lng = zone.longitude || fallbackCoords?.[1];
 
   return (
-    <div className="p-1 min-w-[220px] text-xs leading-relaxed text-foreground">
+    <div style={{ minWidth: 240, fontFamily: "inherit" }}>
       {/* Header */}
-      <div className="border-b pb-2 mb-2">
-        <h4 className="font-bold text-sm text-foreground flex items-center gap-1.5">
-          <MapPin className="size-4 text-emerald-600 shrink-0" />
-          {zone.name}
-        </h4>
-        <span className={`inline-block mt-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-          zone.status === "ACTIVE"
-            ? "bg-emerald-100 text-emerald-700"
-            : zone.status === "MAINTENANCE"
-            ? "bg-amber-100 text-amber-700"
-            : "bg-zinc-100 text-zinc-700"
-        }`}>
-          {statusLabels[zone.status]}
+      <div style={{ marginBottom: 10, paddingBottom: 10, borderBottom: "1px solid #e5e7eb" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+          <MapPin size={14} color="#16a34a" />
+          <strong style={{ fontSize: 14, color: "#111827" }}>{zone.name}</strong>
+        </div>
+        <span style={{
+          display: "inline-block",
+          borderRadius: 999,
+          padding: "2px 8px",
+          fontSize: 10,
+          fontWeight: 700,
+          background: zone.status === "ACTIVE" ? "#dcfce7" : zone.status === "MAINTENANCE" ? "#fef3c7" : "#f4f4f5",
+          color: zone.status === "ACTIVE" ? "#15803d" : zone.status === "MAINTENANCE" ? "#92400e" : "#52525b",
+        }}>
+          {status.label}
         </span>
       </div>
 
-      {/* Overview stats */}
-      <div className="space-y-1.5 text-muted-foreground">
-        <div className="flex items-center gap-1.5">
-          <Compass className="size-3.5" />
-          <span>Diện tích: <strong>{zone.area} ha</strong></span>
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#6b7280" }}>
+          <Compass size={13} />
+          <span><strong>{zone.area} ha</strong></span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <Layers className="size-3.5" />
-          <span>Đất: <strong>{zone.soilType}</strong></span>
+        <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#6b7280" }}>
+          <Layers size={13} />
+          <span>{zone.soilType}</span>
         </div>
+        {zone.sensorsCount !== undefined && (
+          <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#6b7280" }}>
+            <Wifi size={13} />
+            <span>{zone.sensorsCount} cảm biến</span>
+          </div>
+        )}
+        {lat && lng && (
+          <div style={{ fontSize: 10, color: "#9ca3af", gridColumn: "1/-1" }}>
+            📍 {lat.toFixed(4)}, {lng.toFixed(4)}
+          </div>
+        )}
       </div>
 
-      {/* Sensor readings summary if exists */}
+      {/* Sensor readings */}
       {(temp !== undefined || soilMoist !== undefined) && (
-        <div className="mt-3 border-t pt-2 grid grid-cols-2 gap-2">
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 6,
+          padding: "8px",
+          background: "#f0fdf4",
+          borderRadius: 8,
+          marginBottom: 10,
+        }}>
           {temp !== undefined && (
-            <div className="flex items-center gap-1">
-              <Thermometer className="size-3.5 text-orange-500" />
-              <span>{temp}°C</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "#374151" }}>
+              <Thermometer size={13} color="#f97316" />
+              <span><strong>{temp}°C</strong></span>
             </div>
           )}
           {soilMoist !== undefined && (
-            <div className="flex items-center gap-1">
-              <Droplet className="size-3.5 text-blue-500" />
-              <span>Đất {soilMoist}%</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "#374151" }}>
+              <Droplet size={13} color="#3b82f6" />
+              <span><strong>{soilMoist}%</strong></span>
             </div>
           )}
         </div>
       )}
 
-      {/* Active critical alerts warning */}
+      {/* Alert warning */}
       {hasAlerts && (
-        <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-destructive/10 border border-destructive/20 p-2 text-destructive font-semibold">
-          <AlertTriangle className="size-3.5 shrink-0" />
-          <span>Có {zone.openAlertsCount} cảnh báo!</span>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "8px 10px",
+          background: "#fef2f2",
+          border: "1px solid #fecaca",
+          borderRadius: 8,
+          marginBottom: 10,
+          color: "#dc2626",
+          fontSize: 12,
+          fontWeight: 600,
+        }}>
+          <AlertTriangle size={13} />
+          <span>⚠ {zone.openAlertsCount} cảnh báo đang mở</span>
         </div>
       )}
 
-      {/* Action link */}
-      <div className="mt-3.5 pt-2 border-t text-center">
-        <Link
-          href={`/dashboard/zones/${zone.id}`}
-          className="inline-block w-full rounded-lg bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 text-center text-xs font-semibold text-white transition-all shadow-sm"
-        >
-          Xem chi tiết vùng
-        </Link>
-      </div>
+      {/* CTA Button */}
+      <Link
+        href={`/dashboard/zones/${zone.id}`}
+        style={{
+          display: "block",
+          width: "100%",
+          padding: "8px 0",
+          textAlign: "center",
+          borderRadius: 8,
+          background: "#16a34a",
+          color: "white",
+          fontSize: 12,
+          fontWeight: 700,
+          textDecoration: "none",
+          boxSizing: "border-box",
+        }}
+      >
+        Xem chi tiết vùng →
+      </Link>
     </div>
   );
 }
