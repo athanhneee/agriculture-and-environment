@@ -18,34 +18,48 @@ import {
   HomeNavAuthActions,
 } from "@/components/auth/HomeAuthActions";
 
+import { ArrowRight } from "lucide-react";
+
 const features = [
   {
     title: "Vùng trồng",
     description:
       "Quản lý khu canh tác, loại cây, diện tích và trạng thái vận hành.",
     icon: Leaf,
+    href: "/dashboard/zones",
     tone: "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200",
+    hoverBorder: "hover:border-emerald-300 dark:hover:border-emerald-500/40",
+    arrowColor: "text-emerald-600 dark:text-emerald-400",
   },
   {
     title: "Cảm biến real-time",
     description:
       "Theo dõi nhiệt độ, độ ẩm, ánh sáng và độ ẩm đất theo thời gian thực.",
     icon: RadioTower,
+    href: "/dashboard/sensors",
     tone: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-200",
+    hoverBorder: "hover:border-sky-300 dark:hover:border-sky-500/40",
+    arrowColor: "text-sky-600 dark:text-sky-400",
   },
   {
     title: "Cảnh báo",
     description:
       "Phát hiện sớm chỉ số vượt ngưỡng để xử lý trước khi cây bị ảnh hưởng.",
     icon: BellRing,
+    href: "/dashboard/alerts",
     tone: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200",
+    hoverBorder: "hover:border-amber-300 dark:hover:border-amber-500/40",
+    arrowColor: "text-amber-600 dark:text-amber-400",
   },
   {
     title: "Bản đồ",
     description:
       "Xem vị trí vùng trồng, trạm cảm biến và điểm cần kiểm tra.",
     icon: MapPinned,
+    href: "/dashboard/map",
     tone: "bg-lime-100 text-lime-700 dark:bg-lime-400/15 dark:text-lime-200",
+    hoverBorder: "hover:border-lime-300 dark:hover:border-lime-500/40",
+    arrowColor: "text-lime-600 dark:text-lime-400",
   },
 ];
 
@@ -149,20 +163,27 @@ export default async function HomePage() {
             const Icon = feature.icon;
 
             return (
-              <article
+              <Link
                 key={feature.title}
-                className="rounded-2xl border border-emerald-100 bg-white/85 p-5 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/10"
+                href={feature.href}
+                className={`group flex flex-col rounded-2xl border border-emerald-100 bg-white/85 p-5 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/10 ${feature.hoverBorder}`}
               >
-                <div
-                  className={`mb-4 flex size-11 items-center justify-center rounded-xl ${feature.tone}`}
-                >
-                  <Icon className="size-5" aria-hidden="true" />
+                <div className="mb-4 flex items-start justify-between">
+                  <div
+                    className={`flex size-11 items-center justify-center rounded-xl ${feature.tone}`}
+                  >
+                    <Icon className="size-5" aria-hidden="true" />
+                  </div>
+                  <ArrowRight
+                    className={`size-4 translate-x-0 opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-100 ${feature.arrowColor}`}
+                    aria-hidden="true"
+                  />
                 </div>
                 <h2 className="text-base font-semibold">{feature.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-emerald-900/70 dark:text-emerald-50/70">
                   {feature.description}
                 </p>
-              </article>
+              </Link>
             );
           })}
         </section>
