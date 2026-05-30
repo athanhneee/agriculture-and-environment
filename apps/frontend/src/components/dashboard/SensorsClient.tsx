@@ -102,7 +102,9 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
   // Tính toán thống kê
   const totalSensors = sensors.length;
   const activeSensors = sensors.filter((s) => s.status === "ACTIVE").length;
+  const inactiveSensors = sensors.filter((s) => s.status === "INACTIVE").length;
   const errorSensors = sensors.filter((s) => s.status === "ERROR").length;
+  const activePercent = totalSensors > 0 ? Math.round((activeSensors / totalSensors) * 100) : 0;
 
   return (
     <div className="space-y-6 relative">
@@ -149,37 +151,54 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       </div>
 
       {/* Thống kê nhanh */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {/* Total */}
+        <div className="col-span-2 sm:col-span-1 flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 shrink-0">
             <Cpu className="size-5" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tổng thiết bị</p>
-            <p className="text-2xl font-bold tracking-tight">{loading ? "..." : totalSensors}</p>
+            <p className="text-2xl font-bold tracking-tight mt-0.5">{loading ? "..." : totalSensors}</p>
+            {!loading && totalSensors > 0 && (
+              <p className="text-[10px] text-muted-foreground mt-0.5">{activePercent}% đang hoạt động</p>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
-            <div className="relative flex size-2.5 items-center justify-center">
+        {/* Active */}
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 shrink-0">
+            <div className="relative flex size-3 items-center justify-center">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
             </div>
           </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-medium">Hoạt động</p>
-            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400">{loading ? "..." : activeSensors}</p>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hoạt động</p>
+            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-0.5">{loading ? "..." : activeSensors}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400">
+        {/* Inactive */}
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-zinc-500/10 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-400 shrink-0">
+            <SlidersHorizontal className="size-5" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ngừng HĐ</p>
+            <p className="text-2xl font-bold tracking-tight text-zinc-600 dark:text-zinc-400 mt-0.5">{loading ? "..." : inactiveSensors}</p>
+          </div>
+        </div>
+
+        {/* Error */}
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-medium">Gặp sự cố</p>
-            <p className="text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">{loading ? "..." : errorSensors}</p>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gặp sự cố</p>
+            <p className="text-2xl font-bold tracking-tight text-red-600 dark:text-red-400 mt-0.5">{loading ? "..." : errorSensors}</p>
           </div>
         </div>
       </div>
