@@ -90,7 +90,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
       {/* Desktop Table View */}
       <div className="hidden md:block overflow-hidden rounded-2xl border bg-card shadow-sm">
         <table className="w-full border-collapse text-left text-sm text-muted-foreground">
-          <thead className="bg-muted/50 text-xs font-semibold text-foreground uppercase tracking-wider">
+          <thead className="bg-emerald-50/60 dark:bg-emerald-950/20 border-b text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">
             <tr>
               <th className="px-6 py-4">Tên cảm biến</th>
               <th className="px-6 py-4">Mã thiết bị</th>
@@ -101,16 +101,26 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-border/60">
             {sensors.map((sensor) => {
               const status = statusConfig[sensor.status] || { label: sensor.status, className: "" };
               const typeLabel = typeConfig[sensor.type] || sensor.type;
               return (
                 <tr key={sensor.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
-                  <td className="px-6 py-4 align-middle font-bold text-foreground">{sensor.name}</td>
-                  <td className="px-6 py-4 align-middle font-mono text-xs">{sensor.code}</td>
+                  <td className="px-6 py-4 align-middle font-bold text-foreground">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
+                        <Cpu className="size-3.5" />
+                      </div>
+                      <span className="text-emerald-900 dark:text-emerald-100 font-bold">{sensor.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 align-middle font-mono text-xs text-muted-foreground">{sensor.code}</td>
                   <td className="px-6 py-4 align-middle font-medium text-emerald-700 dark:text-emerald-400">
-                    {sensor.farmZone?.name || "N/A"}
+                    <div className="flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                      {sensor.farmZone?.name || "N/A"}
+                    </div>
                   </td>
                   <td className="px-6 py-4 align-middle">{typeLabel}</td>
                   <td className="px-6 py-4 align-middle font-semibold">{sensor.unit}</td>
@@ -159,9 +169,14 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               className="rounded-2xl border bg-card p-4 shadow-sm space-y-4 hover:border-emerald-500/35 transition"
             >
               <div className="flex items-start justify-between gap-4 border-b pb-3">
-                <div>
-                  <h4 className="font-bold text-base text-foreground leading-tight">{sensor.name}</h4>
-                  <p className="text-[11px] font-mono text-muted-foreground mt-1">Code: {sensor.code}</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
+                    <Cpu className="size-3.5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-base text-foreground leading-tight">{sensor.name}</h4>
+                    <p className="text-[11px] font-mono text-muted-foreground mt-1">Code: {sensor.code}</p>
+                  </div>
                 </div>
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${status.className}`}>
                   {status.label}

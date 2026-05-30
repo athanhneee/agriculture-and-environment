@@ -10,8 +10,9 @@ const FarmMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[480px] w-full items-center justify-center rounded-2xl border border-dashed bg-card animate-pulse">
-        <span className="text-sm text-muted-foreground font-semibold">Đang tải bản đồ LeafletJS...</span>
+      <div className="flex h-[480px] w-full flex-col items-center justify-center rounded-2xl border border-dashed border-emerald-500/20 bg-card p-6 text-center animate-pulse">
+        <Compass className="size-10 text-emerald-600/60 animate-spin" style={{ animationDuration: '3s' }} />
+        <span className="mt-3 text-xs text-muted-foreground font-semibold">Đang dựng bản đồ vệ tinh LeafletJS...</span>
       </div>
     )
   }
@@ -52,7 +53,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
     <div className="space-y-6">
       {/* Header title */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Bản Đồ Vùng Trồng</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Bản Đồ Nông Trại</h1>
         <p className="text-sm text-muted-foreground">
           Giám sát trực quan vị trí địa lý của các phân khu nông trại tích hợp thiết bị cảm biến IoT.
         </p>

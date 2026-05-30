@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Plus, Cpu, SlidersHorizontal, RefreshCw } from "lucide-react";
+import { Plus, Cpu, SlidersHorizontal, RefreshCw, Search } from "lucide-react";
 
 import { sensorsApi, type Sensor } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
@@ -99,6 +99,11 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
     fetchSensors();
   };
 
+  // Tính toán thống kê
+  const totalSensors = sensors.length;
+  const activeSensors = sensors.filter((s) => s.status === "ACTIVE").length;
+  const errorSensors = sensors.filter((s) => s.status === "ERROR").length;
+
   return (
     <div className="space-y-6 relative">
       {/* Toast Notification */}
@@ -134,13 +139,49 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
             </button>
             <button
               onClick={handleCreateClick}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
             >
               <Plus className="size-4" />
               Thêm cảm biến
             </button>
           </div>
         )}
+      </div>
+
+      {/* Thống kê nhanh */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
+            <Cpu className="size-5" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tổng thiết bị</p>
+            <p className="text-2xl font-bold tracking-tight">{loading ? "..." : totalSensors}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
+            <div className="relative flex size-2.5 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+              <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-medium">Hoạt động</p>
+            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400">{loading ? "..." : activeSensors}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400">
+            <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-medium">Gặp sự cố</p>
+            <p className="text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">{loading ? "..." : errorSensors}</p>
+          </div>
+        </div>
       </div>
 
       {/* Import Sensors Modal */}
@@ -168,29 +209,30 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       )}
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center bg-card p-4 rounded-2xl border shadow-sm">
-        <div className="flex flex-wrap items-center gap-3 flex-1">
+      <div className="flex flex-col gap-4 p-5 bg-card rounded-2xl border shadow-sm sm:flex-row sm:items-center justify-between">
+        <div className="flex flex-wrap items-center gap-4 flex-1">
           {/* Lọc theo Tên/Mã (Search) */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[240px] flex-1 sm:flex-initial">
             <span className="shrink-0 font-medium text-foreground">Tìm kiếm:</span>
-            <div className="relative">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Tên, mã cảm biến..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-40 sm:w-48 rounded-lg border bg-background px-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                className="h-9 w-full rounded-lg border bg-background pl-9 pr-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               />
             </div>
           </div>
 
           {/* Lọc theo Vùng */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Vùng trồng:</span>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
+            <span className="shrink-0 font-medium text-foreground">Vùng:</span>
             <select
               value={filterZone}
               onChange={(e) => setFilterZone(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
               <option value="ALL">Tất cả các vùng</option>
               {initialZones.map((zone) => (
@@ -202,14 +244,14 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           </div>
 
           {/* Lọc theo Loại cảm biến */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
             <span className="shrink-0 font-medium text-foreground">Loại:</span>
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
-              <option value="ALL">Tất cả chủng loại</option>
+              <option value="ALL">Tất cả loại</option>
               <option value="TEMPERATURE">Nhiệt độ (Temperature)</option>
               <option value="AIR_HUMIDITY">Độ ẩm khí (Air Humidity)</option>
               <option value="SOIL_MOISTURE">Độ ẩm đất (Soil Moisture)</option>
@@ -219,12 +261,12 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           </div>
 
           {/* Lọc theo Trạng thái */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
             <span className="shrink-0 font-medium text-foreground">Trạng thái:</span>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
               <option value="ALL">Tất cả trạng thái</option>
               <option value="ACTIVE">Hoạt động (Active)</option>
@@ -236,7 +278,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
         <button
           onClick={fetchSensors}
-          className="flex size-9 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0"
+          className="flex size-9 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0 self-end sm:self-auto"
           title="Làm mới"
         >
           <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
@@ -245,10 +287,21 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
       {/* Table & Loader */}
       {loading ? (
-        <div className="space-y-4">
-          <div className="h-12 w-full bg-muted/65 rounded-xl animate-pulse" />
-          <div className="h-16 w-full bg-muted/50 rounded-xl animate-pulse" />
-          <div className="h-16 w-full bg-muted/50 rounded-xl animate-pulse" />
+        <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="h-12 w-full bg-emerald-50/50 dark:bg-emerald-950/20 border-b border-muted animate-pulse flex items-center px-6">
+            <div className="h-4 w-1/4 bg-muted rounded"></div>
+            <div className="h-4 w-1/4 bg-muted rounded ml-auto"></div>
+          </div>
+          <div className="p-6 space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex gap-4 items-center">
+                <div className="h-6 w-1/3 bg-muted/60 rounded animate-pulse"></div>
+                <div className="h-6 w-1/6 bg-muted/40 rounded animate-pulse"></div>
+                <div className="h-6 w-1/6 bg-muted/40 rounded animate-pulse"></div>
+                <div className="h-6 w-12 bg-muted/50 rounded-full animate-pulse ml-auto"></div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : error ? (
         <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center text-destructive">

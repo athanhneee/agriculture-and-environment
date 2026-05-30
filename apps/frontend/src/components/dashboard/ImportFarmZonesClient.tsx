@@ -245,11 +245,20 @@ export function ImportFarmZonesClient() {
           onSubmit={handleSubmit}
           className="rounded-2xl border bg-card p-6 shadow-sm space-y-4"
         >
-          <div>
-            <h3 className="text-lg font-semibold">Nhập dữ liệu Vùng Trồng</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Header bắt buộc: <code className="font-mono font-bold text-foreground">name, area, latitude, longitude, soilType</code>
-            </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold">Nhập dữ liệu Vùng Trồng</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Header bắt buộc: <code className="font-mono font-bold text-foreground">name, area, latitude, longitude, soilType</code>
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleDownloadTemplate}
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition cursor-pointer"
+            >
+              Tải file mẫu (.xlsx)
+            </button>
           </div>
 
           <div className="space-y-2">
@@ -283,7 +292,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />
@@ -347,7 +356,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />
@@ -411,7 +420,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />

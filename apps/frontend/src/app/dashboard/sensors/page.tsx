@@ -6,7 +6,7 @@ import { ExportExcelButtons } from "@/components/dashboard/ExportExcelButtons";
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "Quản lý Cảm biến | Smart Farm Monitoring System",
+  title: "Quản lý Cảm biến | Thành Phát An Smart Farm",
   description:
     "Quản lý thiết bị cảm biến IoT được gán cho từng vùng trồng trong nông trại.",
 };
