@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, Trash2, Calendar, AlertTriangle, Leaf } from "lucide-react";
+import { Edit2, Trash2, Calendar, AlertTriangle, Leaf, MapPin, Sprout, CheckCircle2, Clock } from "lucide-react";
 import { type Crop } from "@/lib/api";
 
 interface CropTableProps {
@@ -41,13 +41,86 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
   };
 
   if (crops.length === 0) {
+    const DEMO_CROPS = [
+      {
+        name: "Rau thủy canh Ngọc Xanh",
+        variety: "Lactuca sativa",
+        zone: "Miền Bắc Việt Nam",
+        planted: "15/04/2025",
+        harvest: "15/06/2025",
+        status: "GROWING" as const,
+      },
+      {
+        name: "Thanh long Ruột Đỏ",
+        variety: "Hylocereus costaricensis",
+        zone: "Miền Trung Việt Nam",
+        planted: "01/03/2025",
+        harvest: "01/08/2025",
+        status: "PLANTED" as const,
+      },
+      {
+        name: "Xoài Cát Hòa Lộc",
+        variety: "Mangifera indica",
+        zone: "Miền Nam Việt Nam",
+        planted: "10/01/2025",
+        harvest: "10/05/2025",
+        status: "HARVESTED" as const,
+      },
+    ];
+
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-card py-16 text-center">
-        <Leaf className="size-10 text-muted-foreground/45" />
-        <h3 className="mt-4 text-base font-semibold">Không tìm thấy cây trồng nào</h3>
-        <p className="mt-1.5 text-xs text-muted-foreground max-w-xs">
-          Hệ thống chưa ghi nhận dữ liệu cây trồng. Vui lòng bấm thêm mới để thiết lập.
+      <div className="space-y-4">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-card px-6 py-10 text-center">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
+            <Leaf className="size-6" />
+          </div>
+          <h3 className="mt-4 text-base font-semibold">Chưa có cây trồng nào</h3>
+          <p className="mt-1.5 text-xs text-muted-foreground max-w-xs">
+            Hệ thống chưa ghi nhận dữ liệu cây trồng. Vui lòng bấm thêm mới để thiết lập.
+          </p>
+        </div>
+
+        {/* Preview cây trồng mẫu */}
+        <p className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Ví dụ cây trồng theo 3 miền
         </p>
+        <div className="overflow-hidden rounded-2xl border bg-card shadow-sm opacity-60 pointer-events-none select-none">
+          <table className="w-full border-collapse text-left text-sm text-muted-foreground">
+            <thead className="border-b bg-emerald-50/60 dark:bg-emerald-950/20 text-xs font-semibold uppercase tracking-wider">
+              <tr>
+                <th className="px-6 py-3.5 text-emerald-800 dark:text-emerald-300">Tên cây trồng</th>
+                <th className="px-6 py-3.5 text-muted-foreground">Giống cây</th>
+                <th className="px-6 py-3.5 text-muted-foreground">Vùng trồng</th>
+                <th className="px-6 py-3.5 text-muted-foreground">Ngày gieo</th>
+                <th className="px-6 py-3.5 text-muted-foreground">Thu hoạch</th>
+                <th className="px-6 py-3.5 text-muted-foreground">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {DEMO_CROPS.map((crop) => {
+                const st = statusConfig[crop.status];
+                return (
+                  <tr key={crop.name} className="hover:bg-muted/30">
+                    <td className="px-6 py-3.5 font-bold text-foreground">{crop.name}</td>
+                    <td className="px-6 py-3.5 text-xs">{crop.variety}</td>
+                    <td className="px-6 py-3.5">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                        <MapPin className="size-3" /> {crop.zone}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3.5 text-xs">{crop.planted}</td>
+                    <td className="px-6 py-3.5 text-xs">{crop.harvest}</td>
+                    <td className="px-6 py-3.5">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${st.className}`}>
+                        {st.label}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
@@ -86,15 +159,15 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
       {/* Responsive View: Desktop Table */}
       <div className="hidden md:block overflow-hidden rounded-2xl border bg-card shadow-sm">
         <table className="w-full border-collapse text-left text-sm text-muted-foreground">
-          <thead className="bg-muted/50 text-xs font-semibold text-foreground uppercase tracking-wider">
+          <thead className="border-b bg-emerald-50/60 dark:bg-emerald-950/20 text-xs font-semibold uppercase tracking-wider">
             <tr>
-              <th className="px-6 py-4">Tên cây trồng</th>
-              <th className="px-6 py-4">Giống cây</th>
-              <th className="px-6 py-4">Vùng trồng</th>
-              <th className="px-6 py-4">Ngày gieo trồng</th>
-              <th className="px-6 py-4">Thu hoạch dự kiến</th>
-              <th className="px-6 py-4">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-4 text-right">Thao tác</th>}
+              <th className="px-6 py-3.5 text-emerald-800 dark:text-emerald-300">Tên cây trồng</th>
+              <th className="px-6 py-3.5 text-muted-foreground">Giống cây</th>
+              <th className="px-6 py-3.5 text-muted-foreground">Vùng trồng</th>
+              <th className="px-6 py-3.5 text-muted-foreground">Ngày gieo trồng</th>
+              <th className="px-6 py-3.5 text-muted-foreground">Thu hoạch dự kiến</th>
+              <th className="px-6 py-3.5 text-muted-foreground">Trạng thái</th>
+              {isAdmin && <th className="px-6 py-3.5 text-right text-muted-foreground">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -102,10 +175,16 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
               const status = statusConfig[crop.status] || { label: crop.status, className: "" };
               return (
                 <tr key={crop.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
-                  <td className="px-6 py-4 font-bold text-foreground">{crop.name}</td>
-                  <td className="px-6 py-4">{crop.variety}</td>
-                  <td className="px-6 py-4 font-medium text-emerald-700 dark:text-emerald-400">
-                    {crop.farmZone?.name || "N/A"}
+                  <td className="px-6 py-4">
+                    <div className="font-bold text-foreground leading-tight">{crop.name}</div>
+                    <div className="mt-0.5 text-[11px] text-muted-foreground">{crop.variety}</div>
+                  </td>
+                  <td className="px-6 py-4 text-xs">{crop.variety}</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                      <MapPin className="size-3" />
+                      {crop.farmZone?.name || "N/A"}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     {new Date(crop.plantedDate).toLocaleDateString("vi-VN")}

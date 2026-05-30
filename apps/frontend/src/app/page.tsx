@@ -77,7 +77,10 @@ export default async function HomePage() {
             </span>
             <span>
               <span className="block text-base font-semibold leading-5">
-                Smart Farm
+                Thành Phát An Smart Farm
+              </span>
+              <span className="block text-xs text-emerald-700/70 dark:text-emerald-300/70">
+                Giám sát nông trại
               </span>
             </span>
           </Link>
