@@ -2,12 +2,15 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Activity,
   BellRing,
   Leaf,
   MapPinned,
   RadioTower,
   ShieldCheck,
   Sprout,
+  TrendingUp,
+  Wifi,
 } from "lucide-react";
 
 import {
@@ -98,18 +101,44 @@ export default async function HomePage() {
                 className="aspect-[11/7] w-full object-cover"
               />
               <div className="grid gap-3 border-t bg-white/90 p-4 dark:border-white/10 dark:bg-emerald-950/80 sm:grid-cols-3">
-                {[
-                  ["24", "sensor online"],
-                  ["3", "vùng trồng"],
-                  ["98%", "uptime"],
-                ].map(([value, label]) => (
-                  <div key={label} className="rounded-xl bg-muted p-3">
-                    <p className="text-xl font-bold">{value}</p>
-                    <p className="text-xs font-medium text-muted-foreground">
-                      {label}
-                    </p>
+                {/* Stat 1: Sensor online với live dot nhấp nháy */}
+                <div className="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-800/50 dark:text-emerald-300">
+                    <Wifi className="size-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-xl font-bold text-emerald-900 dark:text-emerald-50">24</p>
+                      <span className="relative flex size-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                      </span>
+                    </div>
+                    <p className="text-xs font-medium text-emerald-700/70 dark:text-emerald-300/70">sensor online</p>
                   </div>
-                ))}
+                </div>
+
+                {/* Stat 2: Vùng trồng */}
+                <div className="flex items-center gap-3 rounded-xl bg-teal-50 p-3 dark:bg-teal-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-teal-100 text-teal-700 dark:bg-teal-800/50 dark:text-teal-300">
+                    <Activity className="size-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xl font-bold text-teal-900 dark:text-teal-50">3</p>
+                    <p className="text-xs font-medium text-teal-700/70 dark:text-teal-300/70">vùng trồng</p>
+                  </div>
+                </div>
+
+                {/* Stat 3: Uptime */}
+                <div className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-700 dark:bg-sky-800/50 dark:text-sky-300">
+                    <TrendingUp className="size-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xl font-bold text-sky-900 dark:text-sky-50">98%</p>
+                    <p className="text-xs font-medium text-sky-700/70 dark:text-sky-300/70">uptime</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
