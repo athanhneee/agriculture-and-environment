@@ -75,7 +75,10 @@ export default async function HomePage() {
               Giám sát nông trại thông minh
             </div>
             <h1 className="max-w-4xl text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-              Smart Farm Monitoring System
+              Hệ thống Quản lý Nông trại{" "}
+              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+                Thông minh
+              </span>
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-900/75 dark:text-emerald-50/75 sm:text-lg">
               Hệ thống mô phỏng dashboard giúp người quản lý trang trại theo
