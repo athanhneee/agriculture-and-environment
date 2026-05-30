@@ -87,24 +87,30 @@ export default async function HomePage() {
 
         <div className="grid flex-1 items-center gap-10 py-12 text-emerald-950 lg:grid-cols-[0.95fr_1.05fr] lg:py-10 dark:text-emerald-50">
           <div className="max-w-3xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-semibold text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
+            {/* Badge — xuất hiện đầu tiên */}
+            <div className="animate-fade-up mb-5 inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-semibold text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
               <ShieldCheck className="size-4" aria-hidden="true" />
               Giám sát nông trại thông minh
             </div>
-            <h1 className="max-w-4xl text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+            {/* H1 — xuất hiện thứ 2 */}
+            <h1 className="animate-fade-up animation-delay-100 max-w-4xl text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
               Hệ thống Quản lý Nông trại{" "}
               <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
                 Thông minh
               </span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-900/75 dark:text-emerald-50/75 sm:text-lg">
+            {/* Mô tả — xuất hiện thứ 3 */}
+            <p className="animate-fade-up animation-delay-200 mt-5 max-w-2xl text-base leading-8 text-emerald-900/75 dark:text-emerald-50/75 sm:text-lg">
               Hệ thống mô phỏng dashboard giúp người quản lý trang trại theo
               dõi vùng trồng, dữ liệu cảm biến, cảnh báo môi trường.
             </p>
-            <HomeHeroAuthActions initialIsAuthenticated={isAuthenticated} />
+            {/* CTA buttons — xuất hiện thứ 4 */}
+            <div className="animate-fade-up animation-delay-300">
+              <HomeHeroAuthActions initialIsAuthenticated={isAuthenticated} />
+            </div>
 
-            {/* Trust badges */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+            {/* Trust badges — xuất hiện cuối */}
+            <div className="animate-fade-up animation-delay-400 mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
               {[
                 { icon: "✓", label: "Dữ liệu thời gian thực" },
                 { icon: "✓", label: "Cảnh báo thông minh" },
@@ -123,7 +129,8 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="relative">
+          {/* Ảnh hero — trượt vào từ bên phải */}
+          <div className="animate-fade-up animation-delay-200 relative">
             <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 shadow-2xl shadow-emerald-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
               <Image
                 src="/smart-farm-hero.png"
