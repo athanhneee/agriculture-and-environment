@@ -192,12 +192,8 @@ export default async function HomePage() {
                 ))}
               </div>
               {/* ===== END WEATHER SCENE ===== */}
-
-              {/* Mask che card cũ đã baked vào PNG ở góc trên phải */}
-              <div className="pointer-events-none absolute right-0 top-0 h-[44%] w-[49%] rounded-tr-[1.75rem] bg-gradient-to-br from-[#eaf9f0] via-[#f0fdf7] to-[#f0fdf7]" />
-
               {/* ===== SMART FARM INFO CARD ===== */}
-              <div className="absolute right-3 top-3 min-w-[160px] overflow-hidden rounded-2xl border border-white/60 bg-white/90 shadow-lg shadow-emerald-900/10 backdrop-blur-md dark:border-white/20 dark:bg-emerald-950/80">
+              <div className="absolute right-[7.8%] top-[3.5%] min-w-[190px] overflow-hidden rounded-2xl border border-white/60 bg-white/90 shadow-lg shadow-emerald-900/10 backdrop-blur-md dark:border-white/20 dark:bg-emerald-950/80">
                 {/* Header */}
                 <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 px-3 py-2">
                   <span className="flex size-5 items-center justify-center rounded-md bg-white/20">
