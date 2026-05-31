@@ -2,17 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Compass,
-  Layers,
-  MapPin,
-  Navigation,
-  RefreshCw,
-  Wifi,
-  ZoomIn,
-} from "lucide-react";
+import { AlertTriangle, Compass, MapPin, Navigation, RadioTower } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
 // ── Lazy load FarmMap (Leaflet chỉ chạy client) ──────────────────────────────
@@ -211,21 +201,23 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
                       : "bg-muted/20 border-dashed opacity-60 cursor-not-allowed"
                   }`}
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Status dot */}
-                    <div className={`mt-1 size-2 rounded-full shrink-0 ${sta.dot}`} />
-
-                    <div className="flex-1 min-w-0">
-                      {/* Zone name */}
-                      <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-bold text-sm text-foreground leading-snug truncate">{zone.name}</h4>
-                        {hasAlerts && (
-                          <span className="flex items-center gap-1 shrink-0 text-[10px] font-bold text-red-600 dark:text-red-400">
-                            <AlertTriangle className="size-3" />
-                            {zone.openAlertsCount}
-                          </span>
-                        )}
-                      </div>
+                  <MapPin className={`size-5 shrink-0 mt-0.5 ${isSelected ? "text-emerald-600" : "text-muted-foreground/75"}`} />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-sm text-foreground truncate">{zone.name}</h4>
+                    
+                    <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-1.5">
+                      <span className="flex items-center gap-1">
+                        <Compass className="size-3" />
+                        {zone.area} ha
+                      </span>
+                      <span>•</span>
+                      <span>Đất {zone.soilType}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <RadioTower className="size-3" />
+                        {zone.sensors?.length || 0}
+                      </span>
+                    </div>
 
                       {/* Meta info */}
                       <div className="flex flex-wrap items-center gap-2 mt-1.5">

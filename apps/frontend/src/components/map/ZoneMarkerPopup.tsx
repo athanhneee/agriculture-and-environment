@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle, Compass, Droplet, Layers, MapPin, Thermometer, Wifi } from "lucide-react";
+import { AlertTriangle, Compass, Droplet, Layers, MapPin, Thermometer, RadioTower } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
 interface ZoneMarkerPopupProps {
@@ -52,17 +52,10 @@ export function ZoneMarkerPopup({ zone, fallbackCoords }: ZoneMarkerPopupProps) 
           <Layers size={13} />
           <span>{zone.soilType}</span>
         </div>
-        {zone.sensorsCount !== undefined && (
-          <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#6b7280" }}>
-            <Wifi size={13} />
-            <span>{zone.sensorsCount} cảm biến</span>
-          </div>
-        )}
-        {lat && lng && (
-          <div style={{ fontSize: 10, color: "#9ca3af", gridColumn: "1/-1" }}>
-            📍 {lat.toFixed(4)}, {lng.toFixed(4)}
-          </div>
-        )}
+        <div className="flex items-center gap-1.5">
+          <RadioTower className="size-3.5" />
+          <span>Cảm biến: <strong>{zone.sensors?.length || 0}</strong></span>
+        </div>
       </div>
 
       {/* Sensor readings */}

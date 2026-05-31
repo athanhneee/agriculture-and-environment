@@ -7,6 +7,7 @@ import {
   Sun,
   Thermometer,
   Layers,
+  RadioTower,
 } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
@@ -74,6 +75,10 @@ export function FarmZoneCard({ zone }: FarmZoneCardProps) {
           <div className="flex items-center gap-2">
             <Layers className="size-4 text-muted-foreground/70" />
             <span className="truncate">{zone.soilType}</span>
+          </div>
+          <div className="flex items-center gap-2 col-span-2">
+            <RadioTower className="size-4 text-muted-foreground/70" />
+            <span>{zone.sensors?.length || 0} thiết bị cảm biến</span>
           </div>
         </div>
 

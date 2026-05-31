@@ -149,6 +149,10 @@ export class FarmZoneService {
   }
 
   static async createFarmZone(data: CreateFarmZoneInput, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem vùng trồng');
+    }
+
     const existingName = await prisma.farmZone.findFirst({
       where: { ownerId: user.id, name: data.name }
     });
@@ -176,6 +180,10 @@ export class FarmZoneService {
     data: UpdateFarmZoneInput,
     user: JwtPayload,
   ) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem vùng trồng');
+    }
+
     const existingZone = await prisma.farmZone.findUnique({ where: { id } });
 
     if (!existingZone) {
@@ -210,6 +218,10 @@ export class FarmZoneService {
   }
 
   static async deleteFarmZone(id: string, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem vùng trồng');
+    }
+
     const existingZone = await prisma.farmZone.findUnique({ where: { id } });
 
     if (!existingZone) {

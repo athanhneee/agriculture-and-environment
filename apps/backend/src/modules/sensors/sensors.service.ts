@@ -87,6 +87,10 @@ export class SensorService {
   }
 
   static async createSensor(data: CreateSensorInput, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cảm biến');
+    }
+
     const farmZone = await prisma.farmZone.findUnique({
       where: { id: data.farmZoneId }
     });
@@ -114,6 +118,10 @@ export class SensorService {
   }
 
   static async updateSensor(id: string, data: UpdateSensorInput, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cảm biến');
+    }
+
     const existingSensor = await prisma.sensor.findUnique({
       where: { id },
       include: { farmZone: true }
@@ -153,6 +161,10 @@ export class SensorService {
   }
 
   static async deleteSensor(id: string, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cảm biến');
+    }
+
     const existingSensor = await prisma.sensor.findUnique({
       where: { id },
       include: { farmZone: true }

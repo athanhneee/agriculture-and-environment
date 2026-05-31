@@ -15,7 +15,7 @@ interface SensorsClientProps {
 
 export function SensorsClient({ initialZones }: SensorsClientProps) {
   const user = useAuthStore((state) => state.user);
-  // Backend yêu cầu quyền ADMIN đối với các tác động thay đổi của Cảm biến (Create, Update, Delete)
+  // ADMIN chỉ xem, chức năng thêm/sửa/xoá dành cho chủ vùng trồng (USER)
   const isAdmin = user?.role === "ADMIN";
 
   const [sensors, setSensors] = useState<Sensor[]>([]);

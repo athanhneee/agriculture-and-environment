@@ -261,6 +261,10 @@ function parseTextTable(buffer: Buffer) {
 
 export class ImportsService {
   static async importFarmZones(file: Express.Multer.File, user: JwtPayload) {
+    if (user.role === "ADMIN") {
+      throw new Error("Quản trị viên không có quyền import vùng trồng.");
+    }
+
     const filename = file.originalname.toLowerCase();
 
     let rawRows: any[] = [];
@@ -319,6 +323,10 @@ export class ImportsService {
   }
 
   static async importCrops(file: Express.Multer.File, user: JwtPayload) {
+    if (user.role === "ADMIN") {
+      throw new Error("Quản trị viên không có quyền import cây trồng.");
+    }
+
     const filename = file.originalname.toLowerCase();
 
     let rawRows: any[] = [];
