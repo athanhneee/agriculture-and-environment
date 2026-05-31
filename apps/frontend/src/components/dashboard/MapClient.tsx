@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { AlertTriangle, Compass, MapPin, Navigation } from "lucide-react";
+import { AlertTriangle, Compass, MapPin, Navigation, RadioTower } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
 const FarmMap = dynamic(
@@ -108,6 +108,11 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
                       </span>
                       <span>•</span>
                       <span>Đất {zone.soilType}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <RadioTower className="size-3" />
+                        {zone.sensors?.length || 0}
+                      </span>
                     </div>
 
                     <div className="mt-2.5 flex items-center justify-between gap-2">

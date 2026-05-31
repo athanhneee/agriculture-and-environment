@@ -82,6 +82,10 @@ export class CropService {
   }
 
   static async createCrop(data: CreateCropInput, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cây trồng');
+    }
+
     // Verify farmZone ownership
     const farmZone = await prisma.farmZone.findUnique({
       where: { id: data.farmZoneId }
@@ -105,6 +109,10 @@ export class CropService {
   }
 
   static async updateCrop(id: string, data: UpdateCropInput, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cây trồng');
+    }
+
     const existingCrop = await prisma.crop.findUnique({
       where: { id },
       include: { farmZone: true }
@@ -138,6 +146,10 @@ export class CropService {
   }
 
   static async deleteCrop(id: string, user: JwtPayload) {
+    if (user.role === 'ADMIN') {
+      throw new Error('Quản trị viên chỉ có quyền xem cây trồng');
+    }
+
     const existingCrop = await prisma.crop.findUnique({
       where: { id },
       include: { farmZone: true }

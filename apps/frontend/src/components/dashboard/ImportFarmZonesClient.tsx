@@ -59,12 +59,12 @@ export function ImportFarmZonesClient() {
     }
   };
 
-  if (!isAdmin) {
+  if (isAdmin) {
     return (
       <section className="rounded-2xl border bg-card p-6 shadow-sm">
         <h1 className="text-2xl font-bold">Import dữ liệu</h1>
         <p className="mt-2 text-sm text-destructive">
-          Chỉ tài khoản ADMIN được phép import dữ liệu vùng trồng.
+          Chỉ chủ vùng trồng (USER) mới được phép import dữ liệu vùng trồng. Quản trị viên chỉ có quyền xem.
         </p>
       </section>
     );
