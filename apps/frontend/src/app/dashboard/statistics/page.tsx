@@ -5,7 +5,7 @@ import { StatisticsClient } from "@/components/dashboard/StatisticsClient";
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "Báo cáo Thống kê | Smart Farm Monitoring System",
+  title: "Báo cáo Thống kê | Thành Phát An Smart Farm",
   description: "Trang hiển thị biểu đồ phân tích tần suất cảnh báo và thông số cảm biến nông trại.",
 };
 

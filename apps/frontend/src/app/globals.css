@@ -140,4 +140,210 @@
       linear-gradient(to bottom, color-mix(in oklch, currentColor 8%, transparent) 1px, transparent 1px);
     background-size: 32px 32px;
   }
+
+  /* Tối ưu hóa hiệu ứng tương tác (Micro-interactions) cho toàn bộ nút bấm */
+  button, 
+  a[role="button"],
+  .btn {
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  button:active, 
+  a[role="button"]:active,
+  .btn:active {
+    transform: scale(0.96) !important;
+  }
+
+  /* Custom scrollbar cho các trình duyệt Webkit */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.884 0.031 150.8);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.565 0.126 152.2);
+  }
+
+  /* Focus visible accessibility */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid oklch(0.565 0.126 152.2);
+    outline-offset: 2px;
+  }
+
+  /* Slide-in bottom animation cho toast */
+  @keyframes slide-in-bottom {
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in-bottom {
+    animation: slide-in-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
 }
+ 
+/* Tối ưu hóa cấu trúc CSS Print để xuất PDF chuyên nghiệp */
+@media print {
+  /* Ẩn các thành phần giao diện không cần in */
+  .no-print,
+  iframe,
+  aside,
+  nav,
+  header,
+  footer,
+  [data-sidebar="sidebar"],
+  .sidebar-container,
+  button:not(.print-visible),
+  a[href="/dashboard/zones"],
+  div[role="navigation"] {
+    display: none !important;
+  }
+ 
+  /* Định cấu hình trang in */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+ 
+  /* Định dạng lại khối nội dung chính khi in */
+  main,
+  .main-content,
+  #dashboard-main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+ 
+  /* Ép buộc in màu nền và màu sắc rực rỡ */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+ 
+  /* Tránh ngắt trang xấu */
+  .card, 
+  section, 
+  article,
+  tr {
+    page-break-inside: avoid !important; /* Tránh cắt đôi thẻ khi chuyển trang in */
+  }
+ 
+  /* Định dạng lại bảng khi in */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+ 
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px !important;
+    text-align: left !important;
+    font-size: 10pt !important;
+  }
+}
+
+/* =============================================
+   Homepage load-in animation (fade up)
+   Dùng cho trang chủ, không ảnh hưởng trang khác
+   ============================================= */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+
+/* =============================================
+   Weather scene animations (homepage hero)
+   Mây trôi, mặt trời, mưa rơi
+   ============================================= */
+
+/* Mặt trời: phát sáng nhịp nhàng */
+@keyframes sun-pulse {
+  0%, 100% { box-shadow: 0 0 18px 8px rgba(253,224,71,0.35), 0 0 40px 20px rgba(253,224,71,0.15); transform: scale(1); }
+  50%       { box-shadow: 0 0 28px 14px rgba(253,224,71,0.55), 0 0 60px 30px rgba(253,224,71,0.25); transform: scale(1.06); }
+}
+.animate-sun-pulse {
+  animation: sun-pulse 3s ease-in-out infinite;
+}
+
+/* Tia nắng quay chậm */
+@keyframes sun-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-sun-rotate {
+  animation: sun-rotate 18s linear infinite;
+}
+
+/* Mây 1: trôi sang phải rồi trái */
+@keyframes cloud-float-1 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(14px); }
+}
+.animate-cloud-1 {
+  animation: cloud-float-1 6s ease-in-out infinite;
+}
+
+/* Mây 2: trôi sang trái rồi phải */
+@keyframes cloud-float-2 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(-10px); }
+}
+.animate-cloud-2 {
+  animation: cloud-float-2 8s ease-in-out infinite;
+}
+
+/* Mưa rơi chéo xuống */
+@keyframes rain-fall {
+  0%   { transform: translateY(-12px) translateX(0px); opacity: 0; }
+  8%   { opacity: 0.65; }
+  92%  { opacity: 0.55; }
+  100% { transform: translateY(260px) translateX(-18px); opacity: 0; }
+}
+.animate-rain {
+  animation: rain-fall linear infinite;
+}
+
+

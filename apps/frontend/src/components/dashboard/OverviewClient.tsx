@@ -62,7 +62,7 @@ export function OverviewClient({
         {activeToasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-bounce duration-300 ${
+            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-slide-in-bottom ${
               toast.severity === "CRITICAL"
                 ? "border-destructive/30 bg-destructive/5 text-destructive-foreground"
                 : "border-amber-500/30 bg-amber-500/5 text-amber-900 dark:text-amber-100"
@@ -91,14 +91,13 @@ export function OverviewClient({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Smart Farm Monitoring Dashboard
+              Bảng điều khiển
             </p>
             <h1 className="mt-1.5 text-2xl font-bold tracking-tight">
               Hệ thống giám sát nông nghiệp thông minh
             </h1>
             <p className="mt-2 text-sm text-muted-foreground max-w-3xl leading-relaxed">
-              Dữ liệu tổng quan được lấy trực tiếp từ Server (SSR) và cập nhật thời gian thực bằng Socket.io.
-              Tự động đánh giá chỉ số cảm biến để kích hoạt cảnh báo tức thời.
+              Dữ liệu cảm biến IoT cập nhật thời gian thực qua Socket.io — tự động đánh giá và kích hoạt cảnh báo tức thì.
             </p>
           </div>
         </div>

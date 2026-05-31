@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Plus, Search, Filter, SlidersHorizontal, RefreshCw } from "lucide-react";
+import { Plus, Search, SlidersHorizontal, RefreshCw, Leaf, Sprout, CheckCircle2 } from "lucide-react";
 
 import { cropsApi, type Crop, type CropStatus } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
@@ -116,12 +116,30 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Quản lý Cây Trồng</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             Theo dõi danh mục, lịch trình canh tác và tình trạng sinh trưởng của cây giống.
           </p>
+          {/* Stat badges khi có dữ liệu */}
+          {!loading && crops.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+                <Leaf className="size-3" />
+                {crops.length} cây trồng
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 dark:border-sky-500/20 dark:bg-sky-400/10 dark:text-sky-300">
+                <CheckCircle2 className="size-3" />
+                {crops.filter((c) => c.status === "GROWING").length} đang phát triển
+              </span>
+              {crops.filter((c) => c.status === "DISEASED").length > 0 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700 dark:border-rose-500/20 dark:bg-rose-400/10 dark:text-rose-300">
+                  ⚠️ {crops.filter((c) => c.status === "DISEASED").length} nhiễm bệnh
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
-        {!isAdmin && (
+        {isAdmin && (
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setIsImportOpen(true)}
@@ -166,71 +184,79 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       )}
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center bg-card p-4 rounded-2xl border shadow-sm">
-        <div className="flex flex-wrap items-center gap-3 flex-1">
-          {/* Lọc theo Tên/Giống (Search) */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="shrink-0 font-medium text-foreground">Tìm kiếm:</span>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Tên, giống cây..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-40 sm:w-48 rounded-lg border bg-background px-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
-              />
-            </div>
-          </div>
-
-          {/* Lọc theo Vùng trồng */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Vùng trồng:</span>
-            <select
-              value={filterZone}
-              onChange={(e) => setFilterZone(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
-            >
-              <option value="ALL">Tất cả các vùng</option>
-              {initialZones.map((zone) => (
-                <option key={zone.id} value={zone.id}>
-                  {zone.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Lọc theo Trạng thái */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-3 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Trạng thái:</span>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
-            >
-              <option value="ALL">Tất cả trạng thái</option>
-              <option value="PLANTED">Mới gieo hạt (Planted)</option>
-              <option value="GROWING">Đang phát triển (Growing)</option>
-              <option value="HARVESTED">Đã thu hoạch (Harvested)</option>
-              <option value="DISEASED">Nhiễm bệnh (Diseased)</option>
-            </select>
-          </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/75" />
+          <input
+            type="text"
+            placeholder="Tìm theo tên cây, giống cây..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-11 w-full rounded-xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+          />
         </div>
 
-        <button
-          onClick={fetchCrops}
-          className="flex size-9 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0"
-          title="Làm mới"
-        >
-          <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <SlidersHorizontal className="size-4 text-muted-foreground" />
+          {/* Lọc theo Vùng trồng */}
+          <select
+            value={filterZone}
+            onChange={(e) => setFilterZone(e.target.value)}
+            className="h-11 rounded-xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+          >
+            <option value="ALL">Tất cả vùng</option>
+            {initialZones.map((zone) => (
+              <option key={zone.id} value={zone.id}>
+                {zone.name}
+              </option>
+            ))}
+          </select>
+
+          {/* Lọc theo Trạng thái */}
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="h-11 rounded-xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+          >
+            <option value="ALL">Tất cả trạng thái</option>
+            <option value="PLANTED">Mới gieo hạt</option>
+            <option value="GROWING">Đang phát triển</option>
+            <option value="HARVESTED">Đã thu hoạch</option>
+            <option value="DISEASED">Nhiễm bệnh</option>
+          </select>
+
+          <button
+            onClick={fetchCrops}
+            className="flex size-11 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0"
+            title="Làm mới"
+          >
+            <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
+        </div>
       </div>
 
       {/* Main Table/Cards list */}
       {loading ? (
-        <div className="space-y-4">
-          <div className="h-12 w-full bg-muted/65 rounded-xl animate-pulse" />
-          <div className="h-16 w-full bg-muted/50 rounded-xl animate-pulse" />
-          <div className="h-16 w-full bg-muted/50 rounded-xl animate-pulse" />
+        <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          {/* Skeleton header */}
+          <div className="border-b bg-muted/40 px-6 py-4">
+            <div className="flex gap-6">
+              {["40%", "20%", "20%", "15%"].map((w, i) => (
+                <div key={i} className={`h-3 rounded-full bg-muted-foreground/15 animate-pulse`} style={{ width: w }} />
+              ))}
+            </div>
+          </div>
+          {/* Skeleton rows */}
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-6 border-b px-6 py-4 last:border-0">
+              <div className="h-4 w-[30%] rounded-full bg-emerald-500/10 animate-pulse" />
+              <div className="h-3 w-[18%] rounded-full bg-muted/70 animate-pulse" />
+              <div className="h-3 w-[18%] rounded-full bg-muted/70 animate-pulse" />
+              <div className="h-3 w-[12%] rounded-full bg-muted/70 animate-pulse" />
+              <div className="h-5 w-[16%] rounded-full bg-sky-100 animate-pulse" />
+            </div>
+          ))}
         </div>
       ) : error ? (
         <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center text-destructive">

@@ -30,10 +30,10 @@ export function Header() {
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div>
           <p className="text-xs font-semibold uppercase text-muted-foreground">
-            Smart Farm 
+            Thành Phát An Smart Farm
           </p>
           <h1 className="text-base font-semibold sm:text-lg">
-            Giám sát trang trại
+            Giám sát nông trại
           </h1>
         </div>
 

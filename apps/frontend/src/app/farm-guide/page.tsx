@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Leaf, RadioTower, ShieldAlert } from "lucide-react";
+import { AIAssistantChat } from "./AIAssistantChat";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: "Hướng dẫn Smart Farm | Smart Farm Monitoring",
+    title: "Hướng dẫn Vận Hành & Chatbot AI | Thành Phát An Smart Farm",
     description:
-        "Trang hướng dẫn tĩnh có ISR, dùng để chứng minh rendering strategy ngoài SSR trong đồ án.",
+        "Trang hướng dẫn tĩnh có ISR và tích hợp trợ lý ảo AI tại Thành Phát An Smart Farm.",
 };
 
 const guideItems = [
@@ -48,7 +49,7 @@ export default function FarmGuidePage() {
                         ISR Demo
                     </p>
                     <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
-                        Hướng dẫn vận hành hệ thống Smart Farm
+                        Hướng dẫn vận hành hệ thống Thành Phát An Smart Farm
                     </h1>
                     <p className="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
                         Trang này dùng Incremental Static Regeneration với revalidate 3600
@@ -77,6 +78,7 @@ export default function FarmGuidePage() {
                         );
                     })}
                 </section>
+                <AIAssistantChat />
             </div>
         </main>
     );

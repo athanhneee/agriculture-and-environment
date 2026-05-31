@@ -13,7 +13,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [importResult, setImportResult] = useState<{ imported: number; skipped: number; errors: any[] } | null>(null);
+  const [importResult, setImportResult] = useState<{ imported: number; skipped: number; errors?: any[] } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
