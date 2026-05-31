@@ -91,14 +91,13 @@ export function OverviewClient({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Smart Farm Monitoring Dashboard
+              Bảng điều khiển
             </p>
             <h1 className="mt-1.5 text-2xl font-bold tracking-tight">
               Hệ thống giám sát nông nghiệp thông minh
             </h1>
             <p className="mt-2 text-sm text-muted-foreground max-w-3xl leading-relaxed">
-              Dữ liệu tổng quan được lấy trực tiếp từ Server (SSR) và cập nhật thời gian thực bằng Socket.io.
-              Tự động đánh giá chỉ số cảm biến để kích hoạt cảnh báo tức thời.
+              Dữ liệu cảm biến IoT cập nhật thời gian thực qua Socket.io — tự động đánh giá và kích hoạt cảnh báo tức thì.
             </p>
           </div>
         </div>

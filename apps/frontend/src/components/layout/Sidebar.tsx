@@ -76,9 +76,9 @@ export function Sidebar() {
           <Sprout className="size-6" aria-hidden="true" />
         </span>
         <span>
-          <span className="block font-semibold leading-5">Smart Farm</span>
+          <span className="block font-semibold leading-5">Thành Phát An Smart Farm</span>
           <span className="block text-xs text-muted-foreground">
-            Monitoring System
+            Giám sát nông trại
           </span>
         </span>
       </Link>

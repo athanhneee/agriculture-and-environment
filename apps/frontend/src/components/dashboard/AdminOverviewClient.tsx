@@ -66,7 +66,7 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Quản trị Hệ thống</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Giám sát tài nguyên và hoạt động tổng thể của nền tảng Smart Farm Monitoring.
+          Giám sát tài nguyên và hoạt động tổng thể của nền tảng Thành Phát An Smart Farm.
         </p>
       </div>
 

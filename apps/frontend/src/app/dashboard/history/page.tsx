@@ -10,7 +10,7 @@ import { HistoryClient } from "@/components/dashboard/HistoryClient";
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "Lịch sử Dữ liệu Cảm biến | Smart Farm Monitoring System",
+  title: "Lịch sử Dữ liệu Cảm biến | Thành Phát An Smart Farm",
   description: "Tra cứu chỉ số đo đạc cảm biến môi trường theo thời gian và xuất báo cáo Excel định kỳ.",
 };
 

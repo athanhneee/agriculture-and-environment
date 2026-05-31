@@ -8,7 +8,7 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const APP_NAME = "Smart Farm Monitoring";
+const APP_NAME = "Thành Phát An Smart Farm";
 const APP_DESCRIPTION =
   "Hệ thống giám sát nông nghiệp thông minh — theo dõi cảm biến IoT thời gian thực, cảnh báo sâu bệnh và phân tích dữ liệu môi trường trang trại.";
 

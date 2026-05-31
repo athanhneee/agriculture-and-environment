@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "Quản trị Hệ thống | Smart Farm Monitoring System",
+  title: "Quản trị Hệ thống | Thành Phát An Smart Farm",
   description: "Trang tổng quan dành cho quản trị viên hệ thống.",
 };
 

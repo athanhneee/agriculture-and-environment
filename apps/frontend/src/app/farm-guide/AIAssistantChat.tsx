@@ -162,17 +162,17 @@ export function AIAssistantChat() {
       {isOpen && (
         <div className="flex h-[550px] w-[380px] sm:w-[400px] flex-col rounded-2xl border bg-card text-card-foreground shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 fade-in-50 duration-300">
           {/* Header */}
-          <div className="flex items-center justify-between bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3 text-white">
+          <div className="flex items-center justify-between bg-gradient-to-r from-emerald-600 to-emerald-800 px-4 py-3.5 text-white">
             <div className="flex items-center gap-2.5">
               <span className="flex size-9 items-center justify-center rounded-full bg-white/20">
                 <Bot className="size-5" />
               </span>
               <div>
                 <h3 className="text-sm font-bold flex items-center gap-1.5">
-                  Chuyên gia Nông nghiệp AI
+                  Trợ lý AI Nông Nghiệp
                   <Sparkles className="size-3.5 text-amber-300 fill-amber-300 animate-pulse" />
                 </h3>
-                <p className="text-[10px] text-emerald-100 font-medium">Tự động hóa & Tư vấn sinh học</p>
+                <p className="text-[10px] text-emerald-100 font-medium">Thành Phát An Smart Farm</p>
               </div>
             </div>
             <button
@@ -206,7 +206,7 @@ export function AIAssistantChat() {
                   className={`max-w-[75%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm ${
                     msg.sender === "user"
                       ? "bg-emerald-600 text-white rounded-tr-none"
-                      : "bg-card border text-foreground rounded-tl-none"
+                      : "bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 text-foreground rounded-tl-none"
                   }`}
                 >
                   <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>

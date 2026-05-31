@@ -6,7 +6,7 @@ import {
   AreaChart, Area, XAxis, YAxis,
   CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
-import { AlertTriangle, Info, RefreshCw, TrendingUp } from "lucide-react";
+import { AlertTriangle, Info, RefreshCw, TrendingUp, MapPin, Cpu, Bell, Calendar } from "lucide-react";
 
 import { statisticsApi } from "@/lib/api";
 import type { OverviewStats } from "@/lib/dashboard-server";
@@ -136,55 +136,73 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border bg-card p-5 shadow-sm animate-pulse">
-                <div className="h-3 w-20 rounded bg-muted" />
-                <div className="mt-3 h-8 w-12 rounded bg-muted" />
-                <div className="mt-2 h-3.5 w-10 rounded bg-muted" />
+              <div key={i} className="rounded-2xl border bg-card p-5 shadow-sm animate-pulse flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-3 w-16 rounded bg-muted" />
+                  <div className="h-8 w-12 rounded bg-muted" />
+                  <div className="h-3 w-20 rounded bg-muted/60" />
+                </div>
+                <div className="size-10 rounded-xl bg-muted" />
               </div>
             ))
           : [
-              { label: "Vùng trồng", value: initialOverview.zonesCount, unit: "vùng" },
-              { label: "Cảm biến", value: initialOverview.sensorsCount, unit: "thiết bị" },
-              { label: "Cảnh báo mở", value: initialOverview.openAlertsCount, unit: "cảnh báo" },
-              { label: "Nghiêm trọng", value: initialOverview.criticalAlertsCount, unit: "nghiêm trọng" },
-            ].map((kpi) => (
-              <div key={kpi.label} className="rounded-2xl border bg-card p-5 shadow-sm">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{kpi.label}</p>
-                <p className="mt-2 text-3xl font-bold">{kpi.value}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{kpi.unit}</p>
-              </div>
-            ))}
+              { label: "Vùng trồng", value: initialOverview.zonesCount, unit: "Đang được giám sát", icon: MapPin, color: "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400" },
+              { label: "Cảm biến", value: initialOverview.sensorsCount, unit: "Thiết bị IoT kết nối", icon: Cpu, color: "bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400" },
+              { label: "Cảnh báo mở", value: initialOverview.openAlertsCount, unit: "Cần được xử lý", icon: Bell, color: "bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400" },
+              { label: "Nghiêm trọng", value: initialOverview.criticalAlertsCount, unit: "Sự cố khẩn cấp", icon: AlertTriangle, color: "bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400" },
+            ].map((kpi) => {
+              const Icon = kpi.icon;
+              return (
+                <div key={kpi.label} className="rounded-2xl border bg-card p-5 shadow-sm flex items-center justify-between hover:shadow-md transition duration-200">
+                  <div>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{kpi.label}</p>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">{kpi.value}</p>
+                    <p className="mt-1.5 text-xs text-muted-foreground font-medium">{kpi.unit}</p>
+                  </div>
+                  <div className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${kpi.color}`}>
+                    <Icon className="size-5" />
+                  </div>
+                </div>
+              );
+            })}
       </div>
 
       {/* Date Filter Form */}
-      <div className="rounded-2xl border bg-card p-4 shadow-sm">
-        <form onSubmit={handleFilterSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-end justify-between">
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Từ ngày
+      <div className="rounded-2xl border bg-card p-5 shadow-sm">
+        <form onSubmit={handleFilterSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-end justify-between">
+          <div className="flex flex-wrap items-center gap-4 flex-1">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Calendar className="size-3.5" />
+                Từ ngày
+              </span>
               <input
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="mt-1.5 block h-9 w-40 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500"
+                className="h-9 w-40 sm:w-44 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               />
-            </label>
-            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Đến ngày
+            </div>
+            
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Calendar className="size-3.5" />
+                Đến ngày
+              </span>
               <input
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="mt-1.5 block h-9 w-40 rounded-lg border bg-background px-2.5 text-xs font-semibold outline-none transition focus:border-emerald-500"
+                className="h-9 w-40 sm:w-44 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               />
-            </label>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-xs font-semibold text-white transition disabled:opacity-75"
+              className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-xs font-semibold text-white transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-75"
             >
               <RefreshCw className={`size-3.5 ${loading ? "animate-spin" : ""}`} />
               Lọc thống kê
