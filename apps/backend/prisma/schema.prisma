@@ -146,7 +146,7 @@ model Sensor {
 }
 
 model SensorReading {
-  id            String   @id @default(uuid())
+  id            String   @default(uuid())
   sensorId      String
   sensor        Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
   farmZoneId    String
@@ -162,16 +162,18 @@ model SensorReading {
   alerts        Alert[]
 
   // Định nghĩa Indexes tối ưu hóa truy vấn chuỗi thời gian (Time-series Query Optimization)
+  @@id([id, recordedAt])
   @@index([recordedAt]) 
   @@index([farmZoneId, recordedAt])
 }
 
 model Alert {
   id              String        @id @default(uuid())
-  farmZoneId      String
-  farmZone        FarmZone      @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
-  sensorReadingId String?
-  sensorReading   SensorReading? @relation(fields: [sensorReadingId], references: [id], onDelete: SetNull)
+  farmZoneId              String
+  farmZone                FarmZone       @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  sensorReadingId         String?
+  sensorReadingRecordedAt DateTime?
+  sensorReading           SensorReading? @relation(fields: [sensorReadingId, sensorReadingRecordedAt], references: [id, recordedAt], onDelete: SetNull)
   
   type            AlertType
   severity        AlertSeverity @default(WARNING)

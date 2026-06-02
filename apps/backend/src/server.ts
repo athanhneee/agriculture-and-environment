@@ -4,6 +4,7 @@ import { env } from './config/env';
 import prisma from './config/prisma';
 import { initSocket } from './sockets/socket';
 import { startSensorMockJob } from './jobs/sensorMock.job';
+import { startPartitionMaintenanceJob } from './jobs/partitionMaintenance.job';
 
 const startServer = async () => {
   try {
@@ -17,6 +18,7 @@ const startServer = async () => {
     server.listen(env.port, env.host, () => {
       console.log(`🚀 Server is running on port ${env.port} in ${env.nodeEnv} mode`);
       startSensorMockJob();
+      startPartitionMaintenanceJob();
     });
   } catch (error) {
     console.error('❌ Failed to connect to the database', error);

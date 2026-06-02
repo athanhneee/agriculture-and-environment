@@ -148,7 +148,7 @@ export class AlertService {
   }
 
   static async processNewReading(readingId: string) {
-    const reading = await prisma.sensorReading.findUnique({
+    const reading = await prisma.sensorReading.findFirst({
       where: { id: readingId },
       include: {
         farmZone: true,
@@ -174,6 +174,7 @@ export class AlertService {
           severity: possibleAlert.severity,
           farmZoneId: reading.farmZoneId,
           sensorReadingId: reading.id,
+          sensorReadingRecordedAt: reading.recordedAt,
         },
         include: {
           farmZone: true,
