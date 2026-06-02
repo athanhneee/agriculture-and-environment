@@ -141,7 +141,7 @@ export class SensorReadingService {
   }
 
   static async deleteReading(id: string) {
-    return prisma.sensorReading.delete({
+    return prisma.sensorReading.deleteMany({
       where: { id },
     });
   }
