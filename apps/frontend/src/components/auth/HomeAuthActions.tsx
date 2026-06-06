@@ -5,6 +5,7 @@ import { ArrowRight, Loader2, LogOut } from "lucide-react";
 
 import { useLogout } from "@/hooks/useLogout";
 import { useAuthStore } from "@/stores/auth.store";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 type HomeAuthActionsProps = {
   initialIsAuthenticated: boolean;
@@ -25,6 +26,7 @@ export function HomeNavAuthActions({
 
   return (
     <nav className="flex items-center gap-2">
+      <ThemeToggle />
       {isAuthenticated ? (
         <button
           type="button"

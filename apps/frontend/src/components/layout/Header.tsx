@@ -7,6 +7,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { useAuthStore } from "@/stores/auth.store";
 import Link from "next/link";
 import { NotificationDropdown } from "./NotificationDropdown";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   const user = useAuthStore((state) => state.user);
@@ -38,6 +39,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <NotificationDropdown />
           
           <div className="relative" ref={dropdownRef}>
