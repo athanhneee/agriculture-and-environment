@@ -22,6 +22,19 @@ export const AuthValidation = {
       email: z.string().email('Email không hợp lệ'),
       password: z.string().min(1, 'Vui lòng nhập mật khẩu'),
     })
+  }),
+
+  changePassword: z.object({
+    body: z.object({
+      oldPassword: z.string().min(1, 'Vui lòng nhập mật khẩu hiện tại'),
+      newPassword: z.string()
+        .min(8, 'Mật khẩu mới phải có ít nhất 8 ký tự')
+        .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, 'Mật khẩu mới phải chứa ít nhất 1 chữ cái và 1 chữ số'),
+      confirmNewPassword: z.string()
+    }).refine((data) => data.newPassword === data.confirmNewPassword, {
+      message: 'Mật khẩu xác nhận không khớp',
+      path: ['confirmNewPassword'],
+    })
   })
 };
 
@@ -36,7 +49,8 @@ export const validate = (schema: any) => {
       });
       next();
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error('Lỗi kiểm tra dữ liệu đầu vào (Validation Error)', error.errors));
+      const errorMessage = error.errors?.[0]?.message || 'Lỗi kiểm tra dữ liệu đầu vào (Validation Error)';
+      res.status(400).json(ApiResponse.error(errorMessage, error.errors));
     }
   };
 };

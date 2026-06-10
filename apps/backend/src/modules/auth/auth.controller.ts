@@ -52,4 +52,12 @@ export class AuthController {
     const user = await AuthService.getMe(userId);
     res.status(200).json(ApiResponse.success('Lấy thông tin thành công', user));
   }
+
+  static async changePassword(req: Request, res: Response) {
+    const userId = req.user!.id;
+    const { oldPassword, newPassword } = req.body;
+
+    await AuthService.changePassword(userId, oldPassword, newPassword);
+    res.status(200).json(ApiResponse.success('Đổi mật khẩu thành công'));
+  }
 }

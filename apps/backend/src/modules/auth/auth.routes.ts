@@ -13,5 +13,6 @@ router.post('/refresh', asyncHandler(AuthController.refresh));
 router.post('/logout', asyncHandler(AuthController.logout));
 
 router.get('/me', authenticate, asyncHandler(AuthController.getMe));
+router.put('/change-password', authenticate, validate(AuthValidation.changePassword), asyncHandler(AuthController.changePassword));
 
 export default router;

@@ -100,9 +100,26 @@ export class AuthService {
   static async getMe(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, name: true, email: true, role: true, createdAt: true }
+      select: { id: true, name: true, email: true, role: true, status: true, createdAt: true }
     });
     if (!user) throw { statusCode: 404, message: 'Không tìm thấy người dùng' };
     return user;
+  }
+
+  static async changePassword(userId: string, oldPassword: string, newPassword: string) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw { statusCode: 404, message: 'Không tìm thấy người dùng' };
+
+    const isValidPassword = await PasswordUtil.verify(oldPassword, user.passwordHash);
+    if (!isValidPassword) throw { statusCode: 401, message: 'Mật khẩu hiện tại không chính xác' };
+
+    const newPasswordHash = await PasswordUtil.hash(newPassword);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash: newPasswordHash }
+    });
+
+    // Optional: Có thể thêm logic thu hồi tất cả Refresh Token để bắt người dùng đăng nhập lại
   }
 }
