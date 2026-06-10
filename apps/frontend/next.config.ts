@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
 
   // output: "standalone" — chỉ bật khi build production (phục vụ Docker deploy)
   // Tắt trong dev để tránh Next.js chạy File Tracing liên tục gây lag máy local
-  ...(isProd ? { output: "standalone" } : {}),
+  // ...(isProd ? { output: "standalone" } : {}),
 
   // Turbopack: chỉ định đúng thư mục gốc của frontend
   // Ngăn Turbopack scan nhầm toàn bộ thư mục apps/ (kể cả backend, node_modules backend...)
