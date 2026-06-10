@@ -19,10 +19,9 @@ export function UsersManagerClient() {
   const [form, setForm] = useState<{
     name: string;
     email: string;
-    password?: string;
     role: "ADMIN" | "USER";
     status: "ACTIVE" | "INACTIVE";
-  }>({ name: "", email: "", password: "", role: "USER", status: "ACTIVE" });
+  }>({ name: "", email: "", role: "USER", status: "ACTIVE" });
   const [saving, setSaving] = useState(false);
 
   // Import Modal State
@@ -47,7 +46,7 @@ export function UsersManagerClient() {
 
   const openAddModal = () => {
     setEditingUser(null);
-    setForm({ name: "", email: "", password: "", role: "USER", status: "ACTIVE" });
+    setForm({ name: "", email: "", role: "USER", status: "ACTIVE" });
     setIsModalOpen(true);
   };
 
@@ -56,7 +55,6 @@ export function UsersManagerClient() {
     setForm({
       name: user.name,
       email: user.email,
-      password: "", // Trống khi edit (không đổi)
       role: user.role,
       status: user.status || "ACTIVE",
     });
@@ -74,8 +72,11 @@ export function UsersManagerClient() {
       setSaving(true);
       if (editingUser) {
         // Cập nhật
-        const payload: any = { ...form };
-        if (!payload.password) delete payload.password; // không gửi password nếu rỗng
+        const payload = {
+          name: form.name,
+          role: form.role,
+          status: form.status
+        };
         await usersApi.update(editingUser.id, payload);
         alert("Cập nhật thông tin thành công!");
       } else {
@@ -288,21 +289,14 @@ export function UsersManagerClient() {
                 <input
                   type="email"
                   required
+                  readOnly={!!editingUser}
                   value={form.email}
-                  onChange={(e) => setForm({...form, email: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium">Mật khẩu {editingUser && "(Bỏ trống nếu không đổi)"}</label>
-                <input
-                  type="text" // Type text để nhìn rõ mật khẩu khởi tạo
-                  required={!editingUser}
-                  placeholder={!editingUser ? "VD: SmartFarm@123" : "********"}
-                  value={form.password}
-                  onChange={(e) => setForm({...form, password: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  onChange={(e) => !editingUser && setForm({...form, email: e.target.value})}
+                  className={`w-full rounded-xl border px-3 py-2 text-sm outline-none ${
+                    editingUser 
+                      ? "bg-muted text-muted-foreground cursor-not-allowed" 
+                      : "bg-background focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  }`}
                 />
               </div>
 
