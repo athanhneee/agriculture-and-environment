@@ -47,28 +47,15 @@ export class UsersService {
     });
   }
 
-  static async updateUser(id: string, data: { name?: string; email?: string; role?: Role; status?: UserStatus; password?: string }) {
+  static async updateUser(id: string, data: { name?: string; role?: Role; status?: UserStatus }) {
     const user = await prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw { statusCode: 404, message: 'Người dùng không tồn tại' };
     }
 
-    if (data.email && data.email !== user.email) {
-      const existingEmail = await prisma.user.findUnique({ where: { email: data.email } });
-      if (existingEmail) {
-        throw { statusCode: 409, message: 'Email đã được sử dụng bởi người dùng khác' };
-      }
-    }
-
-    const updateData: any = { ...data };
-    if (data.password) {
-      updateData.passwordHash = await PasswordUtil.hash(data.password);
-      delete updateData.password;
-    }
-
     return prisma.user.update({
       where: { id },
-      data: updateData,
+      data,
       select: {
         id: true,
         name: true,
