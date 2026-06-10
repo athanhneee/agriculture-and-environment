@@ -32,7 +32,7 @@ export const createTransporter = async () => {
 export const sendOtpEmail = async (to: string, otp: string) => {
   try {
     const transporter = await createTransporter();
-    
+
     const info = await transporter.sendMail({
       from: '"Thành Phát An Smart Farm" <noreply@smartfarm.com>',
       to,
