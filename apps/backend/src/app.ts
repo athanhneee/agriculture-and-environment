@@ -11,6 +11,7 @@ import { env } from './config/env';
 import { corsOptions } from './config/cors';
 import { errorHandler } from './middlewares/error.middleware';
 import { ApiResponse } from './utils/apiResponse';
+import prisma from './config/prisma';
 import authRoutes from './modules/auth/auth.routes';
 import farmZoneRoutes from './modules/farm-zones/farm-zones.routes';
 import cropRoutes from './modules/crops/crops.routes';
@@ -43,6 +44,17 @@ app.get('/api/health', (req: Request, res: Response) => {
   };
 
   res.status(200).json(ApiResponse.success('Health check passed', healthData));
+});
+
+// Endpoint để ping database (Supabase), ngăn Supabase pause project
+app.get('/api/ping-db', async (req: Request, res: Response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.status(200).json(ApiResponse.success('Database ping successful 🚀', { timestamp: new Date().toISOString() }));
+  } catch (error) {
+    console.error('Database ping failed:', error);
+    res.status(500).json(ApiResponse.error('Database ping failed', error));
+  }
 });
 
 // Các Routes khác (Router - Controller - Service) sẽ được mount ở đây sau
