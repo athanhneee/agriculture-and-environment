@@ -269,6 +269,7 @@ export type FarmZone = {
     recordedAt?: string;
   };
   openAlertsCount?: number;
+  sensorsCount?: number;
   sensors?: Array<{
     id: string;
     name: string;

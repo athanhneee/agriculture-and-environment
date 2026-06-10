@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 const geistSans = Geist({
   subsets: ["latin", "latin-ext"],
@@ -51,7 +52,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full" suppressHydrationWarning>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
