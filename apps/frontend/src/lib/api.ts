@@ -251,6 +251,20 @@ export const authApi = {
       body: JSON.stringify(data),
     });
   },
+  forgotPassword: async (data: { email: string }) => {
+    return apiRequest<void>('/api/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      skipAuth: true,
+    });
+  },
+  resetPassword: async (data: any) => {
+    return apiRequest<void>('/api/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      skipAuth: true,
+    });
+  },
   refreshAccessToken,
 };
 

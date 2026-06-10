@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { PasswordUtil } from '../../utils/password';
 import { JwtUtil, JwtPayload } from '../../utils/jwt';
 import { Role } from '@prisma/client';
+import { sendOtpEmail } from '../../utils/email';
 
 export class AuthService {
   // Hàm băm token để lưu DB
@@ -121,5 +122,69 @@ export class AuthService {
     });
 
     // Optional: Có thể thêm logic thu hồi tất cả Refresh Token để bắt người dùng đăng nhập lại
+  }
+
+  static async forgotPassword(email: string) {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      // Bảo mật: Không thông báo là email không tồn tại
+      return;
+    }
+
+    // Tạo mã OTP 6 chữ số
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 phút
+
+    // Thu hồi các OTP cũ
+    await prisma.passwordResetOtp.deleteMany({
+      where: { email }
+    });
+
+    // Lưu OTP mới
+    await prisma.passwordResetOtp.create({
+      data: {
+        email,
+        otp,
+        expiresAt
+      }
+    });
+
+    // Gửi email
+    await sendOtpEmail(email, otp);
+  }
+
+  static async resetPassword(email: string, otp: string, newPassword: string) {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) throw { statusCode: 404, message: 'Không tìm thấy người dùng' };
+
+    const resetRecord = await prisma.passwordResetOtp.findFirst({
+      where: { email, otp, used: false },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!resetRecord) {
+      throw { statusCode: 400, message: 'Mã OTP không chính xác' };
+    }
+
+    if (resetRecord.expiresAt < new Date()) {
+      throw { statusCode: 400, message: 'Mã OTP đã hết hạn' };
+    }
+
+    const newPasswordHash = await PasswordUtil.hash(newPassword);
+
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { email },
+        data: { passwordHash: newPasswordHash }
+      }),
+      prisma.passwordResetOtp.update({
+        where: { id: resetRecord.id },
+        data: { used: true }
+      }),
+      prisma.refreshToken.updateMany({
+        where: { userId: user.id, revokedAt: null },
+        data: { revokedAt: new Date() }
+      })
+    ]);
   }
 }
