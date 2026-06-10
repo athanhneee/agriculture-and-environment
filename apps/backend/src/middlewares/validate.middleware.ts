@@ -11,7 +11,8 @@ export const validate = (schema: any) => {
       });
       next();
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error('Lỗi kiểm tra dữ liệu đầu vào (Validation Error)', error.errors));
+      const errorMessage = error.errors?.[0]?.message || 'Lỗi kiểm tra dữ liệu đầu vào (Validation Error)';
+      res.status(400).json(ApiResponse.error(errorMessage, error.errors));
     }
   };
 };

@@ -21,4 +21,8 @@ export const env = {
   sensorMockEnabled: process.env.SENSOR_MOCK_ENABLED === "true",
   sensorMockIntervalMs: Number(process.env.SENSOR_MOCK_INTERVAL_MS || 1800000), // 30 minutes
   host: process.env.HOST || '0.0.0.0',
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: process.env.SMTP_PORT,
+  smtpUser: process.env.SMTP_USER,
+  smtpPass: process.env.SMTP_PASS,
 };

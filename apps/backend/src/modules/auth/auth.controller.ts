@@ -52,4 +52,25 @@ export class AuthController {
     const user = await AuthService.getMe(userId);
     res.status(200).json(ApiResponse.success('Lấy thông tin thành công', user));
   }
+
+  static async changePassword(req: Request, res: Response) {
+    const userId = req.user!.id;
+    const { oldPassword, newPassword } = req.body;
+
+    await AuthService.changePassword(userId, oldPassword, newPassword);
+    res.status(200).json(ApiResponse.success('Đổi mật khẩu thành công'));
+  }
+
+  static async forgotPassword(req: Request, res: Response) {
+    const { email } = req.body;
+    await AuthService.forgotPassword(email);
+    // Luôn trả về thành công dù email có tồn tại hay không (bảo mật)
+    res.status(200).json(ApiResponse.success('Nếu email hợp lệ, một mã OTP đã được gửi đến hộp thư của bạn.'));
+  }
+
+  static async resetPassword(req: Request, res: Response) {
+    const { email, otp, newPassword } = req.body;
+    await AuthService.resetPassword(email, otp, newPassword);
+    res.status(200).json(ApiResponse.success('Khôi phục mật khẩu thành công. Vui lòng đăng nhập lại.'));
+  }
 }
