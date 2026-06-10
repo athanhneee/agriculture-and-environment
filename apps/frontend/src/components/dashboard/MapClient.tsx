@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { AlertTriangle, Compass, MapPin, Navigation, RadioTower } from "lucide-react";
+import { AlertTriangle, Compass, MapPin, Navigation, RadioTower, ZoomIn, Wifi, CheckCircle2, RefreshCw, Layers } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
 // ── Lazy load FarmMap (Leaflet chỉ chạy client) ──────────────────────────────
