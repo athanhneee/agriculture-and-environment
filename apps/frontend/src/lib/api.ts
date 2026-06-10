@@ -242,10 +242,15 @@ export const authApi = {
       skipAuth: true,
     }),
   me: () => apiRequest<AuthUser>("/api/auth/me"),
-  logout: () =>
-    apiRequest<void>("/api/auth/logout", {
-      method: "POST",
-    }),
+  logout: async () => {
+    return apiRequest<void>('/api/auth/logout', { method: 'POST' });
+  },
+  changePassword: async (data: any) => {
+    return apiRequest<void>('/api/auth/change-password', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  },
   refreshAccessToken,
 };
 
