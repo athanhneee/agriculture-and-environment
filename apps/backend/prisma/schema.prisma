@@ -1,0 +1,197 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+//  previewFeatures = ["driverAdapters"] 
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// 1. ENUMS CONFIGURATION
+// ==========================================
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ZoneStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum CropStatus {
+  PLANTED
+  GROWING
+  HARVESTED
+  DISEASED
+}
+
+enum SensorStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+}
+
+enum SensorType {
+  TEMPERATURE
+  AIR_HUMIDITY
+  SOIL_MOISTURE
+  LIGHT_INTENSITY
+  ALL_IN_ONE
+}
+
+enum AlertType {
+  CRITICAL_WEATHER
+  SOIL_DRY
+  SENSOR_MALFUNCTION
+  OVERHEATING
+  HIGH_TEMPERATURE
+  LOW_SOIL_MOISTURE
+  HIGH_HUMIDITY
+  LOW_LIGHT
+  PEST_RISK
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+// ==========================================
+// 2. MODELS CONFIGURATION
+// ==========================================
+
+model User {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  passwordHash String
+  role         Role           @default(USER)
+  status       UserStatus     @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  farmZones    FarmZone[]
+  refreshTokens RefreshToken[]
+}
+
+model FarmZone {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  area        Float        // Diện tích m2
+  latitude    Float        // Vĩ độ nông trại giả lập
+  longitude   Float        // Kinh độ nông trại giả lập
+  soilType    String
+  status      ZoneStatus   @default(ACTIVE)
+  ownerId     String
+  owner       User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  crops          Crop[]
+  sensors        Sensor[]
+  sensorReadings SensorReading[]
+  alerts         Alert[]
+
+  @@unique([ownerId, name])
+  @@unique([ownerId, latitude, longitude])
+}
+
+model Crop {
+  id                  String     @id @default(uuid())
+  name                String
+  variety             String     // Giống cây trồng
+  plantedDate         DateTime
+  expectedHarvestDate DateTime?
+  status              CropStatus @default(PLANTED)
+  farmZoneId          String
+  farmZone            FarmZone   @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+}
+
+model Sensor {
+  id         String       @id @default(uuid())
+  name       String
+  code       String       @unique // Mã định danh thiết bị IoT cứng (ví dụ: ESP32-ZONE1-01)
+  type       SensorType
+  unit       String       // Đơn vị đo (°C, %, Lux...)
+  status     SensorStatus @default(ACTIVE)
+  farmZoneId String
+  farmZone   FarmZone     @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  readings SensorReading[]
+}
+
+model SensorReading {
+  id            String   @default(uuid())
+  sensorId      String
+  sensor        Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  farmZoneId    String
+  farmZone      FarmZone @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  
+  // Các chỉ số đo đạc từ trạm IoT cảm biến
+  temperature   Float?
+  airHumidity   Float?
+  soilMoisture  Float?
+  lightIntensity Float?
+  recordedAt    DateTime @default(now())
+
+  alerts        Alert[]
+
+  // Định nghĩa Indexes tối ưu hóa truy vấn chuỗi thời gian (Time-series Query Optimization)
+  @@id([id, recordedAt])
+  @@index([recordedAt]) 
+  @@index([farmZoneId, recordedAt])
+}
+
+model Alert {
+  id              String        @id @default(uuid())
+  farmZoneId              String
+  farmZone                FarmZone       @relation(fields: [farmZoneId], references: [id], onDelete: Cascade)
+  sensorReadingId         String?
+  sensorReadingRecordedAt DateTime?
+  sensorReading           SensorReading? @relation(fields: [sensorReadingId, sensorReadingRecordedAt], references: [id, recordedAt], onDelete: SetNull)
+  
+  type            AlertType
+  severity        AlertSeverity @default(WARNING)
+  title           String
+  message         String
+  status          AlertStatus   @default(OPEN)
+  createdAt       DateTime      @default(now())
+  resolvedAt      DateTime?
+
+  @@index([status])
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid())
+  tokenHash  String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+}

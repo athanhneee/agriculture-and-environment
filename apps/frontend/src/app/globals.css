@@ -1,0 +1,349 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-heading: var(--font-geist-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(0.982 0.014 145.4);
+  --foreground: oklch(0.197 0.033 155.8);
+  --card: oklch(0.998 0.004 145.2);
+  --card-foreground: oklch(0.197 0.033 155.8);
+  --popover: oklch(0.998 0.004 145.2);
+  --popover-foreground: oklch(0.197 0.033 155.8);
+  --primary: oklch(0.487 0.134 151.8);
+  --primary-foreground: oklch(0.984 0.018 145.1);
+  --secondary: oklch(0.928 0.043 148.7);
+  --secondary-foreground: oklch(0.272 0.056 154.6);
+  --muted: oklch(0.942 0.021 151.2);
+  --muted-foreground: oklch(0.461 0.041 157.3);
+  --accent: oklch(0.912 0.069 86.5);
+  --accent-foreground: oklch(0.301 0.052 78.2);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.884 0.031 150.8);
+  --input: oklch(0.884 0.031 150.8);
+  --ring: oklch(0.565 0.126 152.2);
+  --chart-1: oklch(0.565 0.126 152.2);
+  --chart-2: oklch(0.703 0.121 198.5);
+  --chart-3: oklch(0.781 0.143 80.9);
+  --chart-4: oklch(0.653 0.168 45.7);
+  --chart-5: oklch(0.569 0.119 256.1);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.956 0.029 150.4);
+  --sidebar-foreground: oklch(0.211 0.034 155.9);
+  --sidebar-primary: oklch(0.487 0.134 151.8);
+  --sidebar-primary-foreground: oklch(0.984 0.018 145.1);
+  --sidebar-accent: oklch(0.912 0.069 86.5);
+  --sidebar-accent-foreground: oklch(0.301 0.052 78.2);
+  --sidebar-border: oklch(0.876 0.032 151.1);
+  --sidebar-ring: oklch(0.565 0.126 152.2);
+}
+
+.dark {
+  --background: oklch(0.149 0.026 160.2);
+  --foreground: oklch(0.95 0.019 149.6);
+  --card: oklch(0.193 0.032 159.7);
+  --card-foreground: oklch(0.95 0.019 149.6);
+  --popover: oklch(0.193 0.032 159.7);
+  --popover-foreground: oklch(0.95 0.019 149.6);
+  --primary: oklch(0.721 0.139 150.4);
+  --primary-foreground: oklch(0.149 0.026 160.2);
+  --secondary: oklch(0.263 0.043 158.8);
+  --secondary-foreground: oklch(0.95 0.019 149.6);
+  --muted: oklch(0.263 0.043 158.8);
+  --muted-foreground: oklch(0.728 0.047 153.1);
+  --accent: oklch(0.329 0.068 87.2);
+  --accent-foreground: oklch(0.959 0.033 92.4);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.721 0.139 150.4);
+  --chart-1: oklch(0.721 0.139 150.4);
+  --chart-2: oklch(0.703 0.121 198.5);
+  --chart-3: oklch(0.83 0.149 87.8);
+  --chart-4: oklch(0.688 0.181 45.7);
+  --chart-5: oklch(0.691 0.13 256.1);
+  --sidebar: oklch(0.193 0.032 159.7);
+  --sidebar-foreground: oklch(0.95 0.019 149.6);
+  --sidebar-primary: oklch(0.721 0.139 150.4);
+  --sidebar-primary-foreground: oklch(0.149 0.026 160.2);
+  --sidebar-accent: oklch(0.329 0.068 87.2);
+  --sidebar-accent-foreground: oklch(0.959 0.033 92.4);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.721 0.139 150.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply scroll-smooth font-sans;
+  }
+  body {
+    @apply min-h-dvh bg-background text-foreground antialiased;
+  }
+  ::selection {
+    @apply bg-emerald-200 text-emerald-950;
+  }
+}
+
+@layer utilities {
+  .farm-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in oklch, currentColor 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, currentColor 8%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Tối ưu hóa hiệu ứng tương tác (Micro-interactions) cho toàn bộ nút bấm */
+  button, 
+  a[role="button"],
+  .btn {
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  button:active, 
+  a[role="button"]:active,
+  .btn:active {
+    transform: scale(0.96) !important;
+  }
+
+  /* Custom scrollbar cho các trình duyệt Webkit */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.884 0.031 150.8);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.565 0.126 152.2);
+  }
+
+  /* Focus visible accessibility */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid oklch(0.565 0.126 152.2);
+    outline-offset: 2px;
+  }
+
+  /* Slide-in bottom animation cho toast */
+  @keyframes slide-in-bottom {
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in-bottom {
+    animation: slide-in-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+ 
+/* Tối ưu hóa cấu trúc CSS Print để xuất PDF chuyên nghiệp */
+@media print {
+  /* Ẩn các thành phần giao diện không cần in */
+  .no-print,
+  iframe,
+  aside,
+  nav,
+  header,
+  footer,
+  [data-sidebar="sidebar"],
+  .sidebar-container,
+  button:not(.print-visible),
+  a[href="/dashboard/zones"],
+  div[role="navigation"] {
+    display: none !important;
+  }
+ 
+  /* Định cấu hình trang in */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+ 
+  /* Định dạng lại khối nội dung chính khi in */
+  main,
+  .main-content,
+  #dashboard-main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+ 
+  /* Ép buộc in màu nền và màu sắc rực rỡ */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+ 
+  /* Tránh ngắt trang xấu */
+  .card, 
+  section, 
+  article,
+  tr {
+    page-break-inside: avoid !important; /* Tránh cắt đôi thẻ khi chuyển trang in */
+  }
+ 
+  /* Định dạng lại bảng khi in */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+ 
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px !important;
+    text-align: left !important;
+    font-size: 10pt !important;
+  }
+}
+
+/* =============================================
+   Homepage load-in animation (fade up)
+   Dùng cho trang chủ, không ảnh hưởng trang khác
+   ============================================= */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+
+/* =============================================
+   Weather scene animations (homepage hero)
+   Mây trôi, mặt trời, mưa rơi
+   ============================================= */
+
+/* Mặt trời: phát sáng nhịp nhàng */
+@keyframes sun-pulse {
+  0%, 100% { box-shadow: 0 0 18px 8px rgba(253,224,71,0.35), 0 0 40px 20px rgba(253,224,71,0.15); transform: scale(1); }
+  50%       { box-shadow: 0 0 28px 14px rgba(253,224,71,0.55), 0 0 60px 30px rgba(253,224,71,0.25); transform: scale(1.06); }
+}
+.animate-sun-pulse {
+  animation: sun-pulse 3s ease-in-out infinite;
+}
+
+/* Tia nắng quay chậm */
+@keyframes sun-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-sun-rotate {
+  animation: sun-rotate 18s linear infinite;
+}
+
+/* Mây 1: trôi sang phải rồi trái */
+@keyframes cloud-float-1 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(14px); }
+}
+.animate-cloud-1 {
+  animation: cloud-float-1 6s ease-in-out infinite;
+}
+
+/* Mây 2: trôi sang trái rồi phải */
+@keyframes cloud-float-2 {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(-10px); }
+}
+.animate-cloud-2 {
+  animation: cloud-float-2 8s ease-in-out infinite;
+}
+
+/* Mưa rơi chéo xuống */
+@keyframes rain-fall {
+  0%   { transform: translateY(-12px) translateX(0px); opacity: 0; }
+  8%   { opacity: 0.65; }
+  92%  { opacity: 0.55; }
+  100% { transform: translateY(260px) translateX(-18px); opacity: 0; }
+}
+.animate-rain {
+  animation: rain-fall linear infinite;
+}
+
+

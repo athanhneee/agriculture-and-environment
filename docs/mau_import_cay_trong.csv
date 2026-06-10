@@ -1,0 +1,7 @@
+name,variety,plantedDate,expectedHarvestDate,status,farmZoneName
+Cà chua Cherry,F1 Nhật Bản,2024-03-01,2024-05-15,GROWING,Khu Nhà Kính Dưa Lưới A
+Dưa lưới Mật,Hoàng kim,2024-04-10,2024-07-20,PLANTED,Khu Trồng Rau Thủy Canh B
+Bắp cải tím,Ruby Perfection,2024-01-15,2024-04-05,HARVESTED,Vườn Cây Ăn Trái C
+Dâu tây Hàn Quốc,Seolhyang,2024-02-20,2024-06-10,GROWING,Khu Thử Nghiệm Thiết Bị D
+Dưa leo,Giống Thái Lan,2024-05-01,2024-06-15,PLANTED,Khu Nhà Kính Dưa Lưới A
+Xà lách thủy canh,Romaine,2024-05-10,2024-06-05,GROWING,Khu Trồng Rau Thủy Canh B
