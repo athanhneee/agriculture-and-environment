@@ -37,7 +37,7 @@ export class UsersController {
 
   static async updateUser(req: Request, res: Response) {
     const { id } = req.params;
-    const { name, email, role, status, password } = req.body;
+    const { name, role, status } = req.body;
     
     if (role && !Object.values(Role).includes(role as Role)) {
        return res.status(400).json(ApiResponse.error('Vai trò không hợp lệ'));
@@ -49,8 +49,6 @@ export class UsersController {
 
     const updatedUser = await UsersService.updateUser(id as string, {
       name,
-      email,
-      password,
       role: role as Role,
       status: status as UserStatus
     });
