@@ -109,6 +109,10 @@ export function ImportFarmZonesClient() {
 
   const isAdmin = user?.role === "ADMIN";
 
+  const handleDownloadTemplate = () => {
+    alert("Chức năng tải file mẫu đang được cập nhật.");
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
