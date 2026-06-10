@@ -5,8 +5,12 @@ import { createCropSchema, updateCropSchema } from './crops.validation';
 
 export class CropController {
   static async getCrops(req: Request, res: Response) {
-    const result = await CropService.getCrops(req.query, req.user!);
-    res.status(200).json(ApiResponse.success('Lấy danh sách cây trồng thành công', result));
+    try {
+      const result = await CropService.getCrops(req.query, req.user!);
+      res.status(200).json(ApiResponse.success('Lấy danh sách cây trồng thành công', result));
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error(error.message));
+    }
   }
 
   static async getCropById(req: Request, res: Response) {

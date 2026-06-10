@@ -6,20 +6,22 @@ import { JwtPayload } from '../../utils/jwt';
 export class CropService {
   static async getCrops(query: any, user: JwtPayload) {
     const { page = 1, limit = 10, farmZoneId, status, search } = query;
-    const skip = (Number(page) - 1) * Number(limit);
-    const take = Number(limit);
+    const safePage = page && !isNaN(Number(page)) ? Number(page) : 1;
+    const safeLimit = limit && !isNaN(Number(limit)) ? Number(limit) : 10;
+    const skip = (safePage - 1) * safeLimit;
+    const take = safeLimit;
 
     const where: Prisma.CropWhereInput = {};
 
-    if (farmZoneId) {
+    if (farmZoneId && farmZoneId !== 'undefined' && farmZoneId !== 'null') {
       where.farmZoneId = String(farmZoneId);
     }
 
-    if (status) {
+    if (status && status !== 'undefined' && status !== 'null') {
       where.status = status as any;
     }
 
-    if (search) {
+    if (search && search !== 'undefined' && search !== 'null') {
       where.OR = [
         { name: { contains: String(search), mode: 'insensitive' } },
         { variety: { contains: String(search), mode: 'insensitive' } },
