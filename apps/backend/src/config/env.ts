@@ -19,6 +19,6 @@ export const env = {
   jwtRefreshSecret: required("JWT_REFRESH_SECRET"),
   isDev: process.env.NODE_ENV !== "production",
   sensorMockEnabled: process.env.SENSOR_MOCK_ENABLED === "true",
-  sensorMockIntervalMs: Number(process.env.SENSOR_MOCK_INTERVAL_MS || 5000),
+  sensorMockIntervalMs: Number(process.env.SENSOR_MOCK_INTERVAL_MS || 120000), // 2 minutes
   host: process.env.HOST || '0.0.0.0',
 };
