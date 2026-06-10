@@ -14,13 +14,10 @@ const adapter = new PrismaPg(pool);
 const prismaClientSingleton = (): PrismaClient => {
   return new PrismaClient({
     adapter, // <-- Đây chính là "vũ khí" giúp engineType "client" hoạt động được!
-    log: env.isDev
-      ? [
-          { emit: 'stdout', level: 'query' },
-          { emit: 'stdout', level: 'error' },
-          { emit: 'stdout', level: 'warn' },
-        ]
-      : [{ emit: 'stdout', level: 'error' }],
+    log: [
+      { emit: 'stdout', level: 'error' },
+      { emit: 'stdout', level: 'warn' },
+    ],
   });
 };
 

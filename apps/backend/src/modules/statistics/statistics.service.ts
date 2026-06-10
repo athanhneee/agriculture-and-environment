@@ -1,4 +1,5 @@
 import prisma from '../../config/prisma';
+import { Prisma } from '@prisma/client';
 import { JwtPayload } from '../../utils/jwt';
 
 export class StatisticsService {
@@ -125,95 +126,38 @@ export class StatisticsService {
       return [];
     }
 
-    const readings = await prisma.sensorReading.findMany({
-      where: {
-        farmZoneId: {
-          in: allowedFarmZoneIds,
-        },
-        recordedAt: {
-          gte: from,
-          lte: to,
-        },
-      },
-      select: {
-        recordedAt: true,
-        temperature: true,
-        airHumidity: true,
-        soilMoisture: true,
-        lightIntensity: true,
-      },
-      orderBy: {
-        recordedAt: 'asc',
-      },
-    });
+    const formatPeriod = groupBy === 'hour' ? 'YYYY-MM-DD"T"HH24:00:00.000"Z"' : 'YYYY-MM-DD';
 
-    const buckets = new Map<
-      string,
-      {
-        period: string;
-        count: number;
-        totalTemperature: number;
-        totalAirHumidity: number;
-        totalSoilMoisture: number;
-        totalLightIntensity: number;
-      }
-    >();
+    // TỐI ƯU HÓA ĐIỂM 10: Sử dụng Database-level Aggregation (PostgreSQL)
+    // Thay vì kéo hàng trăm ngàn dòng về Node.js (tốn >100MB RAM),
+    // Query này gộp nhóm trực tiếp trong CSDL và chỉ trả về tối đa 30 dòng (tốn <1KB RAM).
+    const aggregatedData = await prisma.$queryRaw<any[]>`
+      SELECT 
+        TO_CHAR(DATE_TRUNC(${groupBy === 'hour' ? 'hour' : 'day'}, "recordedAt"), ${formatPeriod}) as "period",
+        COUNT(*)::int as "count",
+        ROUND(AVG("temperature")::numeric, 2)::float as "averageTemperature",
+        ROUND(AVG("airHumidity")::numeric, 2)::float as "averageAirHumidity",
+        ROUND(AVG("soilMoisture")::numeric, 2)::float as "averageSoilMoisture",
+        ROUND(AVG("lightIntensity")::numeric, 2)::float as "averageLightIntensity"
+      FROM "SensorReading"
+      WHERE "farmZoneId" IN (${Prisma.join(allowedFarmZoneIds)})
+        AND "recordedAt" >= ${from} AND "recordedAt" <= ${to}
+      GROUP BY DATE_TRUNC(${groupBy === 'hour' ? 'hour' : 'day'}, "recordedAt")
+      ORDER BY "period" ASC;
+    `;
 
-    for (const reading of readings) {
-      const date = reading.recordedAt;
-
-      const period =
-        groupBy === 'hour'
-          ? date.toISOString().slice(0, 13) + ':00:00.000Z'
-          : date.toISOString().slice(0, 10);
-
-      const current =
-        buckets.get(period) ??
-        {
-          period,
-          count: 0,
-          totalTemperature: 0,
-          totalAirHumidity: 0,
-          totalSoilMoisture: 0,
-          totalLightIntensity: 0,
-        };
-
-      current.count += 1;
-      current.totalTemperature += reading.temperature ?? 0;
-      current.totalAirHumidity += reading.airHumidity ?? 0;
-      current.totalSoilMoisture += reading.soilMoisture ?? 0;
-      current.totalLightIntensity += reading.lightIntensity ?? 0;
-
-      buckets.set(period, current);
-    }
-
-    return Array.from(buckets.values()).map((bucket) => {
-      const averageTemperature = Number(
-        (bucket.totalTemperature / bucket.count).toFixed(2),
-      );
-      const averageAirHumidity = Number(
-        (bucket.totalAirHumidity / bucket.count).toFixed(2),
-      );
-      const averageSoilMoisture = Number(
-        (bucket.totalSoilMoisture / bucket.count).toFixed(2),
-      );
-      const averageLightIntensity = Number(
-        (bucket.totalLightIntensity / bucket.count).toFixed(2),
-      );
-
-      return {
-        period: bucket.period,
-        date: bucket.period,
-        count: bucket.count,
-        averageTemperature,
-        averageAirHumidity,
-        averageSoilMoisture,
-        averageLightIntensity,
-        avgTemperature: averageTemperature,
-        avgAirHumidity: averageAirHumidity,
-        avgSoilMoisture: averageSoilMoisture,
-        avgLightIntensity: averageLightIntensity,
-      };
-    });
+    return aggregatedData.map((row) => ({
+      period: row.period,
+      date: row.period,
+      count: row.count,
+      averageTemperature: row.averageTemperature || 0,
+      averageAirHumidity: row.averageAirHumidity || 0,
+      averageSoilMoisture: row.averageSoilMoisture || 0,
+      averageLightIntensity: row.averageLightIntensity || 0,
+      avgTemperature: row.averageTemperature || 0,
+      avgAirHumidity: row.averageAirHumidity || 0,
+      avgSoilMoisture: row.averageSoilMoisture || 0,
+      avgLightIntensity: row.averageLightIntensity || 0,
+    }));
   }
 }
