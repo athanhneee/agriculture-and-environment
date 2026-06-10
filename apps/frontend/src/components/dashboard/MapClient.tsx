@@ -249,7 +249,6 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
                         </p>
                       )}
                     </div>
-                  </div>
                 </button>
               );
             })}
