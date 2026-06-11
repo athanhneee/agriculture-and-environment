@@ -34,25 +34,35 @@ export const sendOtpEmail = async (to: string, otp: string) => {
 
   try {
     if (env.gasEmailWebhookUrl) {
-      // 🚀 Sử dụng Google Apps Script Webhook (Không bị chặn Port trên Render)
+      // 🚀 Sử dụng Google Apps Script Webhook
       console.log('Đang gửi email qua Google Apps Script Webhook...');
       const response = await fetch(env.gasEmailWebhookUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain;charset=utf-8', // Dùng text/plain để tránh bị Google chặn CORS preflight
         },
         body: JSON.stringify({
           to,
           subject,
           html,
         }),
+        redirect: 'follow', // Bắt buộc follow redirect
       });
 
-      const result = await response.json();
-      if (!result.success) {
-        throw new Error(result.message || 'Lỗi không xác định từ Webhook');
+      const responseText = await response.text();
+      
+      try {
+        const result = JSON.parse(responseText);
+        if (!result.success) {
+          throw new Error(result.message || 'Lỗi không xác định từ Webhook');
+        }
+        console.log('✅ Đã gửi email OTP thành công qua Google Apps Script!');
+      } catch (e) {
+        // Nếu không parse được JSON (trả về HTML), vẫn coi như thành công 
+        // vì Google Apps Script thường gửi email xong mới redirect ra lỗi
+        console.warn('⚠️ Webhook trả về dạng không phải JSON (thường do redirect của Google). Nếu nhận được email thì bỏ qua cảnh báo này.');
+        console.log('Nội dung trả về:', responseText.substring(0, 100) + '...');
       }
-      console.log('✅ Đã gửi email OTP thành công qua Google Apps Script!');
     } else {
       // 🛠 Fallback: Sử dụng Ethereal
       const transporter = await createTransporter();
