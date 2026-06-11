@@ -50,7 +50,7 @@ export const sendOtpEmail = async (to: string, otp: string) => {
       });
 
       const responseText = await response.text();
-      
+
       try {
         const result = JSON.parse(responseText);
         if (!result.success) {

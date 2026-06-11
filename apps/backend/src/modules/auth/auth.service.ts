@@ -127,8 +127,7 @@ export class AuthService {
   static async forgotPassword(email: string) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      // Bảo mật: Không thông báo là email không tồn tại
-      return;
+      throw { statusCode: 404, message: 'Địa chỉ email này không tồn tại trên hệ thống' };
     }
 
     // Tạo mã OTP 6 chữ số
