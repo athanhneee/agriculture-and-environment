@@ -20,7 +20,7 @@ import { type OverviewStats } from "@/lib/dashboard-server";
 
 interface OverviewClientProps {
   initialStats: OverviewStats;
-  initialLatestReading: any;
+  initialLatestReading: Record<string, unknown> | null;
   initialAlerts: Alert[];
 }
 

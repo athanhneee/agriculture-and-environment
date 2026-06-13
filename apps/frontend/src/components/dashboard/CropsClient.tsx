@@ -60,7 +60,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
         search: debouncedSearch,
       });
       setCrops(data as Crop[]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Fetch crops failed:", err);
       setError("Không thể tải danh sách cây trồng. Vui lòng thử lại.");
     } finally {
@@ -87,8 +87,8 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       await cropsApi.delete(id);
       triggerToast("success", "Xóa cây trồng thành công!");
       fetchCrops();
-    } catch (err: any) {
-      triggerToast("error", err.message || "Không thể xóa cây trồng.");
+    } catch (err: unknown) {
+      triggerToast("error", (err instanceof Error ? err.message : null) || "Không thể xóa cây trồng.");
     }
   };
 

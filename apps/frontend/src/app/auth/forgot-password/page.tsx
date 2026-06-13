@@ -50,8 +50,8 @@ export default function ForgotPasswordPage() {
       await authApi.forgotPassword({ email });
       setSuccessMsg("Mã OTP đã được gửi đến hộp thư của bạn.");
       setStep(2);
-    } catch (err: any) {
-      setError(err.message || "Có lỗi xảy ra khi gửi OTP. Vui lòng thử lại.");
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || "Có lỗi xảy ra khi gửi OTP. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
@@ -85,8 +85,8 @@ export default function ForgotPasswordPage() {
         router.push("/auth/login");
       }, 2000);
       
-    } catch (err: any) {
-      setError(err.message || "Mã OTP không chính xác hoặc đã hết hạn.");
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || "Mã OTP không chính xác hoặc đã hết hạn.");
     } finally {
       setLoading(false);
     }

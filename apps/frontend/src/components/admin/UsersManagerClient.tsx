@@ -33,8 +33,8 @@ export function UsersManagerClient() {
       setError(null);
       const data = await usersApi.list();
       setUsers(data as SystemUser[]);
-    } catch (err: any) {
-      setError(err.message || "Không thể tải danh sách người dùng.");
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || "Không thể tải danh sách người dùng.");
     } finally {
       setLoading(false);
     }
@@ -86,8 +86,8 @@ export function UsersManagerClient() {
       }
       closeModal();
       fetchUsers();
-    } catch (err: any) {
-      alert(err.message || (editingUser ? "Cập nhật thất bại." : "Thêm mới thất bại."));
+    } catch (err: unknown) {
+      alert((err instanceof Error ? err.message : null) || (editingUser ? "Cập nhật thất bại." : "Thêm mới thất bại."));
     } finally {
       setSaving(false);
     }
@@ -102,8 +102,8 @@ export function UsersManagerClient() {
       await usersApi.delete(id);
       alert("Đã xóa người dùng thành công.");
       fetchUsers();
-    } catch (err: any) {
-      alert(err.message || "Xóa người dùng thất bại.");
+    } catch (err: unknown) {
+      alert((err instanceof Error ? err.message : null) || "Xóa người dùng thất bại.");
     }
   };
 

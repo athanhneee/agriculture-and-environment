@@ -67,9 +67,9 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
         await cropsApi.create(payload);
       }
       onSuccess();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Submit crop form failed:", error);
-      setErrorMsg(error.message || "Có lỗi xảy ra khi lưu thông tin cây trồng.");
+      setErrorMsg(error instanceof Error ? error.message : "Có lỗi xảy ra khi lưu thông tin cây trồng.");
     }
   };
 

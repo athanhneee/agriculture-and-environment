@@ -61,7 +61,7 @@ export default function RegisterPage() {
     } catch (error) {
       const message =
         error instanceof ApiError
-          ? error.message
+          ? error instanceof Error ? error.message : "Lỗi đăng ký"
           : "Không thể đăng ký tài khoản. Vui lòng thử lại.";
       setError("root", { message });
     }

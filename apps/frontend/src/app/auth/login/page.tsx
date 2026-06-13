@@ -71,7 +71,7 @@ export default function LoginPage() {
     } catch (error) {
       const message =
         error instanceof ApiError
-          ? error.message
+          ? error instanceof Error ? error.message : "Đăng nhập thất bại"
           : "Không thể đăng nhập. Vui lòng thử lại.";
       setError("root", { message });
     }

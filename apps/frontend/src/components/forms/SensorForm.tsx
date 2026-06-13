@@ -63,9 +63,9 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
         await sensorsApi.create(values);
       }
       onSuccess();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Submit sensor form failed:", error);
-      setErrorMsg(error.message || "Có lỗi xảy ra khi lưu thông tin cảm biến.");
+      setErrorMsg(error instanceof Error ? error.message : "Có lỗi xảy ra khi lưu thông tin cảm biến.");
     }
   };
 

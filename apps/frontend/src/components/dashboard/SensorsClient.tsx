@@ -61,7 +61,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
         search: debouncedSearch,
       });
       setSensors(data as Sensor[]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Fetch sensors failed:", err);
       setError("Không thể tải danh sách thiết bị cảm biến. Vui lòng thử lại.");
     } finally {
@@ -88,8 +88,8 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       await sensorsApi.delete(id);
       triggerToast("success", "Xóa thiết bị cảm biến thành công!");
       fetchSensors();
-    } catch (err: any) {
-      triggerToast("error", err.message || "Không thể xóa cảm biến.");
+    } catch (err: unknown) {
+      triggerToast("error", (err instanceof Error ? err.message : null) || "Không thể xóa cảm biến.");
     }
   };
 

@@ -47,7 +47,7 @@ interface RealtimeState {
     recordedAt?: string;
   } | null;
   setInitialData: (params: {
-    latestReading: any;
+    latestReading: Record<string, unknown> | null;
     alerts: Alert[];
   }) => void;
   addReading: (payload: { farmZoneId: string; reading: SensorReading; timestamp: string }) => void;

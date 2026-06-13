@@ -27,7 +27,7 @@ const severityConfig: Record<string, { label: string; badgeClass: string; iconCl
   },
 };
 
-function ToastNotification({ alert, onClose }: { alert: any; onClose: () => void }) {
+function ToastNotification({ alert, onClose }: { alert: import("@/stores/realtime.store").Alert; onClose: () => void }) {
   const sev = severityConfig[alert.severity] || severityConfig.INFO;
 
   return createPortal(
@@ -66,7 +66,7 @@ export function NotificationDropdown() {
         statisticsApi.overview()
       ]);
       
-      setUnreadCount(stats?.openAlertsCount || data.filter((a: any) => a.status === "OPEN").length);
+      setUnreadCount(stats?.openAlertsCount || data.filter((a: import("@/stores/realtime.store").Alert) => a.status === "OPEN").length);
       setAlerts(data.slice(0, 5)); // Show top 5 in dropdown
     } catch (error) {
       console.error("Lỗi khi tải thông báo:", error);
@@ -92,7 +92,7 @@ export function NotificationDropdown() {
       console.log("Connected to Realtime Alerts Socket");
     };
 
-    const handleAlertCreated = (newAlert: any) => {
+    const handleAlertCreated = (newAlert: import("@/stores/realtime.store").Alert) => {
       // 1. Show Toast
       setToastAlert(newAlert);
       setTimeout(() => setToastAlert(null), 5000);

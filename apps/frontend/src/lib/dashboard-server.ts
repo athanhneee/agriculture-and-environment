@@ -44,7 +44,7 @@ const emptyOverview: OverviewStats = {
   averageLightIntensity: 0,
 };
 
-function normalizeOverview(data: any): OverviewStats {
+function normalizeOverview(data: Record<string, number | undefined>): OverviewStats {
   return {
     usersCount: data?.totalUsers ?? 0,
     zonesCount: data?.zonesCount ?? data?.totalFarmZones ?? 0,
@@ -86,7 +86,7 @@ export async function getOverviewStats(): Promise<OverviewStats> {
   }
 }
 
-export async function getLatestSensorReading(): Promise<any> {
+export async function getLatestSensorReading(): Promise<import("@/stores/realtime.store").SensorReading | null> {
   try {
     const headers = await getAuthHeaders();
 

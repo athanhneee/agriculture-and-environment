@@ -38,8 +38,8 @@ export function ProfileClient() {
       });
       setSuccess(true);
       setForm({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
-    } catch (err: any) {
-      setError(err.message || "Đổi mật khẩu thất bại. Vui lòng thử lại.");
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || "Đổi mật khẩu thất bại. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }

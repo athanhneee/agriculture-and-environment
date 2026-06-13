@@ -137,8 +137,8 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
         errors: result.errors ?? [],
       });
       onSuccess?.(result.imported ?? 0, result.skipped ?? 0);
-    } catch (err: any) {
-      setImportState({ status: "error", message: err.message || "Import thất bại." });
+    } catch (err: unknown) {
+      setImportState({ status: "error", message: (err instanceof Error ? err.message : null) || "Import thất bại." });
     }
   };
 
@@ -306,7 +306,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
                         <span className="shrink-0 rounded bg-destructive/10 px-1.5 py-0.5 text-[10px] font-mono font-bold text-destructive">
                           Dòng {err.row}
                         </span>
-                        <span className="text-xs text-destructive/80">{err.message}</span>
+                        <span className="text-xs text-destructive/80">{err instanceof Error ? err.message : String(err)}</span>
                       </div>
                     ))}
                   </div>

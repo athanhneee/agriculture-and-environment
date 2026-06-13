@@ -42,7 +42,7 @@ export function AIAssistantChat() {
  
     // Thêm tin nhắn của người dùng
     const userMsg: Message = {
-      id: Math.random().toString(),
+      id: crypto.randomUUID(),
       sender: "user",
       text,
       timestamp: new Date(),
@@ -119,18 +119,18 @@ export function AIAssistantChat() {
       }
  
       const aiMsg: Message = {
-        id: Math.random().toString(),
+        id: crypto.randomUUID(),
         sender: "ai",
         text: aiResponseText,
         timestamp: new Date(),
       };
  
       setMessages((prev) => [...prev, aiMsg]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMsg: Message = {
-        id: Math.random().toString(),
+        id: crypto.randomUUID(),
         sender: "ai",
-        text: `Đã xảy ra lỗi kết nối với máy chủ AI: ${err.message}. Lời khuyên nông nghiệp giả lập: Hãy đảm bảo các cảm biến trên cánh đồng hoạt động bình thường và nhiệt độ không vượt quá 32°C.`,
+        text: `Đã xảy ra lỗi kết nối với máy chủ AI: ${err instanceof Error ? err.message : String(err)}. Lời khuyên nông nghiệp giả lập: Hãy đảm bảo các cảm biến trên cánh đồng hoạt động bình thường và nhiệt độ không vượt quá 32°C.`,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);

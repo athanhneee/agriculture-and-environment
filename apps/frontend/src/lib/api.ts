@@ -24,7 +24,7 @@ type PaginatedResponse<T> = {
   meta?: unknown;
 };
 
-function unwrapList<T>(payload: any): T[] {
+function unwrapList<T>(payload: { success: boolean; data: T[] | { data: T[]; items?: T[] }; items?: T[] } | unknown): T[] {
   if (Array.isArray(payload)) return payload;
 
   if (payload && Array.isArray(payload.data)) {
@@ -245,7 +245,7 @@ export const authApi = {
   logout: async () => {
     return apiRequest<void>('/api/auth/logout', { method: 'POST' });
   },
-  changePassword: async (data: any) => {
+  changePassword: async (data: Record<string, unknown>) => {
     return apiRequest<void>('/api/auth/change-password', {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -258,7 +258,7 @@ export const authApi = {
       skipAuth: true,
     });
   },
-  resetPassword: async (data: any) => {
+  resetPassword: async (data: Record<string, unknown>) => {
     return apiRequest<void>('/api/auth/reset-password', {
       method: 'POST',
       body: JSON.stringify(data),

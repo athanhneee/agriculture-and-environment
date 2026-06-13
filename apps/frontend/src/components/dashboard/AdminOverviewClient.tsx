@@ -104,7 +104,7 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
   );
 }
 
-function ShieldAlertIcon(props: any) {
+function ShieldAlertIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

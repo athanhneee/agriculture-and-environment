@@ -139,8 +139,8 @@ export function ImportFarmZonesClient() {
         setMessage(`Import thành công ${result.imported} thiết bị cảm biến.`);
       }
       setFile(null);
-    } catch (err: any) {
-      setError(err.message || "Import thất bại");
+    } catch (err: unknown) {
+      setError((err instanceof Error ? err.message : null) || "Import thất bại");
     } finally {
       setSubmitting(false);
     }

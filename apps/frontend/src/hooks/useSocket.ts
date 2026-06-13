@@ -5,7 +5,7 @@ import { disconnectSocket, getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRealtimeStore } from "@/stores/realtime.store";
 
-export function useSocket(onAlertCreated?: (alert: any) => void) {
+export function useSocket(onAlertCreated?: (alert: import("@/stores/realtime.store").Alert) => void) {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -21,7 +21,7 @@ export function useSocket(onAlertCreated?: (alert: any) => void) {
   useEffect(() => {
     if (!accessToken) {
       disconnectSocket();
-      setIsConnected(false);
+      
       return;
     }
 
@@ -37,11 +37,11 @@ export function useSocket(onAlertCreated?: (alert: any) => void) {
       console.log("Disconnected from Socket.io server");
     };
 
-    const handleSensorReading = (payload: any) => {
+    const handleSensorReading = (payload: { reading: import("@/stores/realtime.store").SensorReading; farmZoneId: string; timestamp: string }) => {
       addReading(payload);
     };
 
-    const handleAlertCreated = (alert: any) => {
+    const handleAlertCreated = (alert: import("@/stores/realtime.store").Alert) => {
       addAlert(alert);
       onAlertRef.current?.(alert);
     };

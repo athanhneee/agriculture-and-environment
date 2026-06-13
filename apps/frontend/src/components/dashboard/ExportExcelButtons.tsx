@@ -22,7 +22,7 @@ export function ExportExcelButtons() {
     } catch (err) {
       setError(
         err instanceof ApiError
-          ? err.message
+          ? (err instanceof Error ? err.message : "Lỗi xuất file")
           : "Không thể tải file Excel. Vui lòng thử lại.",
       );
     } finally {
