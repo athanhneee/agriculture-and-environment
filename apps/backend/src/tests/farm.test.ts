@@ -40,7 +40,7 @@ describe('FarmZone API Tests', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBe(false);
-      expect(res.body.message).toContain('Validation Error');
+      expect(res.body.message).toContain('invalid_type');
     });
   });
 });
