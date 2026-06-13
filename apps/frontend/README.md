@@ -22,19 +22,10 @@ This project uses standard system fonts to optimize performance and ensure stabl
 
 ## Rendering Strategies
 
-To optimize performance and user experience, this application leverages three different Next.js rendering strategies:
+Tài liệu giải thích chi tiết về các chiến lược Render (SSR, SSG, ISR) được sử dụng cho báo cáo/bảo vệ đồ án đã được cập nhật đầy đủ tại: 
+👉 [Xem tài liệu: docs/rendering-strategy.md](./docs/rendering-strategy.md)
 
-### 1. Server-Side Rendering (SSR) & Dynamic Rendering
-- **Location**: `src/app/dashboard/**`
-- **Why**: The dashboard contains personalized user data (authentication/cookies) and real-time sensor metrics via WebSockets. Because this data changes constantly and requires user session validation on every request, the dashboard layout is configured with `export const dynamic = "force-dynamic"`. This ensures the content is always fresh and secure.
 
-### 2. Static Site Generation (SSG)
-- **Location**: `src/app/farm-guide/[slug]/page.tsx`
-- **Why**: Detailed guide contents do not change frequently and do not depend on the user's authentication state. By using `generateStaticParams()`, these pages are pre-built into static HTML files at build time. This provides instantaneous page loads and optimal SEO.
-
-### 3. Incremental Static Regeneration (ISR)
-- **Location**: `src/app/farm-guide/page.tsx` and `src/app/farm-guide/[slug]/page.tsx`
-- **Why**: While the guides are static, we might want them to update periodically if new content is published without requiring a full rebuild. We use `export const revalidate = 3600` (1 hour) so Next.js automatically regenerates these pages in the background after the cache expires.
 
 ## Learn More
 
