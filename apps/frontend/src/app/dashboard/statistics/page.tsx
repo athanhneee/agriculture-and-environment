@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { getOverviewStats } from "@/lib/dashboard-server";
 import { StatisticsClient } from "@/components/dashboard/StatisticsClient";
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
+
 
 export const metadata: Metadata = {
   title: "Báo cáo Thống kê | Thành Phát An Smart Farm",

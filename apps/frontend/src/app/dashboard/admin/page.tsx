@@ -3,7 +3,7 @@ import { getOverviewStats } from "@/lib/dashboard-server";
 import { AdminOverviewClient } from "@/components/dashboard/AdminOverviewClient";
 
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 export const metadata: Metadata = {
   title: "Quản trị Hệ thống | Thành Phát An Smart Farm",

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { getFarmZones } from "@/lib/farm-zones-server";
 import { MapClient } from "@/components/dashboard/MapClient";
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 export const metadata: Metadata = {
   title: "Bản Đồ Nông Trại | Thành Phát An Smart Farm",

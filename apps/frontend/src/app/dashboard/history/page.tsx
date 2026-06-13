@@ -7,7 +7,7 @@ import { HistoryClient } from "@/components/dashboard/HistoryClient";
 // 1. ISR (Incremental Static Regeneration) cho danh sách Vùng trồng — cache 30s.
 // 2. Client-side Fetching cho dữ liệu lịch sử và các biểu đồ Recharts, vì trang này phụ thuộc hoàn toàn vào 
 //    bộ lọc khoảng ngày (from/to) và vùng trồng do người dùng thao tác liên tục ở phía Client.
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 export const metadata: Metadata = {
   title: "Lịch sử Dữ liệu Cảm biến | Thành Phát An Smart Farm",

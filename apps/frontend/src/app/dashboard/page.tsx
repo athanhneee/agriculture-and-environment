@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "Bảng điều khiển tổng quan hệ thống giám sát nông nghiệp — số liệu thời gian thực, cảnh báo và trạng thái các vùng trồng.",
 };
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 function getRoleFromToken(token?: string) {
   if (!token) return null;

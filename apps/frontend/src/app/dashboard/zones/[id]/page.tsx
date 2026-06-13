@@ -16,16 +16,13 @@ import {
   Thermometer,
 } from "lucide-react";
 
-import { getFarmZoneById, getAllZoneIds } from "@/lib/farm-zones-server";
+import { getFarmZoneById } from "@/lib/farm-zones-server";
 import { ZoneActionButtons } from "@/components/dashboard/ZoneActionButtons";
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
-// Pre-build tất cả trang chi tiết zone khi khởi động — trả về tức thì từ cache
-export async function generateStaticParams() {
-  const ids = await getAllZoneIds();
-  return ids.map((id) => ({ id }));
-}
+// This route inherits SSR (force-dynamic) from dashboard/layout.tsx
+// Therefore, generateStaticParams cannot be used here.
 
 interface PageProps {
   params: Promise<{ id: string }>;

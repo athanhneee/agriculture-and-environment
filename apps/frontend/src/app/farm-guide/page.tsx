@@ -17,18 +17,21 @@ const guideItems = [
         description:
             "Dashboard nhận dữ liệu nhiệt độ, độ ẩm không khí, độ ẩm đất và ánh sáng theo thời gian thực.",
         icon: RadioTower,
+        slug: "setup-sensors",
     },
     {
         title: "Quản lý vùng trồng",
         description:
             "Mỗi vùng trồng có diện tích, tọa độ bản đồ, loại đất, cây trồng và cảm biến được gán.",
         icon: Leaf,
+        slug: "manage-zones",
     },
     {
         title: "Cảnh báo bất thường",
         description:
             "Khi chỉ số vượt ngưỡng, backend tự sinh cảnh báo môi trường hoặc nguy cơ sâu bệnh.",
         icon: ShieldAlert,
+        slug: "alert-system",
     },
 ];
 
@@ -74,6 +77,11 @@ export default function FarmGuidePage() {
                                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                                     {item.description}
                                 </p>
+                                <div className="mt-4">
+                                    <Link href={`/farm-guide/${item.slug}`} className="text-sm font-medium text-emerald-600 hover:text-emerald-800">
+                                        Xem chi tiết &rarr;
+                                    </Link>
+                                </div>
                             </article>
                         );
                     })}

@@ -3,7 +3,7 @@ import { getFarmZones } from "@/lib/farm-zones-server";
 import { SensorsClient } from "@/components/dashboard/SensorsClient";
 import { ExportExcelButtons } from "@/components/dashboard/ExportExcelButtons";
 
-export const revalidate = 30;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 export const metadata: Metadata = {
   title: "Quản lý Cảm biến | Thành Phát An Smart Farm",

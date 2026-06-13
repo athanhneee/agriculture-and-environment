@@ -4,7 +4,7 @@ import { getOpenAlerts } from "@/lib/dashboard-server";
 import { getFarmZones } from "@/lib/farm-zones-server";
 import type { AlertItem } from "@/lib/api";
 
-export const revalidate = 15;
+// Using SSR (dynamic rendering) inherited from dashboard layout
 
 export const metadata: Metadata = {
   title: "Cảnh báo Hệ Thống | Thành Phát An Smart Farm",
