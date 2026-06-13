@@ -25,6 +25,12 @@ This project uses standard system fonts to optimize performance and ensure stabl
 Tài liệu giải thích chi tiết về các chiến lược Render (SSR, SSG, ISR) được sử dụng cho báo cáo/bảo vệ đồ án đã được cập nhật đầy đủ tại: 
 👉 [Xem tài liệu: docs/rendering-strategy.md](./docs/rendering-strategy.md)
 
+## Kiến trúc bảo mật (Authentication & Route Guarding)
+Để đảm bảo an toàn tối đa (chống XSS) và quản lý phiên đăng nhập hiệu quả, dự án áp dụng mô hình bảo vệ nhiều lớp:
+1. **Frontend Middleware (`src/middleware.ts`)**: Đóng vai trò bảo vệ sơ bộ (Initial Guard). Middleware không chứa logic xác thực phức tạp để tránh nặng hệ thống, mà chỉ kiểm tra sự tồn tại của HttpOnly `refreshToken` cookie để quyết định có cho phép truy cập `/dashboard` hay không.
+2. **Frontend Auth Guard (`useAuthGuard.ts`)**: Trực tiếp gọi API lấy dữ liệu `/auth/me` để tự động khôi phục `accessToken` vào Memory thông qua cơ chế Auto-refresh. Nếu token không hợp lệ, hệ thống sẽ đá văng user về trang đăng nhập.
+3. **Backend Middleware**: Đây mới là lớp **BẢO VỆ THẬT**. Dù user có vượt qua được Frontend bằng cách làm giả cookie, mọi request lấy/đẩy dữ liệu ở Backend đều yêu cầu gửi kèm `Bearer accessToken` hợp lệ. Backend xác thực chữ ký JWT bằng Secret Key, đảm bảo an toàn tuyệt đối 100%.
+
 
 
 ## Learn More

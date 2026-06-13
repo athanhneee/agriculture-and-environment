@@ -5,14 +5,33 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
 
   const headers: Record<string, string> = {
     Accept: "application/json",
   };
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  if (!refreshToken) return headers;
+
+  try {
+    // Gọi ngầm API backend đổi refreshToken lấy accessToken dùng tạm cho vòng đời SSR này
+    const res = await fetch(`${API_URL}/api/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `refreshToken=${refreshToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const body = await res.json();
+      if (body.success && body.data?.accessToken) {
+        headers.Authorization = `Bearer ${body.data.accessToken}`;
+      }
+    }
+  } catch (err) {
+    console.error("Lỗi khi lấy accessToken qua SSR:", err);
   }
 
   return headers;

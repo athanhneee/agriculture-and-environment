@@ -6,7 +6,7 @@ const authRoutes = ["/auth/login", "/auth/register"];
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
 
   const isProtectedRoute = protectedRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
@@ -14,13 +14,13 @@ export function middleware(request: NextRequest) {
 
   const isAuthRoute = authRoutes.some((route) => pathname === route);
 
-  if (isProtectedRoute && !accessToken) {
+  if (isProtectedRoute && !refreshToken) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("next", `${pathname}${search}`);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthRoute && accessToken) {
+  if (isAuthRoute && refreshToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 

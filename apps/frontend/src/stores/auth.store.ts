@@ -23,25 +23,12 @@ export const useAuthStore = create<AuthState>()(
       hasHydrated: false,
       setAuth: ({ user, accessToken }) => {
         set({ user, accessToken });
-        if (typeof window !== "undefined") {
-          document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; path=/`;
-        }
       },
       setAccessToken: (accessToken) => {
         set({ accessToken });
-        if (typeof window !== "undefined") {
-          if (accessToken) {
-            document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; path=/`;
-          } else {
-            document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-          }
-        }
       },
       clearAuth: () => {
         set({ user: null, accessToken: null });
-        if (typeof window !== "undefined") {
-          document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-        }
       },
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
@@ -49,8 +36,7 @@ export const useAuthStore = create<AuthState>()(
       name: "smart-farm-auth",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        user: state.user,
-        accessToken: state.accessToken,
+        hasHydrated: state.hasHydrated,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
