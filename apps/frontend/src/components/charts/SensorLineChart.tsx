@@ -21,6 +21,7 @@ export function SensorLineChart({ data }: SensorLineChartProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Client only
     setMounted(true);
   }, []);
 

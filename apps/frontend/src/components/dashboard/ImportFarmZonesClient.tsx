@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { FileSpreadsheet, Loader2, UploadCloud, Sprout, Cpu, Layers } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
-import { apiBaseUrl, importsApi } from "@/lib/api";
+import { importsApi } from "@/lib/api";
 
 function DragDropZone({
   selectedFile,
@@ -98,7 +98,6 @@ function DragDropZone({
 }
 
 export function ImportFarmZonesClient() {
-  const accessToken = useAuthStore((state) => state.accessToken);
   const user = useAuthStore((state) => state.user);
 
   const [activeTab, setActiveTab] = useState<"zones" | "crops" | "sensors">("zones");

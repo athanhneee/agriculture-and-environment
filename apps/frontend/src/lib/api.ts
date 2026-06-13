@@ -27,12 +27,12 @@ type PaginatedResponse<T> = {
 function unwrapList<T>(payload: { success: boolean; data: T[] | { data: T[]; items?: T[] }; items?: T[] } | unknown): T[] {
   if (Array.isArray(payload)) return payload;
 
-  if (payload && Array.isArray(payload.data)) {
-    return payload.data;
+  if (payload && Array.isArray((payload as any).data)) {
+    return (payload as any).data;
   }
 
-  if (payload && Array.isArray(payload.items)) {
-    return payload.items;
+  if (payload && Array.isArray((payload as any).items)) {
+    return (payload as any).items;
   }
 
   return [];
@@ -682,11 +682,11 @@ export const sensorReadingsApi = {
 };
 
 export const statisticsApi = {
-  overview: () => apiRequest<any>("/api/statistics/overview"),
+  overview: () => apiRequest<Record<string, unknown>>("/api/statistics/overview"),
   alerts: (params?: Record<string, string>) =>
-    apiRequest<any>(`/api/statistics/alerts?${cleanParams(params)}`),
+    apiRequest<Record<string, unknown>>(`/api/statistics/alerts?${cleanParams(params)}`),
   readings: (params?: Record<string, string>) =>
-    apiRequest<any[]>(`/api/statistics/readings?${cleanParams(params)}`),
+    apiRequest<Record<string, unknown>[]>(`/api/statistics/readings?${cleanParams(params)}`),
 };
 
 export type GlobalSearchResults = {

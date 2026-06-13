@@ -52,9 +52,9 @@ function ToastNotification({ alert, onClose }: { alert: import("@/stores/realtim
 
 export function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [alerts, setAlerts] = useState<any[]>([]);
+  const [alerts, setAlerts] = useState<import("@/stores/realtime.store").Alert[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [toastAlert, setToastAlert] = useState<any | null>(null);
+  const [toastAlert, setToastAlert] = useState<import("@/stores/realtime.store").Alert | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -66,14 +66,15 @@ export function NotificationDropdown() {
         statisticsApi.overview()
       ]);
       
-      setUnreadCount(stats?.openAlertsCount || data.filter((a: import("@/stores/realtime.store").Alert) => a.status === "OPEN").length);
-      setAlerts(data.slice(0, 5)); // Show top 5 in dropdown
+      setUnreadCount(Number(stats?.openAlertsCount) || data.filter((a: any) => a.status === "OPEN").length);
+      setAlerts(data.slice(0, 5) as any); // Show top 5 in dropdown
     } catch (error) {
       console.error("Lỗi khi tải thông báo:", error);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Cần fetch data ban đầu
     fetchAlerts();
     // Poll every 30 seconds as fallback
     const interval = setInterval(fetchAlerts, 30000);

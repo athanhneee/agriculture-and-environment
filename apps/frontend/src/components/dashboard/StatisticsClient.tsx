@@ -48,9 +48,9 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   const [from, setFrom] = useState(formatDate(thirtyDaysAgo));
   const [to, setTo] = useState(formatDate(today));
 
-  const [alertSeverityStats, setAlertSeverityStats] = useState<any[]>([]);
-  const [alertTypeStats, setAlertTypeStats] = useState<any[]>([]);
-  const [readingsStats, setReadingsStats] = useState<any[]>([]);
+  const [alertSeverityStats, setAlertSeverityStats] = useState<Record<string, unknown>[]>([]);
+  const [alertTypeStats, setAlertTypeStats] = useState<Record<string, unknown>[]>([]);
+  const [readingsStats, setReadingsStats] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateError, setDateError] = useState<string | null>(null);
@@ -65,8 +65,8 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
         statisticsApi.readings({ from, to }),
       ]);
 
-      setAlertSeverityStats(alertsData?.bySeverity ?? []);
-      setAlertTypeStats(alertsData?.byType ?? []);
+      setAlertSeverityStats((alertsData?.bySeverity as Record<string, unknown>[]) ?? []);
+      setAlertTypeStats((alertsData?.byType as Record<string, unknown>[]) ?? []);
       setReadingsStats(Array.isArray(readingsData) ? readingsData : []);
     } catch (err) {
       console.error("Fetch statistics failed:", err);
@@ -77,6 +77,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
   }, [from, to]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Cần fetch data ban đầu
     fetchStats();
   }, [fetchStats]);
 
@@ -89,21 +90,29 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
     };
 
     return alertSeverityStats
-      .map((item) => ({
-        name: nameMap[item.severity] ?? item.severity,
-        value: item.count,
-        severity: item.severity,
-      }))
+      .map((item) => {
+        const severity = String(item.severity);
+        const count = Number(item.count) || 0;
+        return {
+          name: nameMap[severity] ?? severity,
+          value: count,
+          severity: severity,
+        };
+      })
       .filter((item) => item.value > 0);
   };
 
   // Chuẩn hóa dữ liệu cảnh báo theo Loại (Type) dịch sang tiếng Việt để vẽ BarChart
   const getAlertTypesData = () => {
     return alertTypeStats
-      .map((item) => ({
-        name: TYPE_MAP[item.type] || item.type,
-        count: item.count,
-      }))
+      .map((item) => {
+        const typeStr = String(item.type);
+        const count = Number(item.count) || 0;
+        return {
+          name: TYPE_MAP[typeStr] || typeStr,
+          count: count,
+        };
+      })
       .sort((a, b) => b.count - a.count);
   };
 
@@ -248,10 +257,10 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
                     data={readingsStats.map((item) => ({
-                      date: new Date(item.date).toLocaleDateString("vi-VN", { month: "numeric", day: "numeric" }),
-                      temp: item.avgTemperature ? Number(item.avgTemperature.toFixed(1)) : 0,
-                      hum: item.avgAirHumidity ? Number(item.avgAirHumidity.toFixed(1)) : 0,
-                      soil: item.avgSoilMoisture ? Number(item.avgSoilMoisture.toFixed(1)) : 0,
+                      date: new Date(String(item.date || "")).toLocaleDateString("vi-VN", { month: "numeric", day: "numeric" }),
+                      temp: item.avgTemperature ? Number(Number(item.avgTemperature).toFixed(1)) : 0,
+                      hum: item.avgAirHumidity ? Number(Number(item.avgAirHumidity).toFixed(1)) : 0,
+                      soil: item.avgSoilMoisture ? Number(Number(item.avgSoilMoisture).toFixed(1)) : 0,
                     }))}
                     margin={{ top: 5, right: 10, left: -25, bottom: 0 }}
                   >

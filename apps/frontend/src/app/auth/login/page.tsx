@@ -62,7 +62,7 @@ export default function LoginPage() {
   const onSubmit = async (values: LoginFormValues) => {
     try {
       const data = await authApi.login(values);
-      setAuth(data as any);
+      setAuth(data);
       const redirectTo =
         nextPath?.startsWith("/") && !nextPath.startsWith("//")
           ? nextPath

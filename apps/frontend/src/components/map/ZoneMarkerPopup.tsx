@@ -4,10 +4,9 @@ import { type FarmZone } from "@/lib/api";
 
 interface ZoneMarkerPopupProps {
   zone: FarmZone;
-  fallbackCoords?: [number, number];
 }
 
-export function ZoneMarkerPopup({ zone, fallbackCoords }: ZoneMarkerPopupProps) {
+export function ZoneMarkerPopup({ zone }: ZoneMarkerPopupProps) {
   const statusConfig = {
     ACTIVE:      { label: "Đang hoạt động", cls: "bg-emerald-100 text-emerald-700" },
     INACTIVE:    { label: "Ngừng hoạt động", cls: "bg-zinc-100 text-zinc-600" },
@@ -18,8 +17,6 @@ export function ZoneMarkerPopup({ zone, fallbackCoords }: ZoneMarkerPopupProps) 
   const hasAlerts = (zone.openAlertsCount ?? 0) > 0;
   const temp      = zone.latestSensorSummary?.temperature;
   const soilMoist = zone.latestSensorSummary?.soilMoisture;
-  const lat = zone.latitude || fallbackCoords?.[0];
-  const lng = zone.longitude || fallbackCoords?.[1];
 
   return (
     <div style={{ minWidth: 240, fontFamily: "inherit" }}>

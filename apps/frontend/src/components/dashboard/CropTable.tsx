@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, Trash2, Calendar, AlertTriangle, Leaf, MapPin, Sprout, CheckCircle2, Clock } from "lucide-react";
+import { Edit2, Trash2, Calendar, AlertTriangle, Leaf, MapPin } from "lucide-react";
 import { type Crop } from "@/lib/api";
 
 interface CropTableProps {

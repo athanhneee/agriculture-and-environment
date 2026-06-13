@@ -78,16 +78,16 @@ export const useRealtimeStore = create<RealtimeState>((set) => ({
     const initialChartData: ChartDataPoint[] = [];
     if (latestReading && latestReading.recordedAt) {
       initialChartData.push({
-        time: formatTime(latestReading.recordedAt),
-        temperature: latestReading.temperature ?? 0,
-        airHumidity: latestReading.airHumidity ?? 0,
-        soilMoisture: latestReading.soilMoisture ?? 0,
-        lightIntensity: latestReading.lightIntensity ?? 0,
+        time: formatTime(String(latestReading.recordedAt)),
+        temperature: Number(latestReading.temperature) || 0,
+        airHumidity: Number(latestReading.airHumidity) || 0,
+        soilMoisture: Number(latestReading.soilMoisture) || 0,
+        lightIntensity: Number(latestReading.lightIntensity) || 0,
       });
     }
 
     set({
-      latestReading,
+      latestReading: latestReading as any,
       alerts,
       readings: initialChartData,
     });

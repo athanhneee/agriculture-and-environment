@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { AlertTriangle, Compass, MapPin, Navigation, RadioTower, ZoomIn, Wifi, CheckCircle2, RefreshCw, Layers } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 
@@ -138,13 +139,13 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
               <p className="mt-2 max-w-xs text-sm text-muted-foreground leading-relaxed">
                 Các vùng trồng chưa được ghi nhận tọa độ địa lý. Hãy cập nhật tọa độ GPS cho từng vùng để hiển thị bản đồ.
               </p>
-              <a
+              <Link
                 href="/dashboard/zones"
                 className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition"
               >
                 <Navigation className="size-4" />
                 Đến trang Vùng trồng
-              </a>
+              </Link>
             </div>
           ) : (
             <FarmMap
@@ -185,7 +186,6 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
             {mapZones.map((zone) => {
               const isSelected = selectedZone?.id === zone.id;
               const hasCoords  = getZoneCoords(zone) !== null;
-              const hasAlerts  = (zone.openAlertsCount ?? 0) > 0;
               const sta = statusConfig[zone.status as keyof typeof statusConfig] ?? statusConfig.INACTIVE;
 
               return (

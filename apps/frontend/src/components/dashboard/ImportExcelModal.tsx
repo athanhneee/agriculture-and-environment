@@ -247,7 +247,7 @@ export function ImportExcelModal({ open, onClose, onSuccess }: ImportExcelModalP
 
                 {/* Cell row */}
                 <div className="flex min-w-0 flex-1 items-stretch overflow-x-auto">
-                  {COLUMNS.map((col, i) => (
+                  {COLUMNS.map((col) => (
                     <div
                       key={col.name}
                       className={
@@ -354,7 +354,7 @@ export function ImportExcelModal({ open, onClose, onSuccess }: ImportExcelModalP
                         <span className="shrink-0 rounded bg-destructive/10 px-1.5 py-0.5 text-[10px] font-mono font-bold text-destructive">
                           Dòng {err.row}
                         </span>
-                        <span className="text-xs text-destructive/80">{err instanceof Error ? err.message : String(err)}</span>
+                        <span className="text-xs text-destructive/80">{err.message}</span>
                       </div>
                     ))}
                   </div>

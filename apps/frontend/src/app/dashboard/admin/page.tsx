@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { getOverviewStats } from "@/lib/dashboard-server";
 import { AdminOverviewClient } from "@/components/dashboard/AdminOverviewClient";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+
 
 export const revalidate = 30;
 

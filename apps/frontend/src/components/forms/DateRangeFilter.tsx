@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Download, Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 
 interface DateRangeFilterProps {
   zones: Array<{ id: string; name: string }>;

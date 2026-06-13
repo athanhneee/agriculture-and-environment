@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Activity, BellRing, RadioTower } from "lucide-react";
+import { BellRing, RadioTower } from "lucide-react";
 
-import { getSocket, socketBaseUrl } from "@/lib/socket";
+import { getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/stores/auth.store";
 
 type ZoneSummary = {
@@ -46,14 +46,10 @@ const severityLabels: Record<string, string> = {
 
 export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
   const accessToken = useAuthStore((state) => state.accessToken);
-  const [status, setStatus] = useState<"connecting" | "connected" | "offline">(
-    "connecting",
-  );
   const [latestReadings, setLatestReadings] = useState<
     Record<string, SensorReadingPayload["reading"]>
   >({});
   const [latestAlert, setLatestAlert] = useState<AlertPayload | null>(null);
-  const [eventCount, setEventCount] = useState(0);
 
   const rooms = useMemo(
     () => zones.map((zone) => `farm-zone:${zone.id}`),
@@ -62,32 +58,26 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
 
   useEffect(() => {
     if (!accessToken) {
-      setStatus("offline");
       return;
     }
 
     const socket = getSocket(accessToken);
 
     const handleConnect = () => {
-      setStatus("connected");
       rooms.forEach((room) => socket.emit("join-room", room));
     };
 
-    const handleDisconnect = () => setStatus("offline");
     const handleReading = (payload: SensorReadingPayload) => {
       setLatestReadings((current) => ({
         ...current,
         [payload.farmZoneId]: payload.reading,
       }));
-      setEventCount((count) => count + 1);
     };
     const handleAlert = (payload: AlertPayload) => {
       setLatestAlert(payload);
-      setEventCount((count) => count + 1);
     };
 
     socket.on("connect", handleConnect);
-    socket.on("disconnect", handleDisconnect);
     socket.on("sensor:reading-created", handleReading);
     socket.on("sensor:global-reading", handleReading);
     socket.on("alert:created", handleAlert);
@@ -102,20 +92,12 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
     return () => {
       rooms.forEach((room) => socket.emit("leave-room", room));
       socket.off("connect", handleConnect);
-      socket.off("disconnect", handleDisconnect);
       socket.off("sensor:reading-created", handleReading);
       socket.off("sensor:global-reading", handleReading);
       socket.off("alert:created", handleAlert);
       socket.off("alert:global", handleAlert);
     };
   }, [accessToken, rooms]);
-
-  const statusText =
-    status === "connected"
-      ? ""
-      : status === "connecting"
-        ? "Đang kết nối..."
-        : "Ngoại tuyến";
 
   return (
     <div className="space-y-6">

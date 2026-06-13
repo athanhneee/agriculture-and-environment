@@ -9,13 +9,11 @@ import {
   Compass,
   Cpu,
   Droplets,
-  Edit,
   Layers,
   MapPin,
   Sprout,
   Sun,
   Thermometer,
-  Trash2,
 } from "lucide-react";
 
 import { getFarmZoneById, getAllZoneIds } from "@/lib/farm-zones-server";

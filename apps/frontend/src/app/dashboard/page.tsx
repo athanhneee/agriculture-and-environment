@@ -32,7 +32,7 @@ function getRoleFromToken(token?: string) {
     const payloadStr = Buffer.from(payloadBase64, "base64").toString("utf-8");
     const payload = JSON.parse(payloadStr);
     return payload.role;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

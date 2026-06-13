@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save, X } from "lucide-react";
@@ -25,7 +25,6 @@ const DEFAULT_UNITS = {
 
 export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFormProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string>(initialData?.type ?? "TEMPERATURE");
   const isEdit = Boolean(initialData);
 
   const {
@@ -48,7 +47,6 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
   // Tự động gán đơn vị đo (unit) mặc định dựa trên loại cảm biến được chọn
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const type = e.target.value as keyof typeof DEFAULT_UNITS;
-    setSelectedType(type);
     if (DEFAULT_UNITS[type]) {
       setValue("unit", DEFAULT_UNITS[type]);
     }

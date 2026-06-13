@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Plus, Search, SlidersHorizontal, RefreshCw, Leaf, Sprout, CheckCircle2 } from "lucide-react";
+import { Plus, Search, SlidersHorizontal, RefreshCw, Leaf, CheckCircle2 } from "lucide-react";
 
-import { cropsApi, type Crop, type CropStatus } from "@/lib/api";
+import { cropsApi, type Crop } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { CropTable } from "./CropTable";
 import { CropForm } from "../forms/CropForm";
@@ -69,6 +69,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
   }, [filterZone, filterStatus, debouncedSearch]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Cần load danh sách
     fetchCrops();
   }, [fetchCrops]);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Loader2, LogOut, Search, UserCircle } from "lucide-react";
+import { Loader2, LogOut, UserCircle } from "lucide-react";
 
 import { useState, useRef, useEffect } from "react";
 import { useLogout } from "@/hooks/useLogout";

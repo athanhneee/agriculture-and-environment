@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Table, RefreshCw, BarChart2 } from "lucide-react";
+import { Table, RefreshCw } from "lucide-react";
 
 import { sensorReadingsApi, type SensorReading } from "@/lib/api";
 import { DateRangeFilter } from "../forms/DateRangeFilter";
@@ -49,6 +49,7 @@ export function HistoryClient({ initialZones }: HistoryClientProps) {
   }, [filters]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Cần fetch data ban đầu
     fetchHistory();
   }, [fetchHistory]);
 

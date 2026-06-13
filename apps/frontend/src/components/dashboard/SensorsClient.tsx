@@ -70,6 +70,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
   }, [filterZone, filterType, filterStatus, debouncedSearch]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Cần fetch data ban đầu
     fetchSensors();
   }, [fetchSensors]);
 

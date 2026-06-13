@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-
-const geistSans = Geist({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-geist-sans",
-  display: "swap",
-});
 
 const APP_NAME = "Thành Phát An Smart Farm";
 const APP_DESCRIPTION =
@@ -51,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="vi" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full" suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

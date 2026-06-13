@@ -305,8 +305,8 @@ export default function RegisterPage() {
           {/* Quote */}
           <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-sm">
             <p className="text-sm italic text-emerald-100/80">
-              "Hệ thống giúp chúng tôi phát hiện bất thường sớm hơn 3 lần so với
-              phương pháp thủ công trước đây."
+              &quot;Hệ thống giúp chúng tôi phát hiện bất thường sớm hơn 3 lần so với
+              phương pháp thủ công trước đây.&quot;
             </p>
             <p className="mt-2 text-xs font-semibold text-teal-300">
               — Nguyễn Quản Trị · Quản lý Nông trại Củ Chi

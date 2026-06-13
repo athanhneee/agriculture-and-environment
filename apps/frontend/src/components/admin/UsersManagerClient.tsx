@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Shield, ShieldOff, Trash2, Search, Loader2, Edit, X, Plus, Upload } from "lucide-react";
+import { Users, Shield, Trash2, Search, Loader2, Edit, X, Plus, Upload } from "lucide-react";
 import { usersApi, type SystemUser } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { ImportUsersExcelModal } from "./ImportUsersExcelModal";
@@ -41,6 +41,7 @@ export function UsersManagerClient() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Cần load danh sách
     fetchUsers();
   }, []);
 
@@ -81,7 +82,7 @@ export function UsersManagerClient() {
         alert("Cập nhật thông tin thành công!");
       } else {
         // Thêm mới
-        await usersApi.create(form as any);
+        await usersApi.create(form);
         alert("Thêm mới người dùng thành công!");
       }
       closeModal();

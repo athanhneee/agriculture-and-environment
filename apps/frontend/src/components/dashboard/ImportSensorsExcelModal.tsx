@@ -13,7 +13,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [importResult, setImportResult] = useState<{ imported: number; skipped: number; errors?: unknown[] } | null>(null);
+  const [importResult, setImportResult] = useState<{ imported: number; skipped: number; errors?: { row: number; message: string }[] } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -91,7 +91,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
 
     try {
       const result = await importsApi.uploadSensors(file);
-      setImportResult(result as any);
+      setImportResult(result);
     } catch (err: unknown) {
       setError((err instanceof Error ? err.message : null) || "Đã xảy ra lỗi trong quá trình upload.");
     } finally {
@@ -238,7 +238,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                     {importResult.errors.map((err, idx) => (
                       <div key={idx} className="flex gap-2">
                         <span className="font-semibold shrink-0 text-muted-foreground">Dòng {err.row}:</span>
-                        <span className="text-destructive">{err instanceof Error ? err.message : String(err)}</span>
+                        <span className="text-destructive">{err.message}</span>
                       </div>
                     ))}
                   </div>

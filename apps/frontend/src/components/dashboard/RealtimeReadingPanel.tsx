@@ -15,6 +15,7 @@ export function RealtimeReadingPanel({ isConnected }: RealtimeReadingPanelProps)
   // Hiệu ứng nháy xanh khi có dữ liệu mới đẩy về
   useEffect(() => {
     if (latestReading) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Kích hoạt animation khi có dữ liệu mới
       setPulse(true);
       const timer = setTimeout(() => setPulse(false), 800);
       return () => clearTimeout(timer);

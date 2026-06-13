@@ -54,6 +54,7 @@ export function useSocket(onAlertCreated?: (alert: import("@/stores/realtime.sto
     if (!socket.connected) {
       socket.connect();
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Lý do: Cần đồng bộ trạng thái ngay
       setIsConnected(true);
     }
 

@@ -148,7 +148,7 @@ export default function FarmMap({ zones, selectedZone, onSelectZone }: FarmMapPr
                 }}
               />
               <Popup className="leaflet-popup-custom" minWidth={240}>
-                <ZoneMarkerPopup zone={zone} fallbackCoords={coords} />
+                <ZoneMarkerPopup zone={zone} />
               </Popup>
             </Marker>
           );
