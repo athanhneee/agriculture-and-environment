@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   MapPin,
   Plus,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import { type FarmZone } from "@/lib/api";
 import { FarmZoneCard } from "./FarmZoneCard";
+import { ImportExcelModal } from "./ImportExcelModal";
 import { useAuthStore } from "@/stores/auth.store";
 
 interface FarmZonesBrowserProps {
@@ -57,9 +59,12 @@ const DEMO_REGIONS = [
 export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
   const user = useAuthStore((state) => state.user);
   const isAdmin = user?.role === "ADMIN";
+  const canManage = user?.role !== "ADMIN";
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const router = useRouter();
 
   const filteredZones = initialZones.filter((zone) => {
     const matchesSearch =
@@ -105,14 +110,23 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
           )}
         </div>
 
-        {isAdmin && (
-          <Link
-            href="/dashboard/zones/new"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm shadow-emerald-600/20 transition hover:bg-emerald-700"
-          >
-            <Plus className="size-4" />
-            Thêm vùng trồng
-          </Link>
+        {canManage && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setIsImportOpen(true)}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+              Import Excel
+            </button>
+            <Link
+              href="/dashboard/zones/new"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm shadow-emerald-600/20 transition hover:bg-emerald-700"
+            >
+              <Plus className="size-4" />
+              Thêm vùng trồng
+            </Link>
+          </div>
         )}
       </div>
 
@@ -160,9 +174,9 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
             </div>
             <h3 className="mt-4 text-lg font-semibold">Chưa có vùng trồng nào</h3>
             <p className="mt-2 text-sm text-muted-foreground max-w-sm mx-auto">
-              Hệ thống chưa có dữ liệu vùng trồng. {isAdmin ? "Nhấn \"Thêm vùng trồng\" để bắt đầu." : "Liên hệ quản trị viên để thêm vùng trồng."}
+              Hệ thống chưa có dữ liệu vùng trồng. {canManage ? "Nhấn \"Thêm vùng trồng\" để bắt đầu." : "Liên hệ chủ vùng trồng để thêm vùng trồng."}
             </p>
-            {isAdmin && (
+            {canManage && (
               <Link
                 href="/dashboard/zones/new"
                 className="mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
@@ -227,6 +241,15 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
           </p>
         </div>
       )}
+
+      {/* Import Zones Modal */}
+      <ImportExcelModal
+        open={isImportOpen}
+        onClose={() => setIsImportOpen(false)}
+        onSuccess={() => {
+          router.refresh();
+        }}
+      />
     </div>
   );
 }

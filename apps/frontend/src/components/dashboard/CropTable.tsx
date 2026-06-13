@@ -8,10 +8,10 @@ interface CropTableProps {
   crops: Crop[];
   onEdit: (crop: Crop) => void;
   onDelete: (id: string) => void;
-  isAdmin: boolean;
+  canManage: boolean;
 }
 
-export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) {
+export function CropTable({ crops, onEdit, onDelete, canManage }: CropTableProps) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const statusConfig = {
@@ -167,7 +167,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
               <th className="px-6 py-3.5 text-muted-foreground">Ngày gieo trồng</th>
               <th className="px-6 py-3.5 text-muted-foreground">Thu hoạch dự kiến</th>
               <th className="px-6 py-3.5 text-muted-foreground">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-3.5 text-right text-muted-foreground">Thao tác</th>}
+              {canManage && <th className="px-6 py-3.5 text-right text-muted-foreground">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -199,7 +199,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                       {status.label}
                     </span>
                   </td>
-                  {isAdmin && (
+                  {canManage && (
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
@@ -272,7 +272,7 @@ export function CropTable({ crops, onEdit, onDelete, isAdmin }: CropTableProps) 
                 )}
               </div>
 
-              {isAdmin && (
+              {canManage && (
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(crop)}

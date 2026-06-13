@@ -15,8 +15,8 @@ interface SensorsClientProps {
 
 export function SensorsClient({ initialZones }: SensorsClientProps) {
   const user = useAuthStore((state) => state.user);
-  // ADMIN chỉ xem, chức năng thêm/sửa/xoá dành cho chủ vùng trồng (USER)
   const isAdmin = user?.role === "ADMIN";
+  const canManage = user?.role !== "ADMIN";
 
   const [sensors, setSensors] = useState<Sensor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -129,9 +129,9 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           </p>
         </div>
 
-        {/* Nút thao tác - chỉ cho phép ADMIN */}
-        {isAdmin && (
-          <div className="flex flex-wrap items-center gap-2">
+        {/* Nút thao tác - chỉ cho phép USER */}
+        <div className="flex flex-wrap items-center gap-2">
+          {canManage && (
             <button
               onClick={() => setIsImportOpen(true)}
               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
@@ -139,6 +139,8 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
               <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
               Import Excel
             </button>
+          )}
+          {canManage && (
             <button
               onClick={handleCreateClick}
               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
@@ -146,8 +148,8 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
               <Plus className="size-4" />
               Thêm cảm biến
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Thống kê nhanh */}
@@ -337,7 +339,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           sensors={sensors}
           onEdit={handleEditClick}
           onDelete={handleDelete}
-          isAdmin={isAdmin}
+          canManage={canManage}
         />
       )}
     </div>
