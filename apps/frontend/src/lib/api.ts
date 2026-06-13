@@ -27,12 +27,12 @@ type PaginatedResponse<T> = {
 function unwrapList<T>(payload: { success: boolean; data: T[] | { data: T[]; items?: T[] }; items?: T[] } | unknown): T[] {
   if (Array.isArray(payload)) return payload;
 
-  if (payload && Array.isArray((payload as any).data)) {
-    return (payload as any).data;
+  if (payload && typeof payload === "object" && "data" in payload && Array.isArray(payload.data)) {
+    return payload.data as T[];
   }
 
-  if (payload && Array.isArray((payload as any).items)) {
-    return (payload as any).items;
+  if (payload && typeof payload === "object" && "items" in payload && Array.isArray(payload.items)) {
+    return payload.items as T[];
   }
 
   return [];

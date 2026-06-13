@@ -66,8 +66,8 @@ export function NotificationDropdown() {
         statisticsApi.overview()
       ]);
       
-      setUnreadCount(Number(stats?.openAlertsCount) || data.filter((a: any) => a.status === "OPEN").length);
-      setAlerts(data.slice(0, 5) as any); // Show top 5 in dropdown
+      setUnreadCount(Number(stats?.openAlertsCount) || data.filter((a: import("@/lib/api").AlertItem) => a.status === "OPEN").length);
+      setAlerts(data.slice(0, 5) as unknown as import("@/stores/realtime.store").Alert[]); // Show top 5 in dropdown
     } catch (error) {
       console.error("Lỗi khi tải thông báo:", error);
     }

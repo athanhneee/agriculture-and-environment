@@ -87,7 +87,13 @@ export const useRealtimeStore = create<RealtimeState>((set) => ({
     }
 
     set({
-      latestReading: latestReading as any,
+      latestReading: latestReading ? {
+        temperature: Number(latestReading.temperature) || 0,
+        airHumidity: Number(latestReading.airHumidity) || 0,
+        soilMoisture: Number(latestReading.soilMoisture) || 0,
+        lightIntensity: Number(latestReading.lightIntensity) || 0,
+        recordedAt: String(latestReading.recordedAt || ""),
+      } : null,
       alerts,
       readings: initialChartData,
     });
