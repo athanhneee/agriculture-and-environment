@@ -25,6 +25,10 @@ import searchRoutes from "./modules/search/search.routes";
 import usersRoutes from "./modules/users/users.routes";
 const app: Application = express();
 
+// Render puts the app behind a proxy. To get the correct client IP, we need to trust the proxy.
+// This fixes the ERR_ERL_UNEXPECTED_X_FORWARDED_FOR error from express-rate-limit.
+app.set('trust proxy', 1);
+
 // --- 1. Global Middlewares ---
 app.use(helmet()); // Bảo mật HTTP headers
 app.use(compression()); // Nén HTTP response (Gzip/Brotli) để tải nhanh hơn

@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
       setSuccessMsg(null);
       
       await authApi.forgotPassword({ email });
-      setSuccessMsg("Nếu email hợp lệ, một mã OTP đã được gửi đến hộp thư của bạn.");
+      setSuccessMsg("Mã OTP đã được gửi đến hộp thư của bạn.");
       setStep(2);
     } catch (err: any) {
       setError(err.message || "Có lỗi xảy ra khi gửi OTP. Vui lòng thử lại.");
