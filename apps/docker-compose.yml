@@ -26,3 +26,4 @@ services:
       - backend
     environment:
       - NODE_ENV=production
+      - INTERNAL_API_URL=http://backend:5000

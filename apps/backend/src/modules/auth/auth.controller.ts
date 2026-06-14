@@ -7,7 +7,7 @@ const setRefreshCookie = (res: Response, token: string) => {
   res.cookie('refreshToken', token, {
     httpOnly: true,
     secure: env.nodeEnv === 'production',
-    sameSite: 'strict',
+    sameSite: env.nodeEnv === 'production' ? 'none' : 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
   });
 };
@@ -42,7 +42,11 @@ export class AuthController {
     const refreshToken = req.cookies?.refreshToken;
     if (refreshToken) {
       await AuthService.logout(refreshToken);
-      res.clearCookie('refreshToken');
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: env.nodeEnv === 'production',
+        sameSite: env.nodeEnv === 'production' ? 'none' : 'strict',
+      });
     }
     res.status(200).json(ApiResponse.success('Đăng xuất thành công'));
   }

@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { type Alert } from "@/stores/realtime.store";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+const API_URL = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const cookieStore = await cookies();
