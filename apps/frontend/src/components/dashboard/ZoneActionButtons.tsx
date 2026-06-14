@@ -4,6 +4,7 @@ import { Edit, Trash2, Loader2, Printer } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth.store";
 
 import { deleteFarmZoneAction } from "@/app/dashboard/zones/actions";
 
@@ -14,6 +15,9 @@ interface ZoneActionButtonsProps {
 export function ZoneActionButtons({ zoneId }: ZoneActionButtonsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
+  
+  const user = useAuthStore((state) => state.user);
+  const canManage = user?.role !== "ADMIN";
 
   const handleDelete = async () => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa vùng trồng này? Mọi dữ liệu liên quan sẽ bị xóa!")) {
@@ -40,25 +44,30 @@ export function ZoneActionButtons({ zoneId }: ZoneActionButtonsProps) {
         <Printer className="size-3.5" />
         Xuất PDF
       </button>
-      <Link 
-        href={`/dashboard/zones/${zoneId}/edit`}
-        className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border bg-card hover:bg-muted px-4 text-xs font-semibold transition no-print"
-      >
-        <Edit className="size-3.5" />
-        Sửa vùng
-      </Link>
-      <button 
-        onClick={handleDelete}
-        disabled={isDeleting}
-        className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 text-destructive px-4 text-xs font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed no-print"
-      >
-        {isDeleting ? (
-          <Loader2 className="size-3.5 animate-spin" />
-        ) : (
-          <Trash2 className="size-3.5" />
-        )}
-        {isDeleting ? "Đang xóa..." : "Xóa vùng"}
-      </button>
+      
+      {canManage && (
+        <>
+          <Link 
+            href={`/dashboard/zones/${zoneId}/edit`}
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border bg-card hover:bg-muted px-4 text-xs font-semibold transition no-print"
+          >
+            <Edit className="size-3.5" />
+            Sửa vùng
+          </Link>
+          <button 
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 text-destructive px-4 text-xs font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed no-print"
+          >
+            {isDeleting ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="size-3.5" />
+            )}
+            {isDeleting ? "Đang xóa..." : "Xóa vùng"}
+          </button>
+        </>
+      )}
     </div>
   );
 }

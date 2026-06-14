@@ -8,10 +8,10 @@ interface SensorTableProps {
   sensors: Sensor[];
   onEdit: (sensor: Sensor) => void;
   onDelete: (id: string) => void;
-  isAdmin: boolean;
+  canManage: boolean;
 }
 
-export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableProps) {
+export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTableProps) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const statusConfig = {
@@ -123,7 +123,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
               <th className="px-6 py-3.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">Loại</th>
               <th className="px-6 py-3.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">Đơn vị</th>
               <th className="px-6 py-3.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider text-center">Trạng thái</th>
-              {isAdmin && <th className="px-6 py-3.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider text-right">Thao tác</th>}
+              {canManage && <th className="px-6 py-3.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider text-right">Thao tác</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-border/60">
@@ -171,7 +171,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                       </span>
                     </div>
                   </td>
-                  {isAdmin && (
+                  {canManage && (
                     <td className="px-6 py-3.5 align-middle text-right">
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <button
@@ -249,7 +249,7 @@ export function SensorTable({ sensors, onEdit, onDelete, isAdmin }: SensorTableP
                 </div>
               </div>
 
-              {isAdmin && (
+              {canManage && (
                 <div className="flex justify-end gap-2 pt-3 mt-2 border-t">
                   <button
                     onClick={() => onEdit(sensor)}

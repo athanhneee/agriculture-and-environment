@@ -47,20 +47,17 @@ export default async function DashboardPage() {
   }
 
   const apiZones = await getFarmZones();
-  const dashboardZones =
-    apiZones.length > 0
-      ? apiZones.map((zone) => ({
-          id: zone.id,
-          name: zone.name,
-          crop: zone.cropName ?? "Chưa gán cây trồng",
-          area: `${zone.area} ha`,
-          status: zone.status,
-          location: `${zone.latitude}, ${zone.longitude}`,
-          soilMoisture: zone.latestSensorSummary?.soilMoisture ?? 0,
-          temperature: zone.latestSensorSummary?.temperature ?? 0,
-          light: zone.latestSensorSummary?.lightIntensity ?? 0,
-        }))
-      : cropZones;
+  const dashboardZones = apiZones.map((zone) => ({
+    id: zone.id,
+    name: zone.name,
+    crop: zone.cropName ?? "Chưa gán cây trồng",
+    area: `${zone.area} ha`,
+    status: zone.status,
+    location: `${zone.latitude}, ${zone.longitude}`,
+    soilMoisture: zone.latestSensorSummary?.soilMoisture ?? 0,
+    temperature: zone.latestSensorSummary?.temperature ?? 0,
+    light: zone.latestSensorSummary?.lightIntensity ?? 0,
+  }));
 
   const totalSensors = apiZones.reduce(
     (sum, zone) => sum + (zone.sensors?.length ?? 0),
@@ -80,8 +77,7 @@ export default async function DashboardPage() {
       : 0;
 
   const openAlertsCount =
-    apiZones.reduce((total, zone) => total + (zone.openAlertsCount ?? 0), 0) ||
-    alerts.length;
+    apiZones.reduce((total, zone) => total + (zone.openAlertsCount ?? 0), 0);
 
   const summaryCards = [
     {
@@ -210,51 +206,57 @@ export default async function DashboardPage() {
             </p>
           </div>
           <div className="space-y-3">
-            {dashboardZones.map((zone) => (
-              <Link
-                key={zone.id}
-                href={`/dashboard/zones/${zone.id}`}
-                className="grid gap-3 rounded-2xl border bg-background p-4 transition hover:border-emerald-300 hover:bg-emerald-50/60 dark:hover:bg-emerald-400/10 sm:grid-cols-[1fr_auto]"
-              >
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-semibold">{zone.name}</h3>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        zone.status === "ACTIVE"
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
+            {dashboardZones.length > 0 ? (
+              dashboardZones.map((zone) => (
+                <Link
+                  key={zone.id}
+                  href={`/dashboard/zones/${zone.id}`}
+                  className="grid gap-3 rounded-2xl border bg-background p-4 transition hover:border-emerald-300 hover:bg-emerald-50/60 dark:hover:bg-emerald-400/10 sm:grid-cols-[1fr_auto]"
+                >
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-semibold">{zone.name}</h3>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          zone.status === "ACTIVE"
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
+                            : zone.status === "INACTIVE"
+                            ? "bg-slate-100 text-slate-600 dark:bg-slate-400/15 dark:text-slate-300"
+                            : "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200"
+                        }`}
+                      >
+                        {zone.status === "ACTIVE"
+                          ? "Hoạt động"
                           : zone.status === "INACTIVE"
-                          ? "bg-slate-100 text-slate-600 dark:bg-slate-400/15 dark:text-slate-300"
-                          : "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200"
-                      }`}
-                    >
-                      {zone.status === "ACTIVE"
-                        ? "Hoạt động"
-                        : zone.status === "INACTIVE"
-                        ? "Không hoạt động"
-                        : zone.status}
+                          ? "Không hoạt động"
+                          : zone.status}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {zone.crop} · {zone.area} · {zone.location}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-xs sm:min-w-64">
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-sky-50 px-2 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
+                      <span className="text-[10px] font-medium text-muted-foreground">Độ ẩm đất</span>
+                      {zone.soilMoisture}%
+                    </span>
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-amber-50 px-2 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                      <span className="text-[10px] font-medium text-muted-foreground">Nhiệt độ</span>
+                      {zone.temperature}°C
+                    </span>
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-lime-50 px-2 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
+                      <span className="text-[10px] font-medium text-muted-foreground">Ánh sáng</span>
+                      {zone.light} lux
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {zone.crop} · {zone.area} · {zone.location}
-                  </p>
-                </div>
-                <div className="grid grid-cols-3 gap-2 text-xs sm:min-w-64">
-                  <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-sky-50 px-2 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
-                    <span className="text-[10px] font-medium text-muted-foreground">Độ ẩm đất</span>
-                    {zone.soilMoisture}%
-                  </span>
-                  <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-amber-50 px-2 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-                    <span className="text-[10px] font-medium text-muted-foreground">Nhiệt độ</span>
-                    {zone.temperature}°C
-                  </span>
-                  <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-lime-50 px-2 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
-                    <span className="text-[10px] font-medium text-muted-foreground">Ánh sáng</span>
-                    {zone.light} lux
-                  </span>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))
+            ) : (
+              <div className="py-6 text-center text-sm text-muted-foreground">
+                Bạn chưa có vùng trồng nào. Hãy tạo mới để bắt đầu theo dõi.
+              </div>
+            )}
           </div>
         </div>
 
