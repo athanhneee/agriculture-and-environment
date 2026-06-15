@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  BarChart,
   BellRing,
   LayoutDashboard,
   Leaf,
@@ -55,7 +56,12 @@ const navItems: NavItem[] = [
     match: "/dashboard/alerts",
     icon: BellRing,
   },
-
+  {
+    title: "Thống kê",
+    href: "/dashboard/statistics",
+    match: "/dashboard/statistics",
+    icon: BarChart,
+  },
   {
     title: "Bản đồ",
     href: "/dashboard/map",

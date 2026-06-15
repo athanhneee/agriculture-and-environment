@@ -128,12 +128,15 @@ export class StatisticsService {
 
     const formatPeriod = groupBy === 'hour' ? 'YYYY-MM-DD"T"HH24:00:00.000"Z"' : 'YYYY-MM-DD';
 
+    const timeUnit = Prisma.raw(groupBy === 'hour' ? "'hour'" : "'day'");
+    const sqlFormat = Prisma.raw(`'${formatPeriod}'`);
+
     // TỐI ƯU HÓA ĐIỂM 10: Sử dụng Database-level Aggregation (PostgreSQL)
     // Thay vì kéo hàng trăm ngàn dòng về Node.js (tốn >100MB RAM),
     // Query này gộp nhóm trực tiếp trong CSDL và chỉ trả về tối đa 30 dòng (tốn <1KB RAM).
     const aggregatedData = await prisma.$queryRaw<any[]>`
       SELECT 
-        TO_CHAR(DATE_TRUNC(${groupBy === 'hour' ? 'hour' : 'day'}, "recordedAt"), ${formatPeriod}) as "period",
+        TO_CHAR(DATE_TRUNC(${timeUnit}, "recordedAt"), ${sqlFormat}) as "period",
         COUNT(*)::int as "count",
         ROUND(AVG("temperature")::numeric, 2)::float as "averageTemperature",
         ROUND(AVG("airHumidity")::numeric, 2)::float as "averageAirHumidity",
@@ -142,7 +145,7 @@ export class StatisticsService {
       FROM "SensorReading"
       WHERE "farmZoneId" IN (${Prisma.join(allowedFarmZoneIds)})
         AND "recordedAt" >= ${from} AND "recordedAt" <= ${to}
-      GROUP BY DATE_TRUNC(${groupBy === 'hour' ? 'hour' : 'day'}, "recordedAt")
+      GROUP BY DATE_TRUNC(${timeUnit}, "recordedAt")
       ORDER BY "period" ASC;
     `;
 
