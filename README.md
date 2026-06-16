@@ -68,51 +68,42 @@ The frontend should now be running on `http://localhost:3000`.
 
 ---
 
-## 🐳 Setup With Docker
+## 🐳 Setup With Docker (Using Docker Compose)
 
-Both the frontend and backend have their own `Dockerfile`. Make sure you have Docker installed and running.
+The easiest way to run both the frontend and backend using Docker is via `docker-compose`. 
 
-### 1. Backend Docker Setup
-Navigate to the backend directory:
+### 1. Prepare Environment Variables
+Before running Docker Compose, you must ensure both applications have their `.env` files set up.
+
 ```bash
-cd apps/backend
+# Setup Backend env
+cp apps/backend/.env.example apps/backend/.env
+
+# Setup Frontend env
+cp apps/frontend/.env.example apps/frontend/.env
+```
+*(Important: When using Docker, ensure your `DATABASE_URL` in `apps/backend/.env` points to a reachable database host. Use `host.docker.internal` instead of `localhost` if your DB is running on the host machine).*
+
+### 2. Run with Docker Compose
+Navigate to the `apps` directory where the `docker-compose.yml` file is located:
+```bash
+cd apps
 ```
 
-Prepare environment file:
+Build and run the containers in detached mode:
 ```bash
-cp .env.example .env
-```
-*(Important: When using Docker, ensure your `DATABASE_URL` in `.env` points to a reachable database host, e.g., using `host.docker.internal` instead of `localhost` if your DB is on the host machine).*
-
-Build the Docker image:
-```bash
-docker build -t smart-farm-backend .
+docker-compose up -d --build
 ```
 
-Run the Docker container:
+- The **Frontend** will be accessible at `http://localhost:3000`.
+- The **Backend** will be accessible at `http://localhost:5000`.
+
+To view logs for both services:
 ```bash
-# Adjust port 5000 to match your backend PORT in .env
-docker run -p 5000:5000 --env-file .env smart-farm-backend
+docker-compose logs -f
 ```
 
-### 2. Frontend Docker Setup
-Navigate to the frontend directory:
+To stop the containers:
 ```bash
-cd apps/frontend
+docker-compose down
 ```
-
-Prepare environment file:
-```bash
-cp .env.example .env
-```
-
-Build the Docker image:
-```bash
-docker build -t smart-farm-frontend .
-```
-
-Run the Docker container:
-```bash
-docker run -p 3000:3000 --env-file .env smart-farm-frontend
-```
-The frontend will be accessible at `http://localhost:3000`.
