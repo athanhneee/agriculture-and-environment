@@ -20,9 +20,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  // Đã vô hiệu hóa tự động điều hướng tới dashboard khi truy cập trang đăng nhập/đăng ký lúc đã xác thực
+  /*
   if (isAuthRoute && accessToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
+  */
 
   return NextResponse.next();
 }
