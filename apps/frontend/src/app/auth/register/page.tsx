@@ -87,7 +87,7 @@ export default function RegisterPage() {
           </Link>
 
           {/* Card form */}
-          <div className="rounded-2xl border bg-card p-7 shadow-sm sm:p-9">
+          <div className="rounded-2xl border bg-card p-7 shadow-sm sm:p-9 animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
             {/* Heading */}
             <div className="mb-7">
               <div className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 dark:bg-teal-400/15 dark:text-teal-300">

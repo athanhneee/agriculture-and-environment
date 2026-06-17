@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
           </span>
         </Link>
 
-        <div className="rounded-2xl border bg-card p-7 shadow-sm sm:p-9 relative overflow-hidden">
+        <div className="rounded-2xl border bg-card p-7 shadow-sm sm:p-9 relative overflow-hidden animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
           {/* Heading */}
           <div className="mb-7">
             <div className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300">
