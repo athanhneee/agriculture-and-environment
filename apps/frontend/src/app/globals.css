@@ -122,12 +122,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     @apply scroll-smooth font-sans;
   }
+
   body {
     @apply min-h-dvh bg-background text-foreground antialiased;
   }
+
   ::selection {
     @apply bg-emerald-200 text-emerald-950;
   }
@@ -142,16 +145,17 @@
   }
 
   /* Tối ưu hóa hiệu ứng tương tác (Micro-interactions) cho toàn bộ nút bấm */
-  button, 
+  button,
   a[role="button"],
   .btn {
-    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-                background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-                border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-                transform 150ms cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
-  button:active, 
+
+  button:active,
   a[role="button"]:active,
   .btn:active {
     transform: scale(0.96) !important;
@@ -162,13 +166,16 @@
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background: oklch(0.884 0.031 150.8);
     border-radius: 9999px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: oklch(0.565 0.126 152.2);
   }
@@ -189,6 +196,7 @@
       transform: translateY(1rem);
       opacity: 0;
     }
+
     100% {
       transform: translateY(0);
       opacity: 1;
@@ -199,9 +207,10 @@
     animation: slide-in-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }
- 
+
 /* Tối ưu hóa cấu trúc CSS Print để xuất PDF chuyên nghiệp */
 @media print {
+
   /* Ẩn các thành phần giao diện không cần in */
   .no-print,
   iframe,
@@ -216,7 +225,7 @@
   div[role="navigation"] {
     display: none !important;
   }
- 
+
   /* Định cấu hình trang in */
   body {
     background: white !important;
@@ -226,7 +235,7 @@
     padding: 0 !important;
     margin: 0 !important;
   }
- 
+
   /* Định dạng lại khối nội dung chính khi in */
   main,
   .main-content,
@@ -239,29 +248,31 @@
     border: none !important;
     background: transparent !important;
   }
- 
+
   /* Ép buộc in màu nền và màu sắc rực rỡ */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
- 
+
   /* Tránh ngắt trang xấu */
-  .card, 
-  section, 
+  .card,
+  section,
   article,
   tr {
-    page-break-inside: avoid !important; /* Tránh cắt đôi thẻ khi chuyển trang in */
+    page-break-inside: avoid !important;
+    /* Tránh cắt đôi thẻ khi chuyển trang in */
   }
- 
+
   /* Định dạng lại bảng khi in */
   table {
     width: 100% !important;
     border-collapse: collapse !important;
   }
- 
-  th, td {
+
+  th,
+  td {
     border: 1px solid #cbd5e1 !important;
     padding: 8px !important;
     text-align: left !important;
@@ -278,6 +289,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -288,11 +300,25 @@
   animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.animation-delay-100 { animation-delay: 100ms; }
-.animation-delay-200 { animation-delay: 200ms; }
-.animation-delay-300 { animation-delay: 300ms; }
-.animation-delay-400 { animation-delay: 400ms; }
-.animation-delay-500 { animation-delay: 500ms; }
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
 
 /* =============================================
    Weather scene animations (homepage hero)
@@ -301,49 +327,456 @@
 
 /* Mặt trời: phát sáng nhịp nhàng */
 @keyframes sun-pulse {
-  0%, 100% { box-shadow: 0 0 18px 8px rgba(253,224,71,0.35), 0 0 40px 20px rgba(253,224,71,0.15); transform: scale(1); }
-  50%       { box-shadow: 0 0 28px 14px rgba(253,224,71,0.55), 0 0 60px 30px rgba(253,224,71,0.25); transform: scale(1.06); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 18px 8px rgba(253, 224, 71, 0.35), 0 0 40px 20px rgba(253, 224, 71, 0.15);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 28px 14px rgba(253, 224, 71, 0.55), 0 0 60px 30px rgba(253, 224, 71, 0.25);
+    transform: scale(1.06);
+  }
 }
+
 .animate-sun-pulse {
   animation: sun-pulse 3s ease-in-out infinite;
 }
 
 /* Tia nắng quay chậm */
 @keyframes sun-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
+
 .animate-sun-rotate {
   animation: sun-rotate 18s linear infinite;
 }
 
 /* Mây 1: trôi sang phải rồi trái */
 @keyframes cloud-float-1 {
-  0%, 100% { transform: translateX(0px); }
-  50%       { transform: translateX(14px); }
+
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(14px);
+  }
 }
+
 .animate-cloud-1 {
   animation: cloud-float-1 6s ease-in-out infinite;
 }
 
 /* Mây 2: trôi sang trái rồi phải */
 @keyframes cloud-float-2 {
-  0%, 100% { transform: translateX(0px); }
-  50%       { transform: translateX(-10px); }
+
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(-10px);
+  }
 }
+
 .animate-cloud-2 {
   animation: cloud-float-2 8s ease-in-out infinite;
 }
 
 /* Mưa rơi chéo xuống */
 @keyframes rain-fall {
-  0%   { transform: translateY(-12px) translateX(0px); opacity: 0; }
-  8%   { opacity: 0.65; }
-  92%  { opacity: 0.55; }
-  100% { transform: translateY(260px) translateX(-18px); opacity: 0; }
+  0% {
+    transform: translateY(-12px) translateX(0px);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.65;
+  }
+
+  92% {
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translateY(260px) translateX(-18px);
+    opacity: 0;
+  }
 }
+
 .animate-rain {
   animation: rain-fall linear infinite;
 }
 
+/* =============================================
+   Liquid Glass — Mobile Bottom Navigation
+   Apple-inspired glassmorphism for bottom nav
+   ============================================= */
 
+:root {
+  --lg-bg-strong: rgba(255, 255, 255, 0.78);
+  --lg-bg-soft: rgba(255, 255, 255, 0.36);
+  --lg-border: rgba(255, 255, 255, 0.72);
+  --lg-highlight: rgba(255, 255, 255, 0.88);
+  --lg-green-900: #167a5b;
+  --lg-green-800: #1a9a6e;
+  --lg-green-700: #2db880;
+  --lg-green-600: #34d399;
+  --lg-green-500: #6ee7b7;
+  --lg-icon-muted: #7c9484;
+  --lg-icon-active: #ffffff;
+  --lg-nav-h: 68px;
+  --lg-center-sz: 72px;
+  --lg-pill: 999px;
+}
+
+.dark {
+  --lg-bg-strong: rgba(30, 40, 32, 0.82);
+  --lg-bg-soft: rgba(30, 40, 32, 0.44);
+  --lg-border: rgba(255, 255, 255, 0.12);
+  --lg-highlight: rgba(255, 255, 255, 0.14);
+  --lg-icon-muted: #94a89a;
+}
+
+/* ── wrapper ─────────────────────────────────── */
+.lg-nav-wrapper {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 999;
+  padding: 0 12px 14px;
+  pointer-events: none;
+}
+
+/* ── glass bar ───────────────────────────────── */
+.lg-nav {
+  pointer-events: auto;
+  position: relative;
+  max-width: 430px;
+  height: var(--lg-nav-h);
+  margin: 0 auto;
+  border-radius: var(--lg-pill);
+  background: linear-gradient(135deg, var(--lg-bg-strong), var(--lg-bg-soft));
+  border: 1px solid var(--lg-border);
+  box-shadow:
+    0 -10px 35px rgba(15, 23, 42, 0.14),
+    inset 0 1px 0 var(--lg-highlight),
+    inset 0 -12px 24px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  overflow: visible;
+}
+
+/* inner highlight overlay */
+.lg-nav::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.18) 38%,
+    rgba(255, 255, 255, 0.06) 56%,
+    rgba(255, 255, 255, 0.36)
+  );
+  opacity: 0.52;
+  pointer-events: none;
+}
+
+/* light-sweep shine */
+.lg-nav::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -45%;
+  width: 46%;
+  height: 220%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.42),
+    transparent
+  );
+  transform: rotate(18deg);
+  animation: lg-shine 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lg-shine {
+  0% {
+    left: -45%;
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.6;
+  }
+
+  55% {
+    left: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* ── icon grid ───────────────────────────────── */
+.lg-nav-grid {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 78px 1fr 1fr 1fr;
+  align-items: center;
+  padding: 0 6px;
+}
+
+/* ── nav item ────────────────────────────────── */
+.lg-nav-item {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--lg-pill);
+  color: var(--lg-icon-muted);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.28s ease;
+}
+
+/* icon pill inside each item */
+.lg-nav-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--lg-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -8px 16px rgba(255, 255, 255, 0.14);
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.28s ease,
+    box-shadow 0.28s ease,
+    color 0.28s ease;
+}
+
+.lg-nav-item svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.2;
+}
+
+/* active — emerald gradient pill */
+.lg-nav-item.active .lg-nav-icon-box {
+  color: var(--lg-icon-active);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.34), transparent 34%),
+    linear-gradient(145deg, var(--lg-green-600), var(--lg-green-800));
+  box-shadow:
+    0 10px 22px rgba(26, 154, 110, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -10px 18px rgba(22, 122, 91, 0.2);
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* press */
+.lg-nav-item:active .lg-nav-icon-box {
+  transform: scale(0.92) !important;
+}
+
+/* ── center spacer ───────────────────────────── */
+.lg-nav-spacer {
+  width: 78px;
+  height: 56px;
+}
+
+/* ── floating center button ──────────────────── */
+.lg-nav-center {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: -28px;
+  transform: translateX(-50%);
+  color: #ffffff;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lg-nav-center-btn {
+  width: var(--lg-center-sz);
+  height: var(--lg-center-sz);
+  border-radius: var(--lg-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.45), transparent 30%),
+    linear-gradient(145deg, var(--lg-green-500), var(--lg-green-800));
+  border: 6px solid rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 18px 38px rgba(26, 154, 110, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -14px 24px rgba(22, 122, 91, 0.25);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+/* inner glass highlight on center */
+.lg-nav-center-btn::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.04)
+  );
+  pointer-events: none;
+}
+
+.lg-nav-center-btn svg {
+  position: relative;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  stroke-width: 2.4;
+}
+
+/* center active — deeper emerald with lift */
+.lg-nav-center.active .lg-nav-center-btn {
+  transform: translateY(-4px) scale(1.05);
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.44), transparent 30%),
+    linear-gradient(145deg, var(--lg-green-600), var(--lg-green-900));
+  box-shadow:
+    0 22px 44px rgba(26, 154, 110, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -14px 24px rgba(22, 122, 91, 0.28);
+}
+
+/* center press */
+.lg-nav-center:active .lg-nav-center-btn {
+  transform: translateY(-2px) scale(0.94) !important;
+}
+
+/* ── dark mode overrides ─────────────────────── */
+.dark .lg-nav {
+  box-shadow:
+    0 -10px 35px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 var(--lg-highlight),
+    inset 0 -12px 24px rgba(255, 255, 255, 0.04);
+}
+
+.dark .lg-nav::before {
+  opacity: 0.12;
+}
+
+.dark .lg-nav::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+}
+
+.dark .lg-nav-icon-box {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -8px 16px rgba(255, 255, 255, 0.04);
+}
+
+.dark .lg-nav-center-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── small screens (≤380px) ──────────────────── */
+@media (max-width: 380px) {
+  .lg-nav-wrapper {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .lg-nav-grid {
+    grid-template-columns: 1fr 1fr 1fr 68px 1fr 1fr 1fr;
+    padding: 0 4px;
+  }
+
+  .lg-nav-icon-box {
+    width: 38px;
+    height: 38px;
+  }
+
+  .lg-nav-item svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .lg-nav-spacer {
+    width: 68px;
+  }
+
+  .lg-nav-center-btn {
+    width: 64px;
+    height: 64px;
+  }
+
+  .lg-nav-center-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* ── accessibility: reduce motion ────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lg-nav::after {
+    animation: none;
+  }
+
+  .lg-nav-item,
+  .lg-nav-icon-box,
+  .lg-nav-center-btn {
+    transition: none;
+  }
+}
+
+/* ── fallback: no backdrop-filter ────────────── */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .lg-nav {
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .dark .lg-nav {
+    background: rgba(30, 40, 32, 0.96);
+  }
+}

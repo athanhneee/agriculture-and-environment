@@ -5,115 +5,125 @@ import { usePathname } from "next/navigation";
 import {
   BarChart,
   BellRing,
+  CircleUserRound,
   LayoutDashboard,
   Leaf,
   MapPinned,
   RadioTower,
+  Shield,
+  Users,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/stores/auth.store";
 
-/* ── side items (left & right of center button) ─────────────── */
-const leftItems = [
-  {
-    href: "/dashboard/zones",
-    match: "/dashboard/zones",
-    icon: Leaf,
-  },
-  {
-    href: "/dashboard/sensors",
-    match: "/dashboard/sensors",
-    icon: RadioTower,
-  },
-];
-
-const rightItems = [
-  {
-    href: "/dashboard/statistics",
-    match: "/dashboard/statistics",
-    icon: BarChart,
-  },
-  {
-    href: "/dashboard/alerts",
-    match: "/dashboard/alerts",
-    icon: BellRing,
-  },
-  {
-    href: "/dashboard/map",
-    match: "/dashboard/map",
-    icon: MapPinned,
-  },
-];
-
-/* ── centre "Tổng quan" item ────────────────────────────────── */
-const centerItem = {
-  href: "/dashboard",
-  match: "/dashboard",
-  icon: LayoutDashboard,
+/* ── nav item type ──────────────────────────────────────────── */
+type NavItem = {
+  href: string;
+  match: string;
+  icon: LucideIcon;
+  label: string;
+  isCenter?: boolean;
 };
+
+/* ── farmer nav: 3 left + [center] + 3 right ────────────────── */
+const farmerItems: NavItem[] = [
+  { href: "/dashboard/zones",      match: "/dashboard/zones",      icon: Leaf,            label: "Vùng trồng" },
+  { href: "/dashboard/sensors",    match: "/dashboard/sensors",    icon: RadioTower,      label: "Cảm biến" },
+  { href: "/dashboard/statistics", match: "/dashboard/statistics", icon: BarChart,         label: "Thống kê" },
+  { href: "/dashboard",            match: "/dashboard",            icon: LayoutDashboard, label: "Tổng quan",  isCenter: true },
+  { href: "/dashboard/alerts",     match: "/dashboard/alerts",     icon: BellRing,         label: "Cảnh báo" },
+  { href: "/dashboard/map",        match: "/dashboard/map",        icon: MapPinned,        label: "Bản đồ" },
+  { href: "/dashboard/profile",    match: "/dashboard/profile",    icon: CircleUserRound,  label: "Hồ sơ" },
+];
+
+/* ── admin nav: 3 left + [center] + 3 right ─────────────────── */
+const adminItems: NavItem[] = [
+  { href: "/dashboard/zones",       match: "/dashboard/zones",       icon: Leaf,            label: "Vùng trồng" },
+  { href: "/dashboard/sensors",     match: "/dashboard/sensors",     icon: RadioTower,      label: "Cảm biến" },
+  { href: "/dashboard/statistics",  match: "/dashboard/statistics",  icon: BarChart,         label: "Thống kê" },
+  { href: "/dashboard/admin",       match: "/dashboard/admin",       icon: Shield,          label: "Quản trị",   isCenter: true },
+  { href: "/dashboard/alerts",      match: "/dashboard/alerts",      icon: BellRing,         label: "Cảnh báo" },
+  { href: "/dashboard/admin/users", match: "/dashboard/admin/users", icon: Users,            label: "Người dùng" },
+  { href: "/dashboard/profile",     match: "/dashboard/profile",     icon: CircleUserRound,  label: "Hồ sơ" },
+];
 
 export function MobileNav() {
   const pathname = usePathname();
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === "ADMIN";
+  const items = isAdmin ? adminItems : farmerItems;
 
-  const isActiveCheck = (href: string, match: string) =>
-    href === "/dashboard"
-      ? pathname === "/dashboard"
-      : pathname.startsWith(match);
-
-  const renderSideItem = (item: (typeof leftItems)[number]) => {
-    const Icon = item.icon;
-    const isActive = isActiveCheck(item.href, item.match);
-
-    return (
-      <Link
-        key={item.href}
-        href={item.href}
-        className={cn(
-          "flex h-11 w-11 items-center justify-center rounded-full transition-colors",
-          isActive
-            ? "text-[#2e7d32]"
-            : "text-muted-foreground hover:text-foreground",
-        )}
-      >
-        <Icon className="size-[22px]" strokeWidth={isActive ? 2.4 : 1.8} aria-hidden="true" />
-      </Link>
-    );
+  const isActiveCheck = (href: string, match: string) => {
+    if (href === "/dashboard") return pathname === "/dashboard";
+    if (href === "/dashboard/admin" && match === "/dashboard/admin")
+      return pathname === "/dashboard/admin";
+    return pathname.startsWith(match);
   };
 
-  /* ── centre floating button ───────────────────────────────── */
-  const CenterIcon = centerItem.icon;
+  const centerItem = items.find((i) => i.isCenter)!;
+  const sideItems = items.filter((i) => !i.isCenter);
+  const leftItems = sideItems.slice(0, 3);
+  const rightItems = sideItems.slice(3);
   const centerActive = isActiveCheck(centerItem.href, centerItem.match);
+  const CenterIcon = centerItem.icon;
 
   return (
-    <nav className="fixed inset-x-3 bottom-3 z-40 md:hidden">
-      {/* bar */}
-      <div className="relative flex items-center justify-between rounded-2xl border bg-card/95 px-3 py-2 shadow-2xl backdrop-blur">
-        {/* left group */}
-        <div className="flex items-center gap-2">
-          {leftItems.map(renderSideItem)}
+    <nav
+      className="lg-nav-wrapper md:!hidden"
+      aria-label="Điều hướng chính trên điện thoại"
+    >
+      <div className="lg-nav">
+        {/* icon grid: 3 left + spacer + 3 right */}
+        <div className="lg-nav-grid">
+          {leftItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActiveCheck(item.href, item.match);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-label={item.label}
+                className={`lg-nav-item${active ? " active" : ""}`}
+              >
+                <span className="lg-nav-icon-box">
+                  <Icon />
+                </span>
+              </Link>
+            );
+          })}
+
+          <span className="lg-nav-spacer" aria-hidden="true" />
+
+          {rightItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActiveCheck(item.href, item.match);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-label={item.label}
+                className={`lg-nav-item${active ? " active" : ""}`}
+              >
+                <span className="lg-nav-icon-box">
+                  <Icon />
+                </span>
+              </Link>
+            );
+          })}
         </div>
 
-        {/* centre spacer */}
-        <div className="w-14 shrink-0" />
-
-        {/* right group */}
-        <div className="flex items-center gap-2">
-          {rightItems.map(renderSideItem)}
-        </div>
+        {/* floating center button */}
+        <Link
+          href={centerItem.href}
+          aria-label={centerItem.label}
+          className={`lg-nav-center${centerActive ? " active" : ""}`}
+        >
+          <span className="lg-nav-center-btn">
+            <CenterIcon />
+          </span>
+        </Link>
       </div>
-
-      {/* floating centre button – overlaps the bar */}
-      <Link
-        href={centerItem.href}
-        className={cn(
-          "absolute left-1/2 -translate-x-1/2 -top-4 flex size-[56px] items-center justify-center rounded-full shadow-lg ring-4 ring-card/95 transition-transform active:scale-95",
-          centerActive
-            ? "bg-[#2e7d32] text-white"
-            : "bg-[#2e7d32]/85 text-white/90 hover:bg-[#2e7d32]",
-        )}
-      >
-        <CenterIcon className="size-6" strokeWidth={2} aria-hidden="true" />
-      </Link>
     </nav>
   );
 }
