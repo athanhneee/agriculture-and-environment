@@ -5,12 +5,9 @@ import { redirect } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
-  CloudSun,
-  Droplets,
   Gauge,
   Leaf,
   ThermometerSun,
-  Wind,
 } from "lucide-react";
 
 import { RealtimeDashboardPanel } from "@/components/dashboard/RealtimeDashboardPanel";
@@ -153,27 +150,27 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
         {summaryCards.map((card) => {
           const Icon = card.icon;
           const cardContent = (
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start justify-between gap-3 sm:gap-4">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <span className={`size-1.5 rounded-full ${card.dotColor}`} />
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">
                     {card.label}
                   </p>
                 </div>
-                <p className="mt-2.5 text-3xl font-bold tracking-tight">{card.value}</p>
-                <p className="mt-1 text-xs font-medium text-muted-foreground">
+                <p className="mt-1.5 text-xl font-bold tracking-tight sm:mt-2.5 sm:text-3xl">{card.value}</p>
+                <p className="mt-0.5 text-[10px] font-medium text-muted-foreground sm:mt-1 sm:text-xs">
                   {card.note}
                 </p>
               </div>
               <span
-                className={`flex size-11 shrink-0 items-center justify-center rounded-3xl ${card.tone}`}
+                className={`flex size-9 shrink-0 items-center justify-center rounded-xl sm:size-11 sm:rounded-3xl ${card.tone}`}
               >
-                <Icon className="size-5" aria-hidden="true" />
+                <Icon className="size-4 sm:size-5" aria-hidden="true" />
               </span>
             </div>
           );
@@ -182,14 +179,14 @@ export default async function DashboardPage() {
             <Link
               key={card.label}
               href={card.href}
-              className="group rounded-2xl border bg-card p-5 shadow-sm block transition hover:border-emerald-300/60 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-emerald-500/30"
+              className="group rounded-2xl border bg-card p-3 shadow-sm block transition hover:border-emerald-300/60 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-emerald-500/30 sm:p-5"
             >
               {cardContent}
             </Link>
           ) : (
             <article
               key={card.label}
-              className="rounded-2xl border bg-card p-5 shadow-sm"
+              className="rounded-2xl border bg-card p-3 shadow-sm sm:p-5"
             >
               {cardContent}
             </article>
@@ -259,32 +256,8 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div>
           <RealtimeDashboardPanel zones={apiZones} />
-
-          <div className="rounded-2xl border bg-card p-5 shadow-sm">
-            <h2 className="text-lg font-semibold">Môi trường</h2>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              {[
-                { label: "Mưa", value: "Không", icon: CloudSun },
-                { label: "Gió", value: "6 km/h", icon: Wind },
-                { label: "Tưới", value: "Tự động", icon: Droplets },
-                { label: "pH", value: "6.4", icon: Gauge },
-              ].map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <div key={item.label} className="rounded-2xl bg-muted p-4">
-                    <Icon className="size-5 text-emerald-700 dark:text-emerald-300" />
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      {item.label}
-                    </p>
-                    <p className="font-semibold">{item.value}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </section>
     </div>
