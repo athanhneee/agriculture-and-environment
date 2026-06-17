@@ -109,6 +109,7 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
 
   const severityData = getSeverityData();
   const alertTypesData = getAlertTypesData();
+  const maxAlertCount = alertTypesData.length > 0 ? Math.max(...alertTypesData.map((d) => d.count), 1) : 1;
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -359,10 +360,16 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
                       <XAxis type="number" tick={{ fontSize: 9 }} stroke="#94a3b8" />
                       <YAxis dataKey="name" type="category" tick={{ fontSize: 9 }} stroke="#94a3b8" width={90} />
                       <Tooltip contentStyle={{ fontSize: "11px" }} />
-                      <Bar name="Số lần cảnh báo" dataKey="count" fill="#f59e0b" radius={[0, 4, 4, 0]}>
-                        {alertTypesData.map((_entry, index) => (
-                          <Cell key={`cell-${index}`} fill="#f59e0b" />
-                        ))}
+                      <Bar name="Số lần cảnh báo" dataKey="count" radius={[0, 4, 4, 0]}>
+                        {alertTypesData.map((entry, index) => {
+                          const opacity = 0.3 + (entry.count / maxAlertCount) * 0.7;
+                          return (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={`rgba(239, 68, 68, ${opacity})`}
+                            />
+                          );
+                        })}
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
