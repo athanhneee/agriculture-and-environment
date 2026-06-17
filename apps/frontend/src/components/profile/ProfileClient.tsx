@@ -49,7 +49,7 @@ export function ProfileClient() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto">
+    <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)] max-w-4xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Hồ sơ cá nhân</h1>
         <p className="mt-1 text-sm text-muted-foreground">

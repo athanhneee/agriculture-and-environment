@@ -118,7 +118,7 @@ export function UsersManagerClient() {
   );
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Quản lý Người dùng</h1>

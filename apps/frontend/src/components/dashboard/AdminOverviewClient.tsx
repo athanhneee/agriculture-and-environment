@@ -62,7 +62,7 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
   ];
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Quản trị Hệ thống</h1>
         <p className="text-sm text-muted-foreground mt-1">

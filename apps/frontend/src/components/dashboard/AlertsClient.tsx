@@ -191,7 +191,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
   };
 
   return (
-    <div className="space-y-6 relative animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 relative animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       {/* ── Confirm Delete Modal ── */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
