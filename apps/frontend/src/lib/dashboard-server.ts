@@ -113,7 +113,7 @@ export async function getOpenAlerts(): Promise<Alert[]> {
   try {
     const headers = await getAuthHeaders();
 
-    const res = await fetch(`${API_URL}/api/alerts?status=OPEN`, {
+    const res = await fetch(`${API_URL}/api/alerts?status=OPEN&limit=1000`, {
       headers,
       next: { revalidate: 15 },
     });

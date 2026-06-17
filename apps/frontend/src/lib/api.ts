@@ -651,7 +651,7 @@ export type AlertItem = {
 export const alertsApi = {
   list: async (params?: Record<string, string>) => {
     const payload = await apiRequest<AlertItem[] | PaginatedResponse<AlertItem>>(
-      `/api/alerts?${cleanParams(params)}`,
+      `/api/alerts?${cleanParams({ limit: "1000", ...params })}`,
     );
     return unwrapList<AlertItem>(payload);
   },
