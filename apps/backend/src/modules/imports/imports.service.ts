@@ -296,11 +296,11 @@ export class ImportsService {
 
         // Kiểm tra trùng vị trí
         const existingLocation = await prisma.farmZone.findFirst({
-          where: { ownerId: user.id, latitude: validated.latitude, longitude: validated.longitude }
+          where: { latitude: validated.latitude, longitude: validated.longitude }
         });
 
         if (existingLocation) {
-          throw new Error(`Vị trí (vĩ độ: ${validated.latitude}, kinh độ: ${validated.longitude}) đã được đăng ký cho vùng trồng khác`);
+          throw new Error(`Vị trí (vĩ độ: ${validated.latitude}, kinh độ: ${validated.longitude}) đã được đăng ký cho vùng trồng khác trong hệ thống`);
         }
 
         await prisma.farmZone.create({

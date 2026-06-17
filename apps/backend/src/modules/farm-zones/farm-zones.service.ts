@@ -161,10 +161,10 @@ export class FarmZoneService {
     }
 
     const existingLocation = await prisma.farmZone.findFirst({
-      where: { ownerId: user.id, latitude: data.latitude, longitude: data.longitude }
+      where: { latitude: data.latitude, longitude: data.longitude }
     });
     if (existingLocation) {
-      throw new Error(`Vị trí (vĩ độ: ${data.latitude}, kinh độ: ${data.longitude}) đã được đăng ký cho vùng trồng khác.`);
+      throw new Error(`Vị trí (vĩ độ: ${data.latitude}, kinh độ: ${data.longitude}) đã được đăng ký cho vùng trồng khác trong hệ thống.`);
     }
 
     return prisma.farmZone.create({
@@ -206,9 +206,9 @@ export class FarmZoneService {
 
     if (checkLat !== existingZone.latitude || checkLng !== existingZone.longitude) {
       const duplicateLocation = await prisma.farmZone.findFirst({
-        where: { ownerId: existingZone.ownerId, latitude: checkLat, longitude: checkLng }
+        where: { latitude: checkLat, longitude: checkLng }
       });
-      if (duplicateLocation) throw new Error(`Vị trí (vĩ độ: ${checkLat}, kinh độ: ${checkLng}) đã được đăng ký cho vùng trồng khác.`);
+      if (duplicateLocation) throw new Error(`Vị trí (vĩ độ: ${checkLat}, kinh độ: ${checkLng}) đã được đăng ký cho vùng trồng khác trong hệ thống.`);
     }
 
     return prisma.farmZone.update({

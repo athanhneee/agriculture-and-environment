@@ -114,7 +114,7 @@ model FarmZone {
   alerts         Alert[]
 
   @@unique([ownerId, name])
-  @@unique([ownerId, latitude, longitude])
+  @@unique([latitude, longitude])
 }
 
 model Crop {
