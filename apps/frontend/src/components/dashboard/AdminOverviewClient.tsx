@@ -70,22 +70,22 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           return (
             <div
               key={idx}
-              className="rounded-2xl border bg-card p-5 shadow-sm transition hover:border-emerald-500/30 hover:shadow-md"
+              className="rounded-2xl border bg-card p-3 shadow-sm transition hover:border-emerald-500/30 hover:shadow-md sm:p-5"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground line-clamp-1">{card.title}</p>
-                  <p className="mt-2 text-3xl font-bold">{card.value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{card.description}</p>
+                  <p className="text-[10px] font-medium text-muted-foreground line-clamp-1 sm:text-sm">{card.title}</p>
+                  <p className="mt-1 text-xl font-bold sm:mt-2 sm:text-3xl">{card.value}</p>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-xs">{card.description}</p>
                 </div>
-                <div className={`flex size-10 items-center justify-center rounded-3xl ${card.tone}`}>
-                  <Icon className="size-5" />
+                <div className={`flex size-9 items-center justify-center rounded-xl sm:size-10 sm:rounded-3xl ${card.tone}`}>
+                  <Icon className="size-4 sm:size-5" />
                 </div>
               </div>
             </div>
