@@ -30,7 +30,7 @@ import { useAuthStore } from "@/stores/auth.store";
 type ZoneOption = { id: string; name: string };
 type AlertsClientProps = { initialAlerts: AlertItem[]; zones: ZoneOption[] };
 type AlertFilters = {
-  status: AlertStatus | "ALL";
+  status: AlertStatus | "ACTIVE" | "ALL";
   severity: AlertSeverity | "ALL";
   farmZoneId: string;
 };
@@ -90,7 +90,7 @@ const statusConfig: Record<string, StatusConfig> = {
   },
 };
 
-const defaultFilters: AlertFilters = { status: "OPEN", severity: "ALL", farmZoneId: "ALL" };
+const defaultFilters: AlertFilters = { status: "ACTIVE", severity: "ALL", farmZoneId: "ALL" };
 
 function toRequestParams(filters: AlertFilters) {
   return { status: filters.status, severity: filters.severity, farmZoneId: filters.farmZoneId, limit: "1000" };
@@ -314,9 +314,10 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                 className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               >
                 <option value="ALL">Tất cả trạng thái</option>
-                <option value="OPEN">Đang mở (Open)</option>
-                <option value="ACKNOWLEDGED">Đã xác nhận</option>
-                <option value="RESOLVED">Đã xử lý</option>
+                <option value="ACTIVE">Chưa xử lý (Đang mở &amp; Xác nhận)</option>
+                <option value="OPEN">Chưa xác nhận (Đang mở)</option>
+                <option value="ACKNOWLEDGED">Đang xử lý (Đã xác nhận)</option>
+                <option value="RESOLVED">Đã giải quyết (Đã xử lý)</option>
               </select>
             </div>
 

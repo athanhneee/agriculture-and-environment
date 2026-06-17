@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const getAlertsSchema = z.object({
   query: z.object({
     farmZoneId: z.string().uuid('Invalid farmZoneId').optional(),
-    status: z.enum(['OPEN', 'ACKNOWLEDGED', 'RESOLVED']).optional(),
+    status: z.enum(['OPEN', 'ACKNOWLEDGED', 'RESOLVED', 'ACTIVE']).optional(),
     severity: z.enum(['INFO', 'WARNING', 'CRITICAL']).optional(),
     type: z.enum([
       'CRITICAL_WEATHER', 'SOIL_DRY', 'SENSOR_MALFUNCTION', 'OVERHEATING',

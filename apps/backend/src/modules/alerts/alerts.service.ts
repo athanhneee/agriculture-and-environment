@@ -35,7 +35,13 @@ export class AlertService {
 
     const where: any = {};
 
-    if (filters.status) where.status = filters.status;
+    if (filters.status) {
+      if (filters.status === 'ACTIVE') {
+        where.status = { in: ['OPEN', 'ACKNOWLEDGED'] };
+      } else {
+        where.status = filters.status;
+      }
+    }
     if (filters.severity) where.severity = filters.severity;
     if (filters.type) where.type = filters.type;
     if (filters.farmZoneId) where.farmZoneId = filters.farmZoneId;
