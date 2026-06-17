@@ -98,6 +98,28 @@ export default function FarmMap({ zones, selectedZone, onSelectZone }: FarmMapPr
   const zonesWithCoords = zones.map(z => ({ zone: z, coords: getZoneCoords(z) }))
     .filter(x => x.coords !== null) as { zone: FarmZone; coords: [number, number] }[];
 
+  // Tránh chồng khít các marker có tọa độ giống hệt nhau (Jittering)
+  const coordsCount: Record<string, number> = {};
+  const adjustedZones = zonesWithCoords.map(({ zone, coords }) => {
+    const key = `${coords[0].toFixed(5)},${coords[1].toFixed(5)}`;
+    const count = coordsCount[key] ?? 0;
+    coordsCount[key] = count + 1;
+
+    if (count > 0) {
+      // Thêm một độ lệch nhỏ (jitter) dựa trên số lượng trùng lặp
+      const angle = (count * 2 * Math.PI) / 8; // Phân bổ vòng tròn
+      const radius = 0.00025 * Math.ceil(count / 8); // Khoảng cách tăng dần (~25m)
+      const offsetLat = Math.cos(angle) * radius;
+      const offsetLng = Math.sin(angle) * radius;
+      return {
+        zone,
+        coords: [coords[0] + offsetLat, coords[1] + offsetLng] as [number, number],
+      };
+    }
+
+    return { zone, coords };
+  });
+
   const defaultCenter: [number, number] = zonesWithCoords.length > 0
     ? zonesWithCoords[0].coords
     : VIETNAM_CENTER;
@@ -123,7 +145,7 @@ export default function FarmMap({ zones, selectedZone, onSelectZone }: FarmMapPr
         <MapController selectedZone={selectedZone} />
 
         {/* Markers */}
-        {zonesWithCoords.map(({ zone, coords }) => {
+        {adjustedZones.map(({ zone, coords }) => {
           const hasCritical = (zone.openAlertsCount ?? 0) > 0;
           const isInactive = zone.status !== "ACTIVE";
           const icon = hasCritical ? IconCritical : isInactive ? IconInactive : IconDefault;
