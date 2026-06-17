@@ -362,11 +362,12 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
                       <Tooltip contentStyle={{ fontSize: "11px" }} />
                       <Bar name="Số lần cảnh báo" dataKey="count" radius={[0, 4, 4, 0]}>
                         {alertTypesData.map((entry, index) => {
-                          const opacity = 0.3 + (entry.count / maxAlertCount) * 0.7;
+                          const ratio = entry.count / maxAlertCount;
+                          const lightness = 64 - ratio * 32; // ranges from 64% (teal-300) to 32% (teal-600)
                           return (
                             <Cell
                               key={`cell-${index}`}
-                              fill={`rgba(239, 68, 68, ${opacity})`}
+                              fill={`hsl(173, 80%, ${lightness}%)`}
                             />
                           );
                         })}
