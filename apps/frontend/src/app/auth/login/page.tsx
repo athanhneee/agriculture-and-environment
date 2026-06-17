@@ -151,18 +151,18 @@ export default function LoginPage() {
           </div>
 
           {/* Bottom stat */}
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-sm">
-            <div className="text-center">
+          <div className="flex w-full items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-sm">
+            <div className="flex-1 text-center">
               <p className="text-2xl font-bold text-white">24</p>
               <p className="text-xs text-emerald-300/80">Cảm biến online</p>
             </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="text-center">
+            <div className="h-8 w-px bg-white/10 shrink-0" />
+            <div className="flex-1 text-center">
               <p className="text-2xl font-bold text-white">4</p>
               <p className="text-xs text-emerald-300/80">Vùng trồng</p>
             </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="text-center">
+            <div className="h-8 w-px bg-white/10 shrink-0" />
+            <div className="flex-1 text-center">
               <p className="text-2xl font-bold text-white">98%</p>
               <p className="text-xs text-emerald-300/80">Uptime</p>
             </div>

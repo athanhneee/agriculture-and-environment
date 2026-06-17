@@ -303,7 +303,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Quote */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-sm">
+          <div className="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-sm">
             <p className="text-sm italic text-emerald-100/80">
               "Hệ thống giúp chúng tôi phát hiện bất thường sớm hơn 3 lần so với
               phương pháp thủ công trước đây."
