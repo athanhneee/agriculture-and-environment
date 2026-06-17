@@ -7,6 +7,8 @@ import {
   Bell,
   BellRing,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Filter,
   Info,
@@ -124,6 +126,8 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AlertItem | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   const criticalCount = alerts.filter((a) => a.severity === "CRITICAL").length;
   const warningCount = alerts.filter((a) => a.severity === "WARNING").length;
@@ -140,6 +144,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
     try {
       const data = await alertsApi.list(toRequestParams(nextFilters));
       setAlerts(data);
+      setCurrentPage(1);
     } catch (error) {
       showToast("error", getErrorMessage(error, "Không thể tải danh sách cảnh báo."));
     } finally {
@@ -430,124 +435,183 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
             <Filter className="size-3.5" /> Xóa bộ lọc
           </button>
         </div>
-      ) : (
-        <div className="grid gap-3">
-          {alerts.map((alert) => {
-            const sev = severityConfig[alert.severity] ?? severityConfig.INFO;
-            const sta = statusConfig[alert.status] ?? statusConfig.OPEN;
-            const StatusIcon = sta.icon;
-            const SevIcon = sev.icon;
-            const isCritical = alert.severity === "CRITICAL";
-            const acknowledgePending = pendingAction === `acknowledge:${alert.id}`;
-            const resolvePending = pendingAction === `resolve:${alert.id}`;
-            const deletePending = pendingAction === `delete:${alert.id}`;
+      ) : (() => {
+        const totalPages = Math.ceil(alerts.length / ITEMS_PER_PAGE);
+        const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+        const paginatedAlerts = alerts.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
-            return (
-              <article
-                key={alert.id}
-                className={`group rounded-2xl border bg-card shadow-sm transition-all duration-200 hover:shadow-md ${sev.cardClass}`}
-              >
-                <div className="p-5">
-                  <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-                    {/* Left: Icon + Content */}
-                    <div className="flex min-w-0 flex-1 gap-3.5">
-                      {/* Severity Icon */}
-                      <div className={`relative flex size-11 shrink-0 items-center justify-center rounded-3xl ${sev.iconClass}`}>
-                        {isCritical && alert.status === "OPEN" && (
-                          <span className="absolute inset-0 rounded-3xl animate-ping bg-red-400/20"></span>
-                        )}
-                        <SevIcon className="relative size-5" />
-                      </div>
+        /* page numbers to show (max 5 centered on current) */
+        const getPageNumbers = () => {
+          const pages: number[] = [];
+          let start = Math.max(1, currentPage - 2);
+          let end = Math.min(totalPages, start + 4);
+          if (end - start < 4) start = Math.max(1, end - 4);
+          for (let i = start; i <= end; i++) pages.push(i);
+          return pages;
+        };
 
-                      {/* Text */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                          <h2 className="font-bold text-sm leading-snug text-foreground">{alert.title}</h2>
-                          {isCritical && alert.status === "OPEN" && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-red-100 dark:bg-red-900/30 px-2 py-0.5 text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wider animate-pulse">
-                              ● KHẨN
+        return (
+          <>
+            <div className="grid gap-3">
+              {paginatedAlerts.map((alert) => {
+                const sev = severityConfig[alert.severity] ?? severityConfig.INFO;
+                const sta = statusConfig[alert.status] ?? statusConfig.OPEN;
+                const StatusIcon = sta.icon;
+                const SevIcon = sev.icon;
+                const isCritical = alert.severity === "CRITICAL";
+                const acknowledgePending = pendingAction === `acknowledge:${alert.id}`;
+                const resolvePending = pendingAction === `resolve:${alert.id}`;
+                const deletePending = pendingAction === `delete:${alert.id}`;
+
+                return (
+                  <article
+                    key={alert.id}
+                    className={`group rounded-2xl border bg-card shadow-sm transition-all duration-200 hover:shadow-md ${sev.cardClass}`}
+                  >
+                    <div className="p-5">
+                      <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                        {/* Left: Icon + Content */}
+                        <div className="flex min-w-0 flex-1 gap-3.5">
+                          <div className={`relative flex size-11 shrink-0 items-center justify-center rounded-3xl ${sev.iconClass}`}>
+                            {isCritical && alert.status === "OPEN" && (
+                              <span className="absolute inset-0 rounded-3xl animate-ping bg-red-400/20"></span>
+                            )}
+                            <SevIcon className="relative size-5" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                              <h2 className="font-bold text-sm leading-snug text-foreground">{alert.title}</h2>
+                              {isCritical && alert.status === "OPEN" && (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 dark:bg-red-900/30 px-2 py-0.5 text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wider animate-pulse">
+                                  ● KHẨN
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                              <MapPin className="size-3 text-emerald-600 dark:text-emerald-400" />
+                              <span className="font-semibold text-emerald-700 dark:text-emerald-400">
+                                {alert.farmZone?.name ?? "Không rõ vùng"}
+                              </span>
+                              <span className="text-muted-foreground/40">·</span>
+                              <Clock className="size-3" />
+                              <span title={new Date(alert.createdAt).toLocaleString("vi-VN")}>
+                                {formatRelativeTime(alert.createdAt)}
+                              </span>
+                            </div>
+                            <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                              {alert.message}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Right: Badges + Actions */}
+                        <div className="flex flex-col gap-2.5 xl:items-end xl:shrink-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${sev.badgeClass}`}>
+                              <span className={`size-1.5 rounded-full ${sev.dotClass} inline-block`} />
+                              {sev.label}
                             </span>
-                          )}
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${sta.className}`}>
+                              <StatusIcon className="size-3" />
+                              {sta.label}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {alert.status === "OPEN" && (
+                              <button
+                                type="button"
+                                onClick={() => handleAction(alert, "acknowledge")}
+                                disabled={Boolean(pendingAction)}
+                                className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-sky-500/20 bg-sky-500/10 px-3 text-xs font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                              >
+                                {acknowledgePending ? <Loader2 className="size-3.5 animate-spin" /> : <ShieldCheck className="size-3.5" />}
+                                Xác nhận
+                              </button>
+                            )}
+                            {alert.status !== "RESOLVED" && (
+                              <button
+                                type="button"
+                                onClick={() => handleAction(alert, "resolve")}
+                                disabled={Boolean(pendingAction)}
+                                className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                              >
+                                {resolvePending ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCircle2 className="size-3.5" />}
+                                Đã xử lý
+                              </button>
+                            )}
+                            {isAdmin && (
+                              <button
+                                type="button"
+                                onClick={() => handleAction(alert, "delete")}
+                                disabled={Boolean(pendingAction)}
+                                className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/10 px-3 text-xs font-semibold text-destructive hover:bg-destructive/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                              >
+                                {deletePending ? <Loader2 className="size-3.5 animate-spin" /> : <Trash2 className="size-3.5" />}
+                                Xóa
+                              </button>
+                            )}
+                          </div>
                         </div>
-
-                        <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                          <MapPin className="size-3 text-emerald-600 dark:text-emerald-400" />
-                          <span className="font-semibold text-emerald-700 dark:text-emerald-400">
-                            {alert.farmZone?.name ?? "Không rõ vùng"}
-                          </span>
-                          <span className="text-muted-foreground/40">·</span>
-                          <Clock className="size-3" />
-                          <span title={new Date(alert.createdAt).toLocaleString("vi-VN")}>
-                            {formatRelativeTime(alert.createdAt)}
-                          </span>
-                        </div>
-
-                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                          {alert.message}
-                        </p>
                       </div>
                     </div>
+                  </article>
+                );
+              })}
+            </div>
 
-                    {/* Right: Badges + Actions */}
-                    <div className="flex flex-col gap-2.5 xl:items-end xl:shrink-0">
-                      {/* Badges */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${sev.badgeClass}`}>
-                          <span className={`size-1.5 rounded-full ${sev.dotClass} inline-block`} />
-                          {sev.label}
-                        </span>
-                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${sta.className}`}>
-                          <StatusIcon className="size-3" />
-                          {sta.label}
-                        </span>
-                      </div>
+            {/* ── Pagination ── */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between rounded-2xl border bg-card px-4 py-3 shadow-sm">
+                {/* Info text */}
+                <p className="hidden text-xs text-muted-foreground sm:block">
+                  Hiển thị <span className="font-semibold text-foreground">{startIdx + 1}</span>–<span className="font-semibold text-foreground">{Math.min(startIdx + ITEMS_PER_PAGE, alerts.length)}</span> trong <span className="font-semibold text-foreground">{alerts.length}</span> cảnh báo
+                </p>
+                <p className="text-xs text-muted-foreground sm:hidden">
+                  Trang <span className="font-semibold text-foreground">{currentPage}</span>/<span className="font-semibold text-foreground">{totalPages}</span>
+                </p>
 
-                      {/* Action Buttons */}
-                      <div className="flex flex-wrap gap-2">
-                        {alert.status === "OPEN" && (
-                          <button
-                            type="button"
-                            onClick={() => handleAction(alert, "acknowledge")}
-                            disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-sky-500/20 bg-sky-500/10 px-3 text-xs font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
-                          >
-                            {acknowledgePending ? <Loader2 className="size-3.5 animate-spin" /> : <ShieldCheck className="size-3.5" />}
-                            Xác nhận
-                          </button>
-                        )}
+                {/* Page buttons */}
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="inline-flex size-8 items-center justify-center rounded-full border text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition"
+                    aria-label="Trang trước"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
 
-                        {alert.status !== "RESOLVED" && (
-                          <button
-                            type="button"
-                            onClick={() => handleAction(alert, "resolve")}
-                            disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
-                          >
-                            {resolvePending ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCircle2 className="size-3.5" />}
-                            Đã xử lý
-                          </button>
-                        )}
-
-                        {isAdmin && (
-                          <button
-                            type="button"
-                            onClick={() => handleAction(alert, "delete")}
-                            disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/10 px-3 text-xs font-semibold text-destructive hover:bg-destructive/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
-                          >
-                            {deletePending ? <Loader2 className="size-3.5 animate-spin" /> : <Trash2 className="size-3.5" />}
-                            Xóa
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  {/* Desktop: page numbers */}
+                  <div className="hidden items-center gap-1 sm:flex">
+                    {getPageNumbers().map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`inline-flex size-8 items-center justify-center rounded-full text-xs font-semibold transition ${
+                          page === currentPage
+                            ? "bg-emerald-600 text-white shadow-sm"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
                   </div>
+
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="inline-flex size-8 items-center justify-center rounded-full border text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition"
+                    aria-label="Trang sau"
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
                 </div>
-              </article>
-            );
-          })}
-        </div>
-      )}
+              </div>
+            )}
+          </>
+        );
+      })()}
     </div>
   );
 }
