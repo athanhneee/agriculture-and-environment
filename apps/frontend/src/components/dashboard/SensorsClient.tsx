@@ -107,7 +107,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
   const activePercent = totalSensors > 0 ? Math.round((activeSensors / totalSensors) * 100) : 0;
 
   return (
-    <div className="space-y-6 relative">
+    <div className="space-y-6 relative animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Toast Notification */}
       {toast && (
         <div
