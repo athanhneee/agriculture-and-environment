@@ -255,23 +255,35 @@ export default async function ZoneDetailPage({ params }: PageProps) {
           </h2>
           <div className="mt-4 divide-y">
             {zone.sensors && zone.sensors.length > 0 ? (
-              zone.sensors.map((sensor) => (
-                <div key={sensor.id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
-                  <div>
-                    <p className="font-semibold text-sm">{sensor.name}</p>
-                    <p className="text-xs text-muted-foreground uppercase mt-0.5">
-                      Loại: {sensor.type} {sensor.unit ? `(${sensor.unit})` : ""}
-                    </p>
+              zone.sensors.map((sensor) => {
+                const typeLabels: Record<string, string> = {
+                  TEMPERATURE: "Nhiệt độ",
+                  AIR_HUMIDITY: "Độ ẩm không khí",
+                  SOIL_MOISTURE: "Độ ẩm đất",
+                  LIGHT_INTENSITY: "Ánh sáng",
+                  ALL_IN_ONE: "Tích hợp đa năng",
+                };
+                const displayType = typeLabels[sensor.type] || sensor.type;
+                const displayName = sensor.name.charAt(0).toUpperCase() + sensor.name.slice(1);
+                
+                return (
+                  <div key={sensor.id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+                    <div>
+                      <p className="font-semibold text-sm">{displayName}</p>
+                      <p className="text-xs text-muted-foreground uppercase mt-0.5">
+                        Loại: {displayType} {sensor.unit ? `(${sensor.unit})` : ""}
+                      </p>
+                    </div>
+                    <span
+                      className={`rounded-full border px-3 py-1 text-xs font-bold ${getSensorStatusClass(
+                        sensor.status,
+                      )}`}
+                    >
+                      {getSensorStatusLabel(sensor.status)}
+                    </span>
                   </div>
-                  <span
-                    className={`rounded-full border px-3 py-1 text-xs font-bold ${getSensorStatusClass(
-                      sensor.status,
-                    )}`}
-                  >
-                    {getSensorStatusLabel(sensor.status)}
-                  </span>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-3xl">
                 <Cpu className="size-8 text-muted-foreground/40 stroke-[1.5]" />
