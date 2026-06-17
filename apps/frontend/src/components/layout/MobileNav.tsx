@@ -10,7 +10,6 @@ import {
   Leaf,
   MapPinned,
   RadioTower,
-  Shield,
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -42,7 +41,7 @@ const adminItems: NavItem[] = [
   { href: "/dashboard/zones",       match: "/dashboard/zones",       icon: Leaf,            label: "Vùng trồng" },
   { href: "/dashboard/sensors",     match: "/dashboard/sensors",     icon: RadioTower,      label: "Cảm biến" },
   { href: "/dashboard/statistics",  match: "/dashboard/statistics",  icon: BarChart,         label: "Thống kê" },
-  { href: "/dashboard/admin",       match: "/dashboard/admin",       icon: Shield,          label: "Quản trị",   isCenter: true },
+  { href: "/dashboard/admin",       match: "/dashboard/admin",       icon: LayoutDashboard, label: "Tổng quan",   isCenter: true },
   { href: "/dashboard/alerts",      match: "/dashboard/alerts",      icon: BellRing,         label: "Cảnh báo" },
   { href: "/dashboard/admin/users", match: "/dashboard/admin/users", icon: Users,            label: "Người dùng" },
   { href: "/dashboard/profile",     match: "/dashboard/profile",     icon: CircleUserRound,  label: "Hồ sơ" },

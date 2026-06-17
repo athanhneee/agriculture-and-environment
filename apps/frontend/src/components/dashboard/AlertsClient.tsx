@@ -238,15 +238,15 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
       </div>
 
       {/* ── Stats Cards ── */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {/* Tổng */}
-        <div className="col-span-2 sm:col-span-1 flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 sm:size-11 sm:rounded-3xl">
             <BellRing className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tổng cảnh báo</p>
-            <p className="text-2xl font-bold tracking-tight mt-0.5">{isLoading ? "..." : alerts.length}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Tổng</p>
+            <p className="text-xl font-bold tracking-tight mt-0.5 sm:text-2xl">{isLoading ? "..." : alerts.length}</p>
             {!isLoading && openCount > 0 && (
               <p className="text-[10px] font-medium text-amber-600 dark:text-amber-400 mt-0.5">{openCount} đang mở</p>
             )}
@@ -254,8 +254,8 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
         </div>
 
         {/* Nghiêm trọng */}
-        <div className={`flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow ${criticalCount > 0 ? "border-red-200 dark:border-red-800/40" : ""}`}>
-          <div className="relative flex size-11 shrink-0 items-center justify-center rounded-3xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400">
+        <div className={`flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4 ${criticalCount > 0 ? "border-red-200 dark:border-red-800/40" : ""}`}>
+          <div className="relative flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 sm:size-11 sm:rounded-3xl">
             {criticalCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 flex size-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -265,34 +265,34 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
             <AlertCircle className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nghiêm trọng</p>
-            <p className={`text-2xl font-bold tracking-tight mt-0.5 ${criticalCount > 0 ? "text-red-600 dark:text-red-400" : ""}`}>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Nghiêm trọng</p>
+            <p className={`text-xl font-bold tracking-tight mt-0.5 sm:text-2xl ${criticalCount > 0 ? "text-red-600 dark:text-red-400" : ""}`}>
               {isLoading ? "..." : criticalCount}
             </p>
           </div>
         </div>
 
         {/* Cảnh báo */}
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400 sm:size-11 sm:rounded-3xl">
             <AlertTriangle className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cảnh báo</p>
-            <p className={`text-2xl font-bold tracking-tight mt-0.5 ${warningCount > 0 ? "text-amber-600 dark:text-amber-400" : ""}`}>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Cảnh báo</p>
+            <p className={`text-xl font-bold tracking-tight mt-0.5 sm:text-2xl ${warningCount > 0 ? "text-amber-600 dark:text-amber-400" : ""}`}>
               {isLoading ? "..." : warningCount}
             </p>
           </div>
         </div>
 
         {/* Thông tin */}
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 sm:size-11 sm:rounded-3xl">
             <Info className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Thông tin</p>
-            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-0.5">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Thông tin</p>
+            <p className="text-xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-0.5 sm:text-2xl">
               {isLoading ? "..." : infoCount}
             </p>
           </div>
@@ -300,77 +300,95 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
       </div>
 
       {/* ── Filter Toolbar ── */}
-      <div className="rounded-2xl border bg-card p-4 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
-          <div className="grid flex-1 gap-3 sm:grid-cols-3">
-            {/* Trạng thái */}
-            <div className="flex flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                <Clock className="size-3" /> Trạng thái
-              </span>
-              <select
-                value={filters.status}
-                onChange={(e) => handleFilterChange("status", e.target.value as AlertFilters["status"])}
-                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
-              >
-                <option value="ALL">Tất cả trạng thái</option>
-                <option value="ACTIVE">Chưa xử lý (Đang mở &amp; Xác nhận)</option>
-                <option value="OPEN">Chưa xác nhận (Đang mở)</option>
-                <option value="ACKNOWLEDGED">Đang xử lý (Đã xác nhận)</option>
-                <option value="RESOLVED">Đã giải quyết (Đã xử lý)</option>
-              </select>
+      <div className="rounded-2xl border bg-card shadow-sm">
+        {/* Mobile: collapsed filter toggle */}
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById("alert-filters");
+            el?.classList.toggle("hidden");
+          }}
+          className="flex w-full items-center justify-between px-4 py-3 text-sm font-semibold text-muted-foreground sm:hidden"
+        >
+          <span className="flex items-center gap-2">
+            <Filter className="size-4" />
+            Bộ lọc
+          </span>
+          <span className="text-xs text-muted-foreground/60">Nhấn để mở</span>
+        </button>
+
+        <div id="alert-filters" className="hidden sm:block">
+          <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-end sm:gap-4">
+            <div className="grid flex-1 gap-3 sm:grid-cols-3">
+              {/* Trạng thái */}
+              <div className="flex flex-col gap-1.5">
+                <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <Clock className="size-3" /> Trạng thái
+                </span>
+                <select
+                  value={filters.status}
+                  onChange={(e) => handleFilterChange("status", e.target.value as AlertFilters["status"])}
+                  className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                >
+                  <option value="ALL">Tất cả trạng thái</option>
+                  <option value="ACTIVE">Chưa xử lý (Đang mở &amp; Xác nhận)</option>
+                  <option value="OPEN">Chưa xác nhận (Đang mở)</option>
+                  <option value="ACKNOWLEDGED">Đang xử lý (Đã xác nhận)</option>
+                  <option value="RESOLVED">Đã giải quyết (Đã xử lý)</option>
+                </select>
+              </div>
+
+              {/* Mức độ */}
+              <div className="flex flex-col gap-1.5">
+                <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <AlertTriangle className="size-3" /> Mức độ
+                </span>
+                <select
+                  value={filters.severity}
+                  onChange={(e) => handleFilterChange("severity", e.target.value as AlertFilters["severity"])}
+                  className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                >
+                  <option value="ALL">Tất cả mức độ</option>
+                  <option value="INFO">Thông tin (Info)</option>
+                  <option value="WARNING">Cảnh báo (Warning)</option>
+                  <option value="CRITICAL">Nghiêm trọng (Critical)</option>
+                </select>
+              </div>
+
+              {/* Vùng trồng */}
+              <div className="flex flex-col gap-1.5">
+                <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <MapPin className="size-3" /> Vùng trồng
+                </span>
+                <select
+                  value={filters.farmZoneId}
+                  onChange={(e) => handleFilterChange("farmZoneId", e.target.value)}
+                  className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                >
+                  <option value="ALL">Tất cả vùng trồng</option>
+                  {zones.map((zone) => (
+                    <option key={zone.id} value={zone.id}>{zone.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            {/* Mức độ */}
-            <div className="flex flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                <AlertTriangle className="size-3" /> Mức độ
-              </span>
-              <select
-                value={filters.severity}
-                onChange={(e) => handleFilterChange("severity", e.target.value as AlertFilters["severity"])}
-                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+            <div className="flex gap-2 shrink-0">
+              <button
+                onClick={handleResetFilters}
+                className="inline-flex h-9 items-center gap-2 rounded-3xl border bg-background px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
               >
-                <option value="ALL">Tất cả mức độ</option>
-                <option value="INFO">Thông tin (Info)</option>
-                <option value="WARNING">Cảnh báo (Warning)</option>
-                <option value="CRITICAL">Nghiêm trọng (Critical)</option>
-              </select>
-            </div>
-
-            {/* Vùng trồng */}
-            <div className="flex flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                <MapPin className="size-3" /> Vùng trồng
-              </span>
-              <select
-                value={filters.farmZoneId}
-                onChange={(e) => handleFilterChange("farmZoneId", e.target.value)}
-                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                <Filter className="size-3.5" /> Xóa lọc
+              </button>
+              <button
+                onClick={() => loadAlerts(filters)}
+                disabled={isLoading}
+                className="inline-flex h-9 items-center gap-2 rounded-3xl bg-emerald-600 px-4 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed transition"
               >
-                <option value="ALL">Tất cả vùng trồng</option>
-                {zones.map((zone) => (
-                  <option key={zone.id} value={zone.id}>{zone.name}</option>
-                ))}
-              </select>
+                {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : <RefreshCw className="size-3.5" />}
+                Tải lại
+              </button>
             </div>
-          </div>
-
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={handleResetFilters}
-              className="inline-flex h-9 items-center gap-2 rounded-3xl border bg-background px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
-            >
-              <Filter className="size-3.5" /> Xóa lọc
-            </button>
-            <button
-              onClick={() => loadAlerts(filters)}
-              disabled={isLoading}
-              className="inline-flex h-9 items-center gap-2 rounded-3xl bg-emerald-600 px-4 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed transition"
-            >
-              {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : <RefreshCw className="size-3.5" />}
-              Tải lại
-            </button>
           </div>
         </div>
       </div>

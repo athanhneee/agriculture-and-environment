@@ -158,7 +158,7 @@ export function UsersManagerClient() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div>
           {loading ? (
             <div className="flex flex-col items-center justify-center p-12 text-muted-foreground">
               <Loader2 className="size-8 animate-spin mb-4 text-emerald-500" />
@@ -180,81 +180,136 @@ export function UsersManagerClient() {
               <p>Không tìm thấy người dùng nào.</p>
             </div>
           ) : (
-            <table className="w-full text-left text-sm">
-              <thead className="bg-muted/50 text-muted-foreground uppercase text-xs tracking-wider">
-                <tr>
-                  <th className="px-6 py-4 font-semibold">Người dùng</th>
-                  <th className="px-6 py-4 font-semibold">Quyền</th>
-                  <th className="px-6 py-4 font-semibold">Trạng thái</th>
-                  <th className="px-6 py-4 font-semibold">Ngày tham gia</th>
-                  <th className="px-6 py-4 font-semibold text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
+            <>
+              {/* ── Mobile card list ────────────────────── */}
+              <div className="divide-y md:hidden">
                 {filteredUsers.map((u) => (
-                  <tr key={u.id} className="transition-colors hover:bg-muted/30">
-                    <td className="px-6 py-4 font-medium text-foreground">
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold uppercase shrink-0">
-                          {u.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p>{u.name}</p>
-                          <p className="text-xs text-muted-foreground font-normal">{u.email}</p>
-                        </div>
+                  <div key={u.id} className="flex items-center gap-3 px-4 py-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold uppercase text-sm">
+                      {u.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-sm text-foreground">{u.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{u.email}</p>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${u.role === "ADMIN"
+                          ? "bg-rose-100 text-rose-700"
+                          : "bg-blue-100 text-blue-700"
+                          }`}>
+                          {u.role === "ADMIN" ? <Shield className="size-3" /> : <Users className="size-3" />}
+                          {u.role === "ADMIN" ? "Quản trị viên" : "Nông dân"}
+                        </span>
+                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${u.status === "ACTIVE"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-gray-100 text-gray-600"
+                          }`}>
+                          {u.status === "ACTIVE" ? "Hoạt động" : "Bị khóa"}
+                        </span>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.role === "ADMIN"
-                        ? "bg-rose-100 text-rose-700 border border-rose-200"
-                        : "bg-blue-100 text-blue-700 border border-blue-200"
-                        }`}>
-                        {u.role === "ADMIN" ? <Shield className="size-3.5" /> : <Users className="size-3.5" />}
-                        {u.role === "ADMIN" ? "Quản trị viên" : "Nông dân"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.status === "ACTIVE"
-                        ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
-                        : "bg-gray-100 text-gray-700 border border-gray-200"
-                        }`}>
-                        {u.status === "ACTIVE" ? "Hoạt động" : "Bị khóa"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-muted-foreground">
-                      {new Date(u.createdAt).toLocaleDateString("vi-VN", {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      {currentUser?.id !== u.id && (
-                        <div className="flex justify-end gap-2">
-                          <button
-                            onClick={() => openEditModal(u)}
-                            title="Sửa thông tin"
-                            className="p-2 rounded-3xl text-blue-600 hover:bg-blue-50 transition hover:text-blue-700"
-                          >
-                            <Edit className="size-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(u.id, u.name)}
-                            title="Xóa người dùng"
-                            className="p-2 rounded-3xl text-rose-500 hover:bg-rose-50 transition hover:text-rose-700"
-                          >
-                            <Trash2 className="size-4" />
-                          </button>
-                        </div>
-                      )}
-                      {currentUser?.id === u.id && (
-                        <span className="text-xs text-muted-foreground italic">Bạn</span>
-                      )}
-                    </td>
-                  </tr>
+                    </div>
+                    {currentUser?.id !== u.id ? (
+                      <div className="flex shrink-0 gap-1">
+                        <button
+                          onClick={() => openEditModal(u)}
+                          title="Sửa"
+                          className="p-2 rounded-full text-blue-600 hover:bg-blue-50 transition"
+                        >
+                          <Edit className="size-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(u.id, u.name)}
+                          title="Xóa"
+                          className="p-2 rounded-full text-rose-500 hover:bg-rose-50 transition"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="shrink-0 text-xs text-muted-foreground italic">Bạn</span>
+                    )}
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+
+              {/* ── Desktop table ───────────────────────── */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-muted/50 text-muted-foreground uppercase text-xs tracking-wider">
+                    <tr>
+                      <th className="px-6 py-4 font-semibold">Người dùng</th>
+                      <th className="px-6 py-4 font-semibold">Quyền</th>
+                      <th className="px-6 py-4 font-semibold">Trạng thái</th>
+                      <th className="px-6 py-4 font-semibold">Ngày tham gia</th>
+                      <th className="px-6 py-4 font-semibold text-right">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    {filteredUsers.map((u) => (
+                      <tr key={u.id} className="transition-colors hover:bg-muted/30">
+                        <td className="px-6 py-4 font-medium text-foreground">
+                          <div className="flex items-center gap-3">
+                            <div className="flex size-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold uppercase shrink-0">
+                              {u.name.charAt(0)}
+                            </div>
+                            <div>
+                              <p>{u.name}</p>
+                              <p className="text-xs text-muted-foreground font-normal">{u.email}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.role === "ADMIN"
+                            ? "bg-rose-100 text-rose-700 border border-rose-200"
+                            : "bg-blue-100 text-blue-700 border border-blue-200"
+                            }`}>
+                            {u.role === "ADMIN" ? <Shield className="size-3.5" /> : <Users className="size-3.5" />}
+                            {u.role === "ADMIN" ? "Quản trị viên" : "Nông dân"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.status === "ACTIVE"
+                            ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                            : "bg-gray-100 text-gray-700 border border-gray-200"
+                            }`}>
+                            {u.status === "ACTIVE" ? "Hoạt động" : "Bị khóa"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-muted-foreground">
+                          {new Date(u.createdAt).toLocaleDateString("vi-VN", {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          {currentUser?.id !== u.id && (
+                            <div className="flex justify-end gap-2">
+                              <button
+                                onClick={() => openEditModal(u)}
+                                title="Sửa thông tin"
+                                className="p-2 rounded-3xl text-blue-600 hover:bg-blue-50 transition hover:text-blue-700"
+                              >
+                                <Edit className="size-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(u.id, u.name)}
+                                title="Xóa người dùng"
+                                className="p-2 rounded-3xl text-rose-500 hover:bg-rose-50 transition hover:text-rose-700"
+                              >
+                                <Trash2 className="size-4" />
+                              </button>
+                            </div>
+                          )}
+                          {currentUser?.id === u.id && (
+                            <span className="text-xs text-muted-foreground italic">Bạn</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </div>
