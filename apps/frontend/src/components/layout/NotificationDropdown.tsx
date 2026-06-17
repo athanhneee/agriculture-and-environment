@@ -31,7 +31,7 @@ function ToastNotification({ alert, onClose }: { alert: any; onClose: () => void
   const sev = severityConfig[alert.severity] || severityConfig.INFO;
 
   return createPortal(
-    <div className="fixed bottom-[30px] right-4 sm:right-6 lg:right-8 z-[9999] flex w-80 sm:w-96 items-start gap-3 rounded-3xl border bg-card p-4 shadow-xl animate-in fade-in slide-in-from-bottom-5 duration-300">
+    <div className="fixed bottom-[30px] right-4 sm:right-6 lg:right-8 z-[9999] flex w-80 sm:w-96 items-start gap-3 rounded-3xl border bg-card p-4 shadow-xl animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       <div className={`flex size-10 shrink-0 items-center justify-center rounded-full ${sev.iconClass}`}>
         <AlertTriangle className="size-5" />
       </div>
@@ -153,7 +153,7 @@ export function NotificationDropdown() {
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl border bg-card shadow-lg animate-in fade-in zoom-in-95 z-50 overflow-hidden flex flex-col">
+          <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl border bg-card shadow-lg animate-in fade-in-0 slide-in-from-top-2 zoom-in-95 duration-300 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)] z-50 overflow-hidden flex flex-col">
             <div className="flex items-center justify-between border-b px-4 py-3 bg-muted/30">
               <h3 className="font-semibold">Thông báo mới</h3>
               {unreadCount > 0 && (

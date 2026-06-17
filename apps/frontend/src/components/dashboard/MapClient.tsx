@@ -61,7 +61,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
   const totalAlerts = mapZones.reduce((s, z) => s + (z.openAlertsCount ?? 0), 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>
