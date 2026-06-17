@@ -51,6 +51,7 @@ export default function RegisterPage() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
+    mode: "onBlur",
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 

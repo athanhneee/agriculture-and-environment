@@ -77,7 +77,12 @@ export class SensorReadingService {
     const latestReadings = await Promise.all(
       farmZones.map(async (zone: { id: string }) => {
         const reading = await prisma.sensorReading.findFirst({
-          where: { farmZoneId: zone.id },
+          where: {
+            farmZoneId: zone.id,
+            sensor: {
+              status: "ACTIVE"
+            }
+          },
           orderBy: { recordedAt: "desc" },
         });
 

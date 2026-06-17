@@ -78,6 +78,11 @@ export class FarmZoneService {
             },
           },
           sensorReadings: {
+            where: {
+              sensor: {
+                status: "ACTIVE"
+              }
+            },
             orderBy: { recordedAt: "desc" },
             take: 1,
           },
@@ -120,6 +125,11 @@ export class FarmZoneService {
           },
         },
         sensorReadings: {
+          where: {
+            sensor: {
+              status: "ACTIVE"
+            }
+          },
           orderBy: { recordedAt: "desc" },
           take: 1,
         },

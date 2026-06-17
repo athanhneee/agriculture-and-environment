@@ -48,6 +48,7 @@ export default function LoginPage() {
   const isRegistered = searchParams.get("registered") === "true";
   const nextPath = searchParams.get("next");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const {
     register,
@@ -56,6 +57,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    mode: "onBlur",
     defaultValues: { email: "", password: "" },
   });
 
@@ -63,11 +65,15 @@ export default function LoginPage() {
     try {
       const data = await authApi.login(values);
       setAuth(data as any);
+      setIsLoginSuccess(true);
+      // Tự động điều hướng đã bị vô hiệu hóa theo yêu cầu
+      /*
       const redirectTo =
         nextPath?.startsWith("/") && !nextPath.startsWith("//")
           ? nextPath
           : "/dashboard";
       router.replace(redirectTo);
+      */
     } catch (error) {
       const message =
         error instanceof ApiError
@@ -209,6 +215,14 @@ export default function LoginPage() {
               <div className="mb-5 flex items-start gap-2.5 rounded-3xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
                 <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 <span>Đăng ký tài khoản thành công! Vui lòng đăng nhập.</span>
+              </div>
+            )}
+
+            {/* Alert: đăng nhập thành công */}
+            {isLoginSuccess && (
+              <div className="mb-5 flex items-start gap-2.5 rounded-3xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                <span>Đăng nhập thành công! (Không tự động chuyển hướng)</span>
               </div>
             )}
 
