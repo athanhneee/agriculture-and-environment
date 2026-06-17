@@ -252,26 +252,38 @@ export function StatisticsClient({ initialOverview }: StatisticsClientProps) {
                       temp: item.avgTemperature ? Number(item.avgTemperature.toFixed(1)) : 0,
                       hum: item.avgAirHumidity ? Number(item.avgAirHumidity.toFixed(1)) : 0,
                       soil: item.avgSoilMoisture ? Number(item.avgSoilMoisture.toFixed(1)) : 0,
+                      light: item.avgLightIntensity ? Number(item.avgLightIntensity.toFixed(0)) : 0,
                     }))}
                     margin={{ top: 5, right: 10, left: -25, bottom: 0 }}
                   >
                     <defs>
                       <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.2} />
+                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.15} />
                         <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                       </linearGradient>
+                      <linearGradient id="colorHum" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                      </linearGradient>
                       <linearGradient id="colorSoil" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
                         <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorLight" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#eab308" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#eab308" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.6} />
                     <XAxis dataKey="date" tick={{ fontSize: 9 }} stroke="#94a3b8" />
-                    <YAxis tick={{ fontSize: 9 }} stroke="#94a3b8" />
+                    <YAxis yAxisId="left" tick={{ fontSize: 9 }} stroke="#94a3b8" />
+                    <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 9 }} stroke="#eab308" />
                     <Tooltip contentStyle={{ fontSize: "11px" }} />
                     <Legend wrapperStyle={{ fontSize: "11px" }} />
-                    <Area name="Nhiệt độ TB (°C)" type="monotone" dataKey="temp" stroke="#f97316" fillOpacity={1} fill="url(#colorTemp)" strokeWidth={2} />
-                    <Area name="Ẩm đất TB (%)" type="monotone" dataKey="soil" stroke="#3b82f6" fillOpacity={1} fill="url(#colorSoil)" strokeWidth={2} />
+                    <Area yAxisId="left" name="Nhiệt độ TB (°C)" type="monotone" dataKey="temp" stroke="#f97316" fillOpacity={1} fill="url(#colorTemp)" strokeWidth={2} />
+                    <Area yAxisId="left" name="Ẩm không khí TB (%)" type="monotone" dataKey="hum" stroke="#06b6d4" fillOpacity={1} fill="url(#colorHum)" strokeWidth={2} />
+                    <Area yAxisId="left" name="Ẩm đất TB (%)" type="monotone" dataKey="soil" stroke="#3b82f6" fillOpacity={1} fill="url(#colorSoil)" strokeWidth={2} />
+                    <Area yAxisId="right" name="Ánh sáng TB (lx)" type="monotone" dataKey="light" stroke="#eab308" fillOpacity={1} fill="url(#colorLight)" strokeWidth={2} />
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
