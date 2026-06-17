@@ -100,11 +100,11 @@ export function CropsClient({ initialZones }: CropsClientProps) {
   };
 
   return (
-    <div className="space-y-6 relative">
+    <div className="space-y-6 relative animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)]">
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-3xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
+          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-3xl border px-4 py-3 shadow-lg animate-in fade-in-0 slide-in-from-bottom-5 zoom-in-95 duration-500 [animation-timing-function:cubic-bezier(0.16,1,0.3,1)] ${toast.type === "success"
             ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
             : "border-destructive/20 bg-destructive/10 text-destructive"
             }`}
