@@ -14,7 +14,7 @@ type ImportRow = {
   status?: ZoneStatus;
 };
 
-const REQUIRED_HEADERS = ["name", "area", "latitude", "longitude", "soilType"];
+const REQUIRED_HEADERS = ["name", "area", "gpsCoordinates", "soilType"];
 
 function normalizeHeader(value: unknown) {
   return String(value ?? "").trim();
@@ -37,15 +37,25 @@ function validateRow(row: any, index: number): ImportRow {
     }
   }
 
-  const latitude = parseNumber(row.latitude, "latitude");
-  const longitude = parseNumber(row.longitude, "longitude");
+  const gpsStr = String(row.gpsCoordinates || "").trim();
+  const gpsRegex = /^\s*\(?\s*(-?\d+(?:\.\d+)?)\s*[\s,;/\\]\s*(-?\d+(?:\.\d+)?)\s*\)?\s*$/;
+  const match = gpsStr.match(gpsRegex);
 
-  if (latitude < -90 || latitude > 90) {
-    throw new Error(`Dòng ${index}: latitude phải nằm trong [-90, 90]`);
+  if (!match) {
+    throw new Error(
+      `Dòng ${index}: Tọa độ GPS không đúng định dạng. Định dạng đúng là "Vĩ độ, Kinh độ" (VD: 10.762622, 106.660172)`,
+    );
   }
 
-  if (longitude < -180 || longitude > 180) {
-    throw new Error(`Dòng ${index}: longitude phải nằm trong [-180, 180]`);
+  const latitude = Number(match[1]);
+  const longitude = Number(match[2]);
+
+  if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
+    throw new Error(`Dòng ${index}: Vĩ độ phải nằm trong khoảng [-90, 90]`);
+  }
+
+  if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+    throw new Error(`Dòng ${index}: Kinh độ phải nằm trong khoảng [-180, 180]`);
   }
 
   const status = String(row.status || "ACTIVE").trim().toUpperCase();

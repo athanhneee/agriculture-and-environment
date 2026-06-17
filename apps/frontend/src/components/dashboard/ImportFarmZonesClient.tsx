@@ -235,7 +235,7 @@ export function ImportFarmZonesClient() {
             <div>
               <h3 className="text-lg font-semibold">Nhập dữ liệu Vùng Trồng</h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Header bắt buộc: <code className="font-mono font-bold text-foreground">name, area, latitude, longitude, soilType</code>
+                Header bắt buộc: <code className="font-mono font-bold text-foreground">name, area, gpsCoordinates, soilType</code>
               </p>
             </div>
             <button
@@ -259,7 +259,7 @@ export function ImportFarmZonesClient() {
           <div className="mt-4 rounded-3xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
             <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-3xl border">
-              name,description,area,latitude,longitude,soilType,status
+              name,description,area,gpsCoordinates,soilType,status
             </code>
           </div>
 

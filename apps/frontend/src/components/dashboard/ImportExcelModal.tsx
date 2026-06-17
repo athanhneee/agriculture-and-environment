@@ -38,18 +38,11 @@ const COLUMNS = [
     hint: "Số thực dương, dùng dấu chấm thập phân",
   },
   {
-    name: "latitude",
-    label: "Vĩ độ",
+    name: "gpsCoordinates",
+    label: "Tọa độ GPS",
     required: true,
-    example: "10.7626",
-    hint: "Từ -90 đến 90",
-  },
-  {
-    name: "longitude",
-    label: "Kinh độ",
-    required: true,
-    example: "106.6602",
-    hint: "Từ -180 đến 180",
+    example: "10.762622, 106.660172",
+    hint: "Copy/Paste trực tiếp từ Google Maps (Vĩ độ, Kinh độ)",
   },
   {
     name: "soilType",
