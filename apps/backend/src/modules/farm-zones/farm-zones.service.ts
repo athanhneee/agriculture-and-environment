@@ -7,11 +7,6 @@ import {
 import { JwtPayload } from "../../utils/jwt";
 
 function mapFarmZoneDto(zone: any) {
-  const latestReading =
-    zone.sensorReadings && zone.sensorReadings.length > 0
-      ? zone.sensorReadings[0]
-      : null;
-
   const latestCrop =
     zone.crops && zone.crops.length > 0 ? zone.crops[0] : null;
 
@@ -20,16 +15,61 @@ function mapFarmZoneDto(zone: any) {
     zone.alerts?.filter((a: any) => a.status === "OPEN").length ??
     0;
 
+  let temperature: number | null = null;
+  let airHumidity: number | null = null;
+  let soilMoisture: number | null = null;
+  let lightIntensity: number | null = null;
+  let recordedAt: Date | null = null;
+
+  if (zone.sensorReadings && zone.sensorReadings.length > 0) {
+    for (const reading of zone.sensorReadings) {
+      const sensorType = reading.sensor?.type;
+
+      if (!sensorType) continue;
+
+      if (temperature === null && (sensorType === "TEMPERATURE" || sensorType === "ALL_IN_ONE")) {
+        if (reading.temperature !== null && reading.temperature !== undefined) {
+          temperature = reading.temperature;
+          if (!recordedAt) recordedAt = reading.recordedAt;
+        }
+      }
+      if (airHumidity === null && (sensorType === "AIR_HUMIDITY" || sensorType === "ALL_IN_ONE")) {
+        if (reading.airHumidity !== null && reading.airHumidity !== undefined) {
+          airHumidity = reading.airHumidity;
+          if (!recordedAt) recordedAt = reading.recordedAt;
+        }
+      }
+      if (soilMoisture === null && (sensorType === "SOIL_MOISTURE" || sensorType === "ALL_IN_ONE")) {
+        if (reading.soilMoisture !== null && reading.soilMoisture !== undefined) {
+          soilMoisture = reading.soilMoisture;
+          if (!recordedAt) recordedAt = reading.recordedAt;
+        }
+      }
+      if (lightIntensity === null && (sensorType === "LIGHT_INTENSITY" || sensorType === "ALL_IN_ONE")) {
+        if (reading.lightIntensity !== null && reading.lightIntensity !== undefined) {
+          lightIntensity = reading.lightIntensity;
+          if (!recordedAt) recordedAt = reading.recordedAt;
+        }
+      }
+
+      if (temperature !== null && airHumidity !== null && soilMoisture !== null && lightIntensity !== null) {
+        break;
+      }
+    }
+  }
+
+  const hasSummary = temperature !== null || airHumidity !== null || soilMoisture !== null || lightIntensity !== null;
+
   return {
     ...zone,
     cropName: latestCrop?.name ?? null,
-    latestSensorSummary: latestReading
+    latestSensorSummary: hasSummary
       ? {
-        temperature: latestReading.temperature,
-        airHumidity: latestReading.airHumidity,
-        soilMoisture: latestReading.soilMoisture,
-        lightIntensity: latestReading.lightIntensity,
-        recordedAt: latestReading.recordedAt,
+        temperature,
+        airHumidity,
+        soilMoisture,
+        lightIntensity,
+        recordedAt,
       }
       : null,
     openAlertsCount,
@@ -83,8 +123,11 @@ export class FarmZoneService {
                 status: "ACTIVE"
               }
             },
+            include: {
+              sensor: true
+            },
             orderBy: { recordedAt: "desc" },
-            take: 1,
+            take: 10,
           },
           _count: {
             select: {
@@ -130,8 +173,11 @@ export class FarmZoneService {
               status: "ACTIVE"
             }
           },
+          include: {
+            sensor: true
+          },
           orderBy: { recordedAt: "desc" },
-          take: 1,
+          take: 10,
         },
         alerts: {
           orderBy: { createdAt: "desc" },
