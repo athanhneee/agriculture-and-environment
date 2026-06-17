@@ -588,7 +588,7 @@ const cleanParams = (params?: Record<string, string>) => {
 export const cropsApi = {
   list: async (params?: Record<string, string>) => {
     const payload = await apiRequest<Crop[] | PaginatedResponse<Crop>>(
-      `/api/crops?${cleanParams(params)}`,
+      `/api/crops?${cleanParams({ limit: "1000", ...params })}`,
     );
     return unwrapList<Crop>(payload);
   },
@@ -609,7 +609,7 @@ export const cropsApi = {
 export const sensorsApi = {
   list: async (params?: Record<string, string>) => {
     const payload = await apiRequest<Sensor[] | PaginatedResponse<Sensor>>(
-      `/api/sensors?${cleanParams(params)}`,
+      `/api/sensors?${cleanParams({ limit: "1000", ...params })}`,
     );
     return unwrapList<Sensor>(payload);
   },
