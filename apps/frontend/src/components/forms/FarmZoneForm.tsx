@@ -2,15 +2,29 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Loader2, Save, UploadCloud } from "lucide-react";
+import { ArrowLeft, Loader2, Save, UploadCloud, Compass } from "lucide-react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 import { createFarmZoneAction, updateFarmZoneAction } from "@/app/dashboard/zones/actions";
 import { farmZoneSchema, type FarmZoneFormValues } from "@/lib/validations";
 import { ImportExcelModal } from "@/components/dashboard/ImportExcelModal";
 import type { FarmZone } from "@/lib/api";
+
+const LocationPickerMap = dynamic(() => import("../map/LocationPickerMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[300px] w-full flex-col items-center justify-center rounded-2xl border bg-card text-center">
+      <div className="relative flex size-12 items-center justify-center">
+        <span className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping" />
+        <Compass className="size-6 text-emerald-600 animate-spin" style={{ animationDuration: "2.5s" }} />
+      </div>
+      <p className="mt-2 text-xs font-semibold text-muted-foreground">Đang khởi tạo bản đồ chọn vị trí...</p>
+    </div>
+  ),
+});
 
 interface FarmZoneFormProps {
   initialData?: FarmZone;
@@ -25,6 +39,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
     register,
     setValue,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FarmZoneFormValues>({
     resolver: zodResolver(farmZoneSchema),
@@ -48,6 +63,9 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
         status: "ACTIVE",
       },
   });
+
+  const watchLatitude = watch("latitude");
+  const watchLongitude = watch("longitude");
 
   const [areaInput, setAreaInput] = useState(initialData ? String(initialData.area) : "");
 
@@ -178,8 +196,9 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 type="number"
                 step="any"
                 placeholder="10.762622"
+                readOnly
                 aria-invalid={Boolean(errors.latitude)}
-                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-muted cursor-not-allowed opacity-80 px-3.5 text-sm outline-none transition aria-invalid:border-destructive"
                 {...register("latitude", { valueAsNumber: true })}
               />
               {errors.latitude?.message ? (
@@ -193,14 +212,28 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 type="number"
                 step="any"
                 placeholder="106.660172"
+                readOnly
                 aria-invalid={Boolean(errors.longitude)}
-                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-muted cursor-not-allowed opacity-80 px-3.5 text-sm outline-none transition aria-invalid:border-destructive"
                 {...register("longitude", { valueAsNumber: true })}
               />
               {errors.longitude?.message ? (
                 <p className="mt-2 text-sm text-destructive">{errors.longitude.message}</p>
               ) : null}
             </label>
+
+            {/* Bản đồ chọn vị trí */}
+            <div className="sm:col-span-2 space-y-2">
+              <span className="text-sm font-medium">Định vị tọa độ trên bản đồ *</span>
+              <LocationPickerMap
+                latitude={watchLatitude}
+                longitude={watchLongitude}
+                onChange={(lat, lng) => {
+                  setValue("latitude", lat, { shouldValidate: true, shouldDirty: true });
+                  setValue("longitude", lng, { shouldValidate: true, shouldDirty: true });
+                }}
+              />
+            </div>
 
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Trạng thái hoạt động *</span>
