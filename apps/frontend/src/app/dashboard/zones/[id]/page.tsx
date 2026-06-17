@@ -93,10 +93,10 @@ export default async function ZoneDetailPage({ params }: PageProps) {
   const light = zone.latestSensorSummary?.lightIntensity;
 
   const metrics = [
-    { label: "Nhiệt độ không khí", value: temp !== undefined ? `${temp}°C` : "N/A", icon: Thermometer, color: "text-orange-500 bg-orange-500/10" },
-    { label: "Độ ẩm đất", value: soilMoist !== undefined ? `${soilMoist}%` : "N/A", icon: Droplets, color: "text-blue-500 bg-blue-500/10" },
-    { label: "Độ ẩm không khí", value: airHum !== undefined ? `${airHum}%` : "N/A", icon: Activity, color: "text-sky-500 bg-sky-500/10" },
-    { label: "Cường độ ánh sáng", value: light !== undefined ? `${light.toLocaleString()} lx` : "N/A", icon: Sun, color: "text-yellow-500 bg-yellow-500/10" },
+    { label: "Nhiệt độ không khí", value: temp !== undefined && temp !== null ? `${temp}°C` : "N/A", icon: Thermometer, color: "text-orange-500 bg-orange-500/10" },
+    { label: "Độ ẩm đất", value: soilMoist !== undefined && soilMoist !== null ? `${soilMoist}%` : "N/A", icon: Droplets, color: "text-blue-500 bg-blue-500/10" },
+    { label: "Độ ẩm không khí", value: airHum !== undefined && airHum !== null ? `${airHum}%` : "N/A", icon: Activity, color: "text-sky-500 bg-sky-500/10" },
+    { label: "Cường độ ánh sáng", value: light !== undefined && light !== null ? `${light.toLocaleString()} lx` : "N/A", icon: Sun, color: "text-yellow-500 bg-yellow-500/10" },
   ];
 
   return (

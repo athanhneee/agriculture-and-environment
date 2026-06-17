@@ -91,28 +91,28 @@ export function FarmZoneCard({ zone }: FarmZoneCardProps) {
             <div className="flex items-center gap-2 text-sm">
               <Thermometer className="size-4 text-orange-500" />
               <span className="font-medium text-foreground">
-                {temp !== undefined ? `${temp}°C` : "N/A"}
+                {temp !== undefined && temp !== null ? `${temp}°C` : "N/A"}
               </span>
               <span className="text-xs text-muted-foreground">Nhiệt độ</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <Droplets className="size-4 text-blue-500" />
               <span className="font-medium text-foreground">
-                {soilMoist !== undefined ? `${soilMoist}%` : "N/A"}
+                {soilMoist !== undefined && soilMoist !== null ? `${soilMoist}%` : "N/A"}
               </span>
               <span className="text-xs text-muted-foreground">Ẩm đất</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <Gauge className="size-4 text-sky-500" />
               <span className="font-medium text-foreground">
-                {airHum !== undefined ? `${airHum}%` : "N/A"}
+                {airHum !== undefined && airHum !== null ? `${airHum}%` : "N/A"}
               </span>
               <span className="text-xs text-muted-foreground">Ẩm khí</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <Sun className="size-4 text-yellow-500" />
               <span className="font-medium text-foreground">
-                {light !== undefined ? `${light.toLocaleString()} lx` : "N/A"}
+                {light !== undefined && light !== null ? `${light.toLocaleString()} lx` : "N/A"}
               </span>
               <span className="text-xs text-muted-foreground">Ánh sáng</span>
             </div>

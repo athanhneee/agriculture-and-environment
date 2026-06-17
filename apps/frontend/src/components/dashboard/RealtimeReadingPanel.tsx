@@ -24,28 +24,28 @@ export function RealtimeReadingPanel({ isConnected }: RealtimeReadingPanelProps)
   const metrics = [
     {
       label: "Nhiệt độ không khí",
-      value: latestReading?.temperature !== undefined ? `${latestReading.temperature}°C` : "N/A",
+      value: latestReading?.temperature !== undefined && latestReading.temperature !== null ? `${latestReading.temperature}°C` : "N/A",
       icon: Thermometer,
       color: "text-orange-500 bg-orange-500/10",
       border: "border-orange-500/20",
     },
     {
       label: "Độ ẩm không khí",
-      value: latestReading?.airHumidity !== undefined ? `${latestReading.airHumidity}%` : "N/A",
+      value: latestReading?.airHumidity !== undefined && latestReading.airHumidity !== null ? `${latestReading.airHumidity}%` : "N/A",
       icon: Droplet,
       color: "text-sky-500 bg-sky-500/10",
       border: "border-sky-500/20",
     },
     {
       label: "Độ ẩm đất",
-      value: latestReading?.soilMoisture !== undefined ? `${latestReading.soilMoisture}%` : "N/A",
+      value: latestReading?.soilMoisture !== undefined && latestReading.soilMoisture !== null ? `${latestReading.soilMoisture}%` : "N/A",
       icon: Droplets,
       color: "text-blue-500 bg-blue-500/10",
       border: "border-blue-500/20",
     },
     {
       label: "Cường độ ánh sáng",
-      value: latestReading?.lightIntensity !== undefined ? `${latestReading.lightIntensity.toLocaleString()} lx` : "N/A",
+      value: latestReading?.lightIntensity !== undefined && latestReading.lightIntensity !== null ? `${latestReading.lightIntensity.toLocaleString()} lx` : "N/A",
       icon: Sun,
       color: "text-yellow-500 bg-yellow-500/10",
       border: "border-yellow-500/20",
