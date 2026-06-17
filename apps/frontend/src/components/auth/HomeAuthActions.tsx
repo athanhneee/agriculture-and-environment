@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Loader2, LogOut } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, LogIn } from "lucide-react";
 
 import { useLogout } from "@/hooks/useLogout";
 import { useAuthStore } from "@/stores/auth.store";
@@ -14,6 +15,18 @@ type HomeAuthActionsProps = {
 function useIsAuthenticated(initialIsAuthenticated: boolean) {
   const accessToken = useAuthStore((state) => state.accessToken);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+
+  useEffect(() => {
+    if (hasHydrated && accessToken) {
+      const hasCookie = document.cookie
+        .split(";")
+        .some((item) => item.trim().startsWith("accessToken="));
+      if (!hasCookie) {
+        clearAuth();
+      }
+    }
+  }, [hasHydrated, accessToken, clearAuth]);
 
   return hasHydrated ? Boolean(accessToken) : initialIsAuthenticated;
 }
@@ -44,9 +57,10 @@ export function HomeNavAuthActions({
       ) : (
         <Link
           href="/auth/login"
-          className="hidden rounded-xl px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-white/70 dark:text-emerald-100 dark:hover:bg-white/10 sm:inline-flex"
+          className="inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-emerald-800 transition hover:bg-white/70 dark:text-emerald-100 dark:hover:bg-white/10 sm:px-4"
         >
-          Đăng nhập
+          <LogIn className="size-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Đăng nhập</span>
         </Link>
       )}
 
