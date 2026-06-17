@@ -11,7 +11,7 @@ export function GlobalSearch() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<GlobalSearchResults | null>(null);
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -104,9 +104,9 @@ export function GlobalSearch() {
                       <button
                         key={zone.id}
                         onClick={() => handleNavigate(`/dashboard/zones/${zone.id}`)}
-                        className="flex w-full items-center gap-3 rounded-xl p-2 text-left hover:bg-muted transition"
+                        className="flex w-full items-center gap-3 rounded-3xl p-2 text-left hover:bg-muted transition"
                       >
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">
                           <MapPin className="size-4" />
                         </div>
                         <div className="flex-1 overflow-hidden">
@@ -127,9 +127,9 @@ export function GlobalSearch() {
                       <button
                         key={crop.id}
                         onClick={() => handleNavigate(`/dashboard/crops`)}
-                        className="flex w-full items-center gap-3 rounded-xl p-2 text-left hover:bg-muted transition"
+                        className="flex w-full items-center gap-3 rounded-3xl p-2 text-left hover:bg-muted transition"
                       >
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-400/10 dark:text-amber-300">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-3xl bg-amber-100 text-amber-700 dark:bg-amber-400/10 dark:text-amber-300">
                           <Leaf className="size-4" />
                         </div>
                         <div className="flex-1 overflow-hidden">
@@ -150,9 +150,9 @@ export function GlobalSearch() {
                       <button
                         key={sensor.id}
                         onClick={() => handleNavigate(`/dashboard/sensors`)}
-                        className="flex w-full items-center gap-3 rounded-xl p-2 text-left hover:bg-muted transition"
+                        className="flex w-full items-center gap-3 rounded-3xl p-2 text-left hover:bg-muted transition"
                       >
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-3xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300">
                           <Activity className="size-4" />
                         </div>
                         <div className="flex-1 overflow-hidden">

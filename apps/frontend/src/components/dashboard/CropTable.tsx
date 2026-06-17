@@ -141,13 +141,13 @@ export function CropTable({ crops, onEdit, onDelete, canManage }: CropTableProps
             <div className="mt-6 flex justify-end gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="h-9 rounded-xl border bg-background px-4 text-xs font-semibold hover:bg-muted transition"
+                className="h-9 rounded-3xl border bg-background px-4 text-xs font-semibold hover:bg-muted transition"
               >
                 Hủy
               </button>
               <button
                 onClick={handleDeleteConfirm}
-                className="h-9 rounded-xl bg-destructive text-destructive-foreground px-4 text-xs font-semibold hover:bg-destructive/90 transition"
+                className="h-9 rounded-3xl bg-destructive text-destructive-foreground px-4 text-xs font-semibold hover:bg-destructive/90 transition"
               >
                 Đồng ý xóa
               </button>
@@ -204,14 +204,14 @@ export function CropTable({ crops, onEdit, onDelete, canManage }: CropTableProps
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => onEdit(crop)}
-                          className="flex size-8 items-center justify-center rounded-lg border bg-card hover:bg-muted transition text-muted-foreground hover:text-foreground"
+                          className="flex size-8 items-center justify-center rounded-3xl border bg-card hover:bg-muted transition text-muted-foreground hover:text-foreground"
                           title="Sửa"
                         >
                           <Edit2 className="size-3.5" />
                         </button>
                         <button
                           onClick={() => setDeleteId(crop.id)}
-                          className="flex size-8 items-center justify-center rounded-lg border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 transition text-destructive"
+                          className="flex size-8 items-center justify-center rounded-3xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 transition text-destructive"
                           title="Xóa"
                         >
                           <Trash2 className="size-3.5" />
@@ -276,13 +276,13 @@ export function CropTable({ crops, onEdit, onDelete, canManage }: CropTableProps
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     onClick={() => onEdit(crop)}
-                    className="flex h-8 items-center gap-1.5 rounded-lg border bg-card hover:bg-muted px-3 text-xs text-muted-foreground hover:text-foreground transition"
+                    className="flex h-8 items-center gap-1.5 rounded-3xl border bg-card hover:bg-muted px-3 text-xs text-muted-foreground hover:text-foreground transition"
                   >
                     <Edit2 className="size-3" /> Sửa
                   </button>
                   <button
                     onClick={() => setDeleteId(crop.id)}
-                    className="flex h-8 items-center gap-1.5 rounded-lg border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 px-3 text-xs text-destructive transition"
+                    className="flex h-8 items-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 px-3 text-xs text-destructive transition"
                   >
                     <Trash2 className="size-3" /> Xóa
                   </button>

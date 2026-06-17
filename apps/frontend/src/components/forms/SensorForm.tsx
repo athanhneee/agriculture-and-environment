@@ -77,14 +77,14 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
         </h3>
         <button
           onClick={onCancel}
-          className="rounded-lg p-1 hover:bg-muted transition text-muted-foreground hover:text-foreground"
+          className="rounded-3xl p-1 hover:bg-muted transition text-muted-foreground hover:text-foreground"
         >
           <X className="size-5" />
         </button>
       </div>
 
       {errorMsg && (
-        <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div className="mb-6 rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {errorMsg}
         </div>
       )}
@@ -98,7 +98,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
               type="text"
               placeholder="Cảm biến Nhiệt độ Không khí Khu A..."
               aria-invalid={Boolean(errors.name)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("name")}
             />
             {errors.name?.message && (
@@ -114,7 +114,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
               placeholder="ESP32-TEMP-ZONE1-01"
               disabled={isEdit} // Không cho phép sửa mã định danh sau khi tạo
               aria-invalid={Boolean(errors.code)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10 disabled:bg-muted disabled:cursor-not-allowed"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10 disabled:bg-muted disabled:cursor-not-allowed"
               {...register("code")}
             />
             {errors.code?.message && (
@@ -127,7 +127,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
             <span className="text-sm font-medium">Chọn vùng trồng *</span>
             <select
               aria-invalid={Boolean(errors.farmZoneId)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("farmZoneId")}
             >
               <option value="">-- Chọn vùng trồng --</option>
@@ -146,7 +146,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
           <label className="block">
             <span className="text-sm font-medium">Loại cảm biến *</span>
             <select
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               {...register("type")}
               onChange={handleTypeChange}
             >
@@ -165,7 +165,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
               type="text"
               placeholder="°C, %, Lux..."
               aria-invalid={Boolean(errors.unit)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("unit")}
             />
             {errors.unit?.message && (
@@ -177,7 +177,7 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
           <label className="block sm:col-span-2">
             <span className="text-sm font-medium">Trạng thái hoạt động *</span>
             <select
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               {...register("status")}
             >
               <option value="ACTIVE">Đang hoạt động (Active)</option>
@@ -191,14 +191,14 @@ export function SensorForm({ initialData, zones, onSuccess, onCancel }: SensorFo
           <button
             type="button"
             onClick={onCancel}
-            className="h-10 rounded-xl border bg-background px-4 text-sm font-semibold hover:bg-muted transition"
+            className="h-10 rounded-3xl border bg-background px-4 text-sm font-semibold hover:bg-muted transition"
           >
             Hủy bỏ
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition disabled:opacity-75"
+            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-3xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition disabled:opacity-75"
           >
             {isSubmitting ? (
               <Loader2 className="size-4 animate-spin" />

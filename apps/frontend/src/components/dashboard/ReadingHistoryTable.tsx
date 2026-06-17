@@ -57,13 +57,13 @@ export function ReadingHistoryTable({ readings }: ReadingHistoryTableProps) {
               <tr key={reading.id} className="hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-200 cursor-default">
                 <td className="px-6 py-4 font-medium text-foreground">
                   <div className="flex items-center gap-1.5 font-mono text-xs">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                     {new Date(reading.recordedAt).toLocaleString("vi-VN")}
                   </div>
                 </td>
                 <td className="px-6 py-4 font-semibold text-emerald-700 dark:text-emerald-400">
                   <div className="flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
                     {reading.farmZone?.name || "N/A"}
                   </div>
                 </td>
@@ -96,7 +96,7 @@ export function ReadingHistoryTable({ readings }: ReadingHistoryTableProps) {
 
       {/* Pagination controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between bg-card border rounded-xl p-3 shadow-sm text-sm">
+        <div className="flex items-center justify-between bg-card border rounded-3xl p-3 shadow-sm text-sm">
           <span className="text-muted-foreground font-medium">
             Hiển thị {startIndex + 1} - {Math.min(startIndex + itemsPerPage, readings.length)} trong tổng số {readings.length} bản ghi
           </span>
@@ -105,7 +105,7 @@ export function ReadingHistoryTable({ readings }: ReadingHistoryTableProps) {
             <button
               onClick={handlePrevPage}
               disabled={currentPage === 1}
-              className="flex size-8 items-center justify-center rounded-lg border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground disabled:opacity-50"
+              className="flex size-8 items-center justify-center rounded-3xl border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground disabled:opacity-50"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -115,7 +115,7 @@ export function ReadingHistoryTable({ readings }: ReadingHistoryTableProps) {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className="flex size-8 items-center justify-center rounded-lg border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground disabled:opacity-50"
+              className="flex size-8 items-center justify-center rounded-3xl border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground disabled:opacity-50"
             >
               <ChevronRight className="size-4" />
             </button>

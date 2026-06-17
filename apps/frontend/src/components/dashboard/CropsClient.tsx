@@ -104,9 +104,9 @@ export function CropsClient({ initialZones }: CropsClientProps) {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
-              ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
-              : "border-destructive/20 bg-destructive/10 text-destructive"
+          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-3xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
+            ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
+            : "border-destructive/20 bg-destructive/10 text-destructive"
             }`}
         >
           <span className="text-sm font-semibold">{toast.message}</span>
@@ -145,7 +145,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
           {canManage && (
             <button
               onClick={() => setIsImportOpen(true)}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
               Import Excel
@@ -154,7 +154,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
           {canManage && (
             <button
               onClick={handleCreateClick}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
             >
               <Plus className="size-4" />
               Thêm cây trồng
@@ -197,7 +197,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
             placeholder="Tìm theo tên cây, giống cây..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 w-full rounded-xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            className="h-11 w-full rounded-3xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           />
         </div>
 
@@ -207,7 +207,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
           <select
             value={filterZone}
             onChange={(e) => setFilterZone(e.target.value)}
-            className="h-11 rounded-xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            className="h-11 rounded-3xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           >
             <option value="ALL">Tất cả vùng</option>
             {initialZones.map((zone) => (
@@ -221,7 +221,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="h-11 rounded-xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            className="h-11 rounded-3xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           >
             <option value="ALL">Tất cả trạng thái</option>
             <option value="PLANTED">Mới gieo hạt</option>
@@ -232,7 +232,7 @@ export function CropsClient({ initialZones }: CropsClientProps) {
 
           <button
             onClick={fetchCrops}
-            className="flex size-11 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0"
+            className="flex size-11 items-center justify-center rounded-3xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0"
             title="Làm mới"
           >
             <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />

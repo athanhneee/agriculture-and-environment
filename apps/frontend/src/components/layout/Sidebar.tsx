@@ -103,7 +103,7 @@ export function Sidebar() {
               href={item.href}
               prefetch={true}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+                "flex h-11 items-center gap-3 rounded-3xl px-3 text-sm font-medium transition",
                 isActive
                   ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm"
                   : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -124,7 +124,7 @@ export function Sidebar() {
               href="/dashboard/admin"
               prefetch={true}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+                "flex h-11 items-center gap-3 rounded-3xl px-3 text-sm font-medium transition",
                 pathname === "/dashboard/admin"
                   ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
                   : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -137,7 +137,7 @@ export function Sidebar() {
               href="/dashboard/admin/users"
               prefetch={true}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+                "flex h-11 items-center gap-3 rounded-3xl px-3 text-sm font-medium transition",
                 pathname.startsWith("/dashboard/admin/users")
                   ? "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
                   : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",

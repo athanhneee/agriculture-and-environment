@@ -83,10 +83,10 @@ export function HistoryClient({ initialZones }: HistoryClientProps) {
       {/* Main content grid */}
       {loading ? (
         <div className="space-y-4">
-          <div className="h-12 w-full bg-muted/65 rounded-xl animate-pulse" />
+          <div className="h-12 w-full bg-muted/65 rounded-3xl animate-pulse" />
           <div className="grid gap-6 sm:grid-cols-2">
-            <div className="h-64 bg-muted/50 rounded-xl animate-pulse" />
-            <div className="h-64 bg-muted/50 rounded-xl animate-pulse" />
+            <div className="h-64 bg-muted/50 rounded-3xl animate-pulse" />
+            <div className="h-64 bg-muted/50 rounded-3xl animate-pulse" />
           </div>
         </div>
       ) : error ? (
@@ -94,7 +94,7 @@ export function HistoryClient({ initialZones }: HistoryClientProps) {
           <p className="font-semibold">{error}</p>
           <button
             onClick={fetchHistory}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-1.5 text-xs font-semibold hover:bg-destructive/20 transition"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-1.5 text-xs font-semibold hover:bg-destructive/20 transition"
           >
             <RefreshCw className="size-3" />
             Thử lại

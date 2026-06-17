@@ -31,7 +31,7 @@ function ToastNotification({ alert, onClose }: { alert: any; onClose: () => void
   const sev = severityConfig[alert.severity] || severityConfig.INFO;
 
   return createPortal(
-    <div className="fixed bottom-[30px] right-4 sm:right-6 lg:right-8 z-[9999] flex w-80 sm:w-96 items-start gap-3 rounded-xl border bg-card p-4 shadow-xl animate-in fade-in slide-in-from-bottom-5 duration-300">
+    <div className="fixed bottom-[30px] right-4 sm:right-6 lg:right-8 z-[9999] flex w-80 sm:w-96 items-start gap-3 rounded-3xl border bg-card p-4 shadow-xl animate-in fade-in slide-in-from-bottom-5 duration-300">
       <div className={`flex size-10 shrink-0 items-center justify-center rounded-full ${sev.iconClass}`}>
         <AlertTriangle className="size-5" />
       </div>
@@ -39,7 +39,7 @@ function ToastNotification({ alert, onClose }: { alert: any; onClose: () => void
         <h4 className="text-sm font-bold text-foreground truncate">{alert.title}</h4>
         <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{alert.message}</p>
       </div>
-      <button 
+      <button
         onClick={onClose}
         className="flex size-6 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition"
       >
@@ -65,7 +65,7 @@ export function NotificationDropdown() {
         alertsApi.list(),
         statisticsApi.overview()
       ]);
-      
+
       setUnreadCount(stats?.openAlertsCount || data.filter((a: any) => a.status === "OPEN").length);
       setAlerts(data.slice(0, 5)); // Show top 5 in dropdown
     } catch (error) {
@@ -162,7 +162,7 @@ export function NotificationDropdown() {
                 </span>
               )}
             </div>
-            
+
             <div className="flex-1 overflow-y-auto max-h-[60vh]">
               {alerts.length === 0 ? (
                 <div className="p-8 text-center flex flex-col items-center justify-center">
@@ -204,7 +204,7 @@ export function NotificationDropdown() {
               <Link
                 href="/dashboard/alerts"
                 onClick={() => setIsOpen(false)}
-                className="block w-full rounded-xl p-2 text-center text-sm font-semibold text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition dark:text-emerald-400 dark:hover:bg-emerald-500/10 dark:hover:text-emerald-300"
+                className="block w-full rounded-3xl p-2 text-center text-sm font-semibold text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition dark:text-emerald-400 dark:hover:bg-emerald-500/10 dark:hover:text-emerald-300"
               >
                 Xem tất cả cảnh báo
               </Link>

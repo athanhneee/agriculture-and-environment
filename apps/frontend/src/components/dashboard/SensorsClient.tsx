@@ -111,9 +111,9 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
-              ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
-              : "border-destructive/20 bg-destructive/10 text-destructive"
+          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-3xl border px-4 py-3 shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
+            ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
+            : "border-destructive/20 bg-destructive/10 text-destructive"
             }`}
         >
           <span className="text-sm font-semibold">{toast.message}</span>
@@ -134,7 +134,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           {canManage && (
             <button
               onClick={() => setIsImportOpen(true)}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
               Import Excel
@@ -143,7 +143,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
           {canManage && (
             <button
               onClick={handleCreateClick}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20"
             >
               <Plus className="size-4" />
               Thêm cảm biến
@@ -156,7 +156,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {/* Total */}
         <div className="col-span-2 sm:col-span-1 flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 shrink-0">
+          <div className="flex size-11 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 shrink-0">
             <Cpu className="size-5" />
           </div>
           <div className="min-w-0">
@@ -170,7 +170,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
         {/* Active */}
         <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 shrink-0">
+          <div className="flex size-11 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 shrink-0">
             <div className="relative flex size-3 items-center justify-center">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
@@ -184,7 +184,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
         {/* Inactive */}
         <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-zinc-500/10 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-400 shrink-0">
+          <div className="flex size-11 items-center justify-center rounded-3xl bg-zinc-500/10 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-400 shrink-0">
             <SlidersHorizontal className="size-5" />
           </div>
           <div className="min-w-0">
@@ -195,8 +195,8 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
         {/* Error */}
         <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div className="flex size-11 items-center justify-center rounded-3xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
           </div>
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gặp sự cố</p>
@@ -242,7 +242,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
                 placeholder="Tên, mã cảm biến..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-full rounded-lg border bg-background pl-9 pr-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                className="h-9 w-full rounded-3xl border bg-background pl-9 pr-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               />
             </div>
           </div>
@@ -253,7 +253,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
             <select
               value={filterZone}
               onChange={(e) => setFilterZone(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
               <option value="ALL">Tất cả các vùng</option>
               {initialZones.map((zone) => (
@@ -270,7 +270,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
               <option value="ALL">Tất cả loại</option>
               <option value="TEMPERATURE">Nhiệt độ (Temperature)</option>
@@ -287,7 +287,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="h-9 rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
             >
               <option value="ALL">Tất cả trạng thái</option>
               <option value="ACTIVE">Hoạt động (Active)</option>
@@ -299,7 +299,7 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
 
         <button
           onClick={fetchSensors}
-          className="flex size-9 items-center justify-center rounded-xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0 self-end sm:self-auto"
+          className="flex size-9 items-center justify-center rounded-3xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0 self-end sm:self-auto"
           title="Làm mới"
         >
           <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />

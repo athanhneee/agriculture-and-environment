@@ -30,23 +30,23 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
     resolver: zodResolver(farmZoneSchema),
     defaultValues: initialData
       ? {
-          name: initialData.name,
-          description: initialData.description || "",
-          area: initialData.area,
-          latitude: initialData.latitude,
-          longitude: initialData.longitude,
-          soilType: initialData.soilType,
-          status: initialData.status,
-        }
+        name: initialData.name,
+        description: initialData.description || "",
+        area: initialData.area,
+        latitude: initialData.latitude,
+        longitude: initialData.longitude,
+        soilType: initialData.soilType,
+        status: initialData.status,
+      }
       : {
-          name: "",
-          description: "",
-          area: 0,
-          latitude: 10.762622,
-          longitude: 106.660172,
-          soilType: "",
-          status: "ACTIVE",
-        },
+        name: "",
+        description: "",
+        area: 0,
+        latitude: 10.762622,
+        longitude: 106.660172,
+        soilType: "",
+        status: "ACTIVE",
+      },
   });
 
   const [areaInput, setAreaInput] = useState(initialData ? String(initialData.area) : "");
@@ -68,7 +68,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
   const onSubmit = async (values: FarmZoneFormValues) => {
     setErrorMsg(null);
     try {
-      const res = initialData 
+      const res = initialData
         ? await updateFarmZoneAction(initialData.id, values)
         : await createFarmZoneAction(values);
 
@@ -105,7 +105,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
         </div>
 
         {errorMsg ? (
-          <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          <div className="mb-6 rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
             {errorMsg}
           </div>
         ) : null}
@@ -118,7 +118,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 type="text"
                 placeholder="Vùng trồng A - Khu vực Phía Bắc"
                 aria-invalid={Boolean(errors.name)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 {...register("name")}
               />
               {errors.name?.message ? (
@@ -131,7 +131,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
               <textarea
                 placeholder="Mô tả cụ thể về giống cây trồng, điều kiện đặc biệt..."
                 rows={3}
-                className="mt-2 w-full rounded-xl border bg-background p-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                className="mt-2 w-full rounded-3xl border bg-background p-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
                 {...register("description")}
               />
             </label>
@@ -144,7 +144,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 placeholder="1.5"
                 value={areaInput}
                 aria-invalid={Boolean(errors.area)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 name="area"
                 onChange={handleAreaChange}
                 onKeyDown={(event) => {
@@ -164,7 +164,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 type="text"
                 placeholder="Đất đỏ Bazan, đất sét..."
                 aria-invalid={Boolean(errors.soilType)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 {...register("soilType")}
               />
               {errors.soilType?.message ? (
@@ -179,7 +179,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 step="any"
                 placeholder="10.762622"
                 aria-invalid={Boolean(errors.latitude)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 {...register("latitude", { valueAsNumber: true })}
               />
               {errors.latitude?.message ? (
@@ -194,7 +194,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
                 step="any"
                 placeholder="106.660172"
                 aria-invalid={Boolean(errors.longitude)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 {...register("longitude", { valueAsNumber: true })}
               />
               {errors.longitude?.message ? (
@@ -206,7 +206,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
               <span className="text-sm font-medium">Trạng thái hoạt động *</span>
               <select
                 aria-invalid={Boolean(errors.status)}
-                className="mt-2 h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                className="mt-2 h-11 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                 {...register("status")}
               >
                 <option value="ACTIVE">Đang hoạt động (Active)</option>
@@ -226,7 +226,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
               <button
                 type="button"
                 onClick={() => setImportModalOpen(true)}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-600/30 bg-emerald-600/10 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-600/15 dark:text-emerald-400"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border border-emerald-600/30 bg-emerald-600/10 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-600/15 dark:text-emerald-400"
               >
                 <UploadCloud className="size-4" />
                 Import từ Excel
@@ -239,7 +239,7 @@ export function FarmZoneForm({ initialData }: FarmZoneFormProps = {}) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {isSubmitting ? (
                 <Loader2 className="size-4 animate-spin" />

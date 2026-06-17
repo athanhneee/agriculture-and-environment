@@ -22,12 +22,12 @@ const FarmMap = dynamic(() => import("../map/FarmMap"), {
 
 // ── Tọa độ fallback theo tên vùng ────────────────────────────────────────────
 const REGION_FALLBACK: Record<string, [number, number]> = {
-  "miền bắc":   [21.0278, 105.8342],
-  "mien bac":   [21.0278, 105.8342],
+  "miền bắc": [21.0278, 105.8342],
+  "mien bac": [21.0278, 105.8342],
   "miền trung": [16.4637, 107.5909],
   "mien trung": [16.4637, 107.5909],
-  "miền nam":   [10.7769, 106.7009],
-  "mien nam":   [10.7769, 106.7009],
+  "miền nam": [10.7769, 106.7009],
+  "mien nam": [10.7769, 106.7009],
 };
 
 function getZoneCoords(zone: FarmZone): [number, number] | null {
@@ -47,9 +47,9 @@ interface MapClientProps {
 }
 
 const statusConfig = {
-  ACTIVE:      { label: "Hoạt động",      dot: "bg-emerald-500", badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" },
-  INACTIVE:    { label: "Ngừng HĐ",       dot: "bg-zinc-400",    badge: "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400" },
-  MAINTENANCE: { label: "Bảo trì",        dot: "bg-amber-500",   badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" },
+  ACTIVE: { label: "Hoạt động", dot: "bg-emerald-500", badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" },
+  INACTIVE: { label: "Ngừng HĐ", dot: "bg-zinc-400", badge: "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400" },
+  MAINTENANCE: { label: "Bảo trì", dot: "bg-amber-500", badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" },
 };
 
 export function MapClient({ initialZones, zones }: MapClientProps) {
@@ -57,7 +57,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
   const [selectedZone, setSelectedZone] = useState<FarmZone | null>(null);
 
   const zonesWithCoords = mapZones.filter((z) => getZoneCoords(z) !== null);
-  const zonesNoCoords   = mapZones.filter((z) => getZoneCoords(z) === null);
+  const zonesNoCoords = mapZones.filter((z) => getZoneCoords(z) === null);
   const totalAlerts = mapZones.reduce((s, z) => s + (z.openAlertsCount ?? 0), 0);
 
   return (
@@ -71,7 +71,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
           </p>
         </div>
         {totalAlerts > 0 && (
-          <div className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-800/40 px-4 py-2 text-sm font-semibold text-red-700 dark:text-red-400">
+          <div className="inline-flex items-center gap-2 rounded-3xl border border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-800/40 px-4 py-2 text-sm font-semibold text-red-700 dark:text-red-400">
             <AlertTriangle className="size-4" />
             {totalAlerts} cảnh báo đang mở
           </div>
@@ -81,7 +81,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
       {/* ── Stats Bar ───────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
+          <div className="flex size-10 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600">
             <MapPin className="size-5" />
           </div>
           <div>
@@ -91,7 +91,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
         </div>
 
         <div className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600">
+          <div className="flex size-10 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-600">
             <ZoomIn className="size-5" />
           </div>
           <div>
@@ -101,7 +101,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
         </div>
 
         <div className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600">
+          <div className="flex size-10 items-center justify-center rounded-3xl bg-violet-500/10 text-violet-600">
             <Wifi className="size-5" />
           </div>
           <div>
@@ -113,7 +113,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
         </div>
 
         <div className={`flex items-center gap-3 rounded-2xl border bg-card p-3.5 shadow-sm hover:shadow-md transition-shadow ${totalAlerts > 0 ? "border-red-200 dark:border-red-800/40" : ""}`}>
-          <div className={`flex size-10 items-center justify-center rounded-xl ${totalAlerts > 0 ? "bg-red-500/10 text-red-600" : "bg-emerald-500/10 text-emerald-600"}`}>
+          <div className={`flex size-10 items-center justify-center rounded-3xl ${totalAlerts > 0 ? "bg-red-500/10 text-red-600" : "bg-emerald-500/10 text-emerald-600"}`}>
             {totalAlerts > 0 ? <AlertTriangle className="size-5" /> : <CheckCircle2 className="size-5" />}
           </div>
           <div>
@@ -140,7 +140,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
               </p>
               <a
                 href="/dashboard/zones"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition"
+                className="mt-5 inline-flex items-center gap-2 rounded-3xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition"
               >
                 <Navigation className="size-4" />
                 Đến trang Vùng trồng
@@ -173,7 +173,7 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
             </div>
             <button
               onClick={() => setSelectedZone(null)}
-              className="flex size-8 items-center justify-center rounded-lg border text-muted-foreground hover:bg-muted hover:text-foreground transition"
+              className="flex size-8 items-center justify-center rounded-3xl border text-muted-foreground hover:bg-muted hover:text-foreground transition"
               title="Reset view"
             >
               <RefreshCw className="size-3.5" />
@@ -184,8 +184,8 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
           <div className="flex-1 overflow-y-auto p-3 space-y-2">
             {mapZones.map((zone) => {
               const isSelected = selectedZone?.id === zone.id;
-              const hasCoords  = getZoneCoords(zone) !== null;
-              const hasAlerts  = (zone.openAlertsCount ?? 0) > 0;
+              const hasCoords = getZoneCoords(zone) !== null;
+              const hasAlerts = (zone.openAlertsCount ?? 0) > 0;
               const sta = statusConfig[zone.status as keyof typeof statusConfig] ?? statusConfig.INACTIVE;
 
               return (
@@ -193,18 +193,17 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
                   key={zone.id}
                   onClick={() => hasCoords ? setSelectedZone(zone) : undefined}
                   disabled={!hasCoords}
-                  className={`w-full text-left rounded-xl border p-3.5 transition-all duration-150 ${
-                    isSelected
-                      ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/40 shadow-sm"
-                      : hasCoords
+                  className={`w-full text-left rounded-3xl border p-3.5 transition-all duration-150 ${isSelected
+                    ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/40 shadow-sm"
+                    : hasCoords
                       ? "hover:border-emerald-300 hover:bg-muted/40 bg-background border-border"
                       : "bg-muted/20 border-dashed opacity-60 cursor-not-allowed"
-                  }`}
+                    }`}
                 >
                   <MapPin className={`size-5 shrink-0 mt-0.5 ${isSelected ? "text-emerald-600" : "text-muted-foreground/75"}`} />
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-sm text-foreground truncate">{zone.name}</h4>
-                    
+
                     <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-1.5">
                       <span className="flex items-center gap-1">
                         <Compass className="size-3" />
@@ -219,36 +218,36 @@ export function MapClient({ initialZones, zones }: MapClientProps) {
                       </span>
                     </div>
 
-                      {/* Meta info */}
-                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${sta.badge}`}>
-                          {sta.label}
-                        </span>
+                    {/* Meta info */}
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${sta.badge}`}>
+                        {sta.label}
+                      </span>
+                      <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                        <Compass className="size-3" /> {zone.area} ha
+                      </span>
+                      {zone.sensorsCount !== undefined && zone.sensorsCount > 0 && (
                         <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                          <Compass className="size-3" /> {zone.area} ha
+                          <Wifi className="size-3" /> {zone.sensorsCount}
                         </span>
-                        {zone.sensorsCount !== undefined && zone.sensorsCount > 0 && (
-                          <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                            <Wifi className="size-3" /> {zone.sensorsCount}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Soil type */}
-                      {zone.soilType && (
-                        <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground/70">
-                          <Layers className="size-3" />
-                          <span>Đất {zone.soilType}</span>
-                        </div>
-                      )}
-
-                      {/* No coords warning */}
-                      {!hasCoords && (
-                        <p className="mt-1.5 text-[10px] italic text-muted-foreground/60">
-                          Chưa có tọa độ GPS
-                        </p>
                       )}
                     </div>
+
+                    {/* Soil type */}
+                    {zone.soilType && (
+                      <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground/70">
+                        <Layers className="size-3" />
+                        <span>Đất {zone.soilType}</span>
+                      </div>
+                    )}
+
+                    {/* No coords warning */}
+                    {!hasCoords && (
+                      <p className="mt-1.5 text-[10px] italic text-muted-foreground/60">
+                        Chưa có tọa độ GPS
+                      </p>
+                    )}
+                  </div>
                 </button>
               );
             })}

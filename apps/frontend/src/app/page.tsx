@@ -91,7 +91,7 @@ export default async function HomePage() {
         <div className="grid flex-1 items-center gap-10 py-12 text-emerald-950 lg:grid-cols-[0.95fr_1.05fr] lg:py-10 dark:text-emerald-50">
           <div className="max-w-3xl">
             {/* Badge — xuất hiện đầu tiên */}
-            <div className="animate-fade-up mb-5 inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-semibold text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
+            <div className="animate-fade-up mb-5 inline-flex items-center gap-2 rounded-3xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-semibold text-emerald-800 shadow-sm backdrop-blur dark:border-emerald-300/15 dark:bg-white/10 dark:text-emerald-100">
               <ShieldCheck className="size-4" aria-hidden="true" />
               Giám sát nông trại thông minh
             </div>
@@ -150,12 +150,12 @@ export default async function HomePage() {
                 {/* Mặt trời */}
                 <div className="absolute left-5 top-4">
                   {/* Tia nắng quay */}
-                  <div className="animate-sun-rotate absolute inset-0 m-auto" style={{width:44, height:44}}>
-                    {[0,45,90,135].map((deg) => (
+                  <div className="animate-sun-rotate absolute inset-0 m-auto" style={{ width: 44, height: 44 }}>
+                    {[0, 45, 90, 135].map((deg) => (
                       <div
                         key={deg}
                         className="absolute left-1/2 top-1/2 h-1 w-7 -translate-y-1/2 rounded-full bg-yellow-300/60"
-                        style={{transformOrigin:"0 50%", transform:`rotate(${deg}deg) translateX(24px)`}}
+                        style={{ transformOrigin: "0 50%", transform: `rotate(${deg}deg) translateX(24px)` }}
                       />
                     ))}
                   </div>
@@ -182,7 +182,7 @@ export default async function HomePage() {
                 </div>
 
                 {/* Mưa rơi — 12 hạt chéo xuống */}
-                {[8,14,22,30,38,46,54,62,70,78,86,92].map((left, i) => (
+                {[8, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 92].map((left, i) => (
                   <div
                     key={left}
                     className="animate-rain absolute top-0 h-5 w-px rounded-full bg-sky-400/55"
@@ -199,7 +199,7 @@ export default async function HomePage() {
               <div className="absolute right-[7.8%] top-[3.5%] min-w-[190px] overflow-hidden rounded-2xl border border-white/60 bg-white/90 shadow-lg shadow-emerald-900/10 backdrop-blur-md dark:border-white/20 dark:bg-emerald-950/80">
                 {/* Header */}
                 <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 px-3 py-2">
-                  <span className="flex size-5 items-center justify-center rounded-md bg-white/20">
+                  <span className="flex size-5 items-center justify-center rounded-3xl bg-white/20">
                     <Sprout className="size-3 text-white" />
                   </span>
                   <span className="text-xs font-bold tracking-widest text-white">SMART FARM</span>
@@ -230,8 +230,8 @@ export default async function HomePage() {
               {/* ===== END SMART FARM CARD ===== */}
               <div className="grid gap-3 border-t bg-white/90 p-4 dark:border-white/10 dark:bg-emerald-950/80 sm:grid-cols-3">
                 {/* Stat 1: Sensor online với live dot nhấp nháy */}
-                <div className="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950/60">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-800/50 dark:text-emerald-300">
+                <div className="flex items-center gap-3 rounded-3xl bg-emerald-50 p-3 dark:bg-emerald-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-800/50 dark:text-emerald-300">
                     <Wifi className="size-4" />
                   </span>
                   <div className="min-w-0">
@@ -247,8 +247,8 @@ export default async function HomePage() {
                 </div>
 
                 {/* Stat 2: Vùng trồng */}
-                <div className="flex items-center gap-3 rounded-xl bg-teal-50 p-3 dark:bg-teal-950/60">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-teal-100 text-teal-700 dark:bg-teal-800/50 dark:text-teal-300">
+                <div className="flex items-center gap-3 rounded-3xl bg-teal-50 p-3 dark:bg-teal-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-3xl bg-teal-100 text-teal-700 dark:bg-teal-800/50 dark:text-teal-300">
                     <Activity className="size-4" />
                   </span>
                   <div className="min-w-0">
@@ -258,8 +258,8 @@ export default async function HomePage() {
                 </div>
 
                 {/* Stat 3: Uptime */}
-                <div className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950/60">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-700 dark:bg-sky-800/50 dark:text-sky-300">
+                <div className="flex items-center gap-3 rounded-3xl bg-sky-50 p-3 dark:bg-sky-950/60">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-3xl bg-sky-100 text-sky-700 dark:bg-sky-800/50 dark:text-sky-300">
                     <TrendingUp className="size-4" />
                   </span>
                   <div className="min-w-0">
@@ -284,7 +284,7 @@ export default async function HomePage() {
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div
-                    className={`flex size-11 items-center justify-center rounded-xl ${feature.tone}`}
+                    className={`flex size-11 items-center justify-center rounded-3xl ${feature.tone}`}
                   >
                     <Icon className="size-5" aria-hidden="true" />
                   </div>

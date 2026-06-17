@@ -125,7 +125,7 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
             <h2 className="text-lg font-semibold">Cảm biến thời gian thực</h2>
             <p className="mt-0.5 text-xs text-muted-foreground">Số liệu từ các trạm IoT</p>
           </div>
-          <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
+          <span className="flex size-10 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
             <RadioTower className="size-5" aria-hidden="true" />
           </span>
         </div>
@@ -142,19 +142,19 @@ export function RealtimeDashboardPanel({ zones }: { zones: ZoneSummary[] }) {
                 >
                   <p className="text-sm font-semibold">{zone.name}</p>
                   <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                    <span className="flex flex-col gap-0.5 rounded-xl bg-sky-50 px-3 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
+                    <span className="flex flex-col gap-0.5 rounded-3xl bg-sky-50 px-3 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Độ ẩm đất</span>
                       {reading?.soilMoisture ?? "--"}%
                     </span>
-                    <span className="flex flex-col gap-0.5 rounded-xl bg-amber-50 px-3 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                    <span className="flex flex-col gap-0.5 rounded-3xl bg-amber-50 px-3 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Nhiệt độ</span>
                       {reading?.temperature ?? "--"}°C
                     </span>
-                    <span className="flex flex-col gap-0.5 rounded-xl bg-teal-50 px-3 py-2 font-semibold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300">
+                    <span className="flex flex-col gap-0.5 rounded-3xl bg-teal-50 px-3 py-2 font-semibold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Ẩm không khí</span>
                       {reading?.airHumidity ?? "--"}%
                     </span>
-                    <span className="flex flex-col gap-0.5 rounded-xl bg-lime-50 px-3 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
+                    <span className="flex flex-col gap-0.5 rounded-3xl bg-lime-50 px-3 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Ánh sáng</span>
                       {reading?.lightIntensity ?? "--"} lx
                     </span>

@@ -1,22 +1,22 @@
 "use client";
- 
+
 import { useState, useRef, useEffect } from "react";
 import { MessageSquare, Send, X, Bot, User, Sparkles, HelpCircle } from "lucide-react";
- 
+
 interface Message {
   id: string;
   sender: "user" | "ai";
   text: string;
   timestamp: Date;
 }
- 
+
 const SUGGESTIONS = [
   "Cách bón phân NPK cho lúa nước hiệu quả?",
   "Nhiệt độ và độ ẩm tốt nhất cho cây cà chua là bao nhiêu?",
   "Đất bị khô (độ ẩm < 40%) thì nên tưới lượng nước thế nào?",
   "Làm sao phòng ngừa bệnh héo xanh ở cây trồng?",
 ];
- 
+
 export function AIAssistantChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -29,17 +29,17 @@ export function AIAssistantChat() {
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
- 
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
- 
+
   // Tự động cuộn xuống tin nhắn mới nhất
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
- 
+
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
- 
+
     // Thêm tin nhắn của người dùng
     const userMsg: Message = {
       id: Math.random().toString(),
@@ -47,17 +47,17 @@ export function AIAssistantChat() {
       text,
       timestamp: new Date(),
     };
- 
+
     setMessages((prev) => [...prev, userMsg]);
     setInputText("");
- 
+
     // Hiển thị trạng thái AI đang gõ
     setIsTyping(true);
- 
+
     try {
       let aiResponseText = "";
       const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
- 
+
       if (apiKey) {
         // Gọi API Gemini thật
         const response = await fetch(
@@ -85,7 +85,7 @@ export function AIAssistantChat() {
             }),
           }
         );
- 
+
         if (response.ok) {
           const resData = await response.json();
           aiResponseText =
@@ -97,10 +97,10 @@ export function AIAssistantChat() {
       } else {
         // Fallback Mock AI Agent thông minh dựa trên từ khóa câu hỏi
         const cleanText = text.toLowerCase();
-        
+
         // Trì hoãn 1.2s để tạo cảm giác AI đang xử lý
         await new Promise((resolve) => setTimeout(resolve, 1200));
- 
+
         if (cleanText.includes("phân") || cleanText.includes("bón") || cleanText.includes("npk")) {
           aiResponseText = "Để bón phân hiệu quả cho lúa nước và cây ngắn ngày, bạn nên áp dụng nguyên tắc '4 đúng' (Đúng loại, Đúng liều lượng, Đúng thời điểm, Đúng cách).\n\n- **Đối với lúa nước**: Bón lót (trước cấy), bón thúc lần 1 (10-15 ngày sau cấy để đẻ nhánh) và bón thúc lần 2 (40-45 ngày để đón đòng). Sử dụng phân hỗn hợp NPK chuyên dùng cho lúa.\n- **Đối với cà chua**: Cần chia làm nhiều đợt bón. Đợt 1 sau khi trồng 10 ngày (NPK giàu Đạm), đợt 2 khi cây ra hoa (tăng Lân), đợt 3 khi quả đang lớn (tăng Kali để quả ngọt và chắc trái).";
         } else if (cleanText.includes("nhiệt độ") || cleanText.includes("nóng") || cleanText.includes("lạnh")) {
@@ -117,14 +117,14 @@ export function AIAssistantChat() {
           aiResponseText = `Cảm ơn bạn đã quan tâm. Về chủ đề "${text}": Trong nông nghiệp thông minh, bạn nên kết hợp số liệu cảm biến thực tế (Nhiệt độ, Độ ẩm đất, Ánh sáng) và kiến thức sinh học của từng giống cây để thiết lập các ngưỡng kích hoạt tưới tiêu và chiếu sáng tự động tối ưu nhất.\n\nNếu bạn gặp vấn đề cụ thể về một loại cây trồng hay dịch hại nào, hãy nhập rõ từ khóa (ví dụ: bón phân, cà chua, lúa nước, độ ẩm đất...) để tôi có thể hỗ trợ chi tiết hơn nhé!`;
         }
       }
- 
+
       const aiMsg: Message = {
         id: Math.random().toString(),
         sender: "ai",
         text: aiResponseText,
         timestamp: new Date(),
       };
- 
+
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err: any) {
       const errorMsg: Message = {
@@ -138,7 +138,7 @@ export function AIAssistantChat() {
       setIsTyping(false);
     }
   };
- 
+
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
       {/* Nút bong bóng chat bay */}
@@ -152,12 +152,12 @@ export function AIAssistantChat() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
           </span>
-          <span className="absolute right-16 bg-card border text-foreground text-xs font-semibold px-3 py-1.5 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+          <span className="absolute right-16 bg-card border text-foreground text-xs font-semibold px-3 py-1.5 rounded-3xl shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
             Hỏi trợ lý AI Nông Nghiệp ✨
           </span>
         </button>
       )}
- 
+
       {/* Hộp thoại Chat */}
       {isOpen && (
         <div className="flex h-[550px] w-[380px] sm:w-[400px] flex-col rounded-2xl border bg-card text-card-foreground shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 fade-in-50 duration-300">
@@ -182,7 +182,7 @@ export function AIAssistantChat() {
               <X className="size-4" />
             </button>
           </div>
- 
+
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/20 dark:bg-muted/5">
             {messages.map((msg) => (
@@ -192,28 +192,25 @@ export function AIAssistantChat() {
               >
                 {/* Avatar */}
                 <div
-                  className={`flex size-8 shrink-0 select-none items-center justify-center rounded-full text-xs font-bold ${
-                    msg.sender === "user"
+                  className={`flex size-8 shrink-0 select-none items-center justify-center rounded-full text-xs font-bold ${msg.sender === "user"
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
                       : "bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300"
-                  }`}
+                    }`}
                 >
                   {msg.sender === "user" ? <User className="size-4" /> : <Bot className="size-4" />}
                 </div>
- 
+
                 {/* Bong bóng text */}
                 <div
-                  className={`max-w-[75%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm ${
-                    msg.sender === "user"
+                  className={`max-w-[75%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm ${msg.sender === "user"
                       ? "bg-emerald-600 text-white rounded-tr-none"
                       : "bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 text-foreground rounded-tl-none"
-                  }`}
+                    }`}
                 >
                   <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
                   <span
-                    className={`block text-[9px] mt-1.5 text-right ${
-                      msg.sender === "user" ? "text-emerald-200" : "text-muted-foreground"
-                    }`}
+                    className={`block text-[9px] mt-1.5 text-right ${msg.sender === "user" ? "text-emerald-200" : "text-muted-foreground"
+                      }`}
                   >
                     {msg.timestamp.toLocaleTimeString("vi-VN", {
                       hour: "2-digit",
@@ -223,7 +220,7 @@ export function AIAssistantChat() {
                 </div>
               </div>
             ))}
- 
+
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex gap-2.5">
@@ -239,7 +236,7 @@ export function AIAssistantChat() {
             )}
             <div ref={messagesEndRef} />
           </div>
- 
+
           {/* Quick Suggestions */}
           {messages.length === 1 && !isTyping && (
             <div className="px-4 py-2 bg-muted/10 border-t space-y-1.5">
@@ -259,7 +256,7 @@ export function AIAssistantChat() {
               </div>
             </div>
           )}
- 
+
           {/* Input Form */}
           <form
             onSubmit={(e) => {
@@ -274,12 +271,12 @@ export function AIAssistantChat() {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isTyping}
-              className="flex-1 rounded-xl border bg-background px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 disabled:opacity-50"
+              className="flex-1 rounded-3xl border bg-background px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={!inputText.trim() || isTyping}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-3xl bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               <Send className="size-4" />
             </button>

@@ -62,11 +62,10 @@ export function OverviewClient({
         {activeToasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-slide-in-bottom ${
-              toast.severity === "CRITICAL"
+            className={`pointer-events-auto flex items-start gap-3 rounded-2xl border bg-card p-4 shadow-lg animate-slide-in-bottom ${toast.severity === "CRITICAL"
                 ? "border-destructive/30 bg-destructive/5 text-destructive-foreground"
                 : "border-amber-500/30 bg-amber-500/5 text-amber-900 dark:text-amber-100"
-            }`}
+              }`}
           >
             <AlertTriangle className={`size-5 shrink-0 ${toast.severity === "CRITICAL" ? "text-destructive" : "text-amber-500"}`} />
             <div className="flex-1 min-w-0">
@@ -147,17 +146,16 @@ export function OverviewClient({
               <h3 className="font-bold text-lg">Cảnh báo đang mở ({alerts.length})</h3>
               <span className="text-xs text-muted-foreground">Mới nhất</span>
             </div>
-            
+
             <div className="space-y-3 max-h-[290px] overflow-y-auto pr-1">
               {alerts.length > 0 ? (
                 alerts.map((alert) => (
                   <div
                     key={alert.id}
-                    className={`rounded-xl border p-3.5 text-xs flex gap-3 ${
-                      alert.severity === "CRITICAL"
+                    className={`rounded-3xl border p-3.5 text-xs flex gap-3 ${alert.severity === "CRITICAL"
                         ? "border-destructive/15 bg-destructive/5 text-destructive"
                         : "border-amber-500/15 bg-amber-500/5 text-amber-800 dark:text-amber-400"
-                    }`}
+                      }`}
                   >
                     <AlertTriangle className="size-4.5 shrink-0 mt-0.5" />
                     <div>
@@ -173,7 +171,7 @@ export function OverviewClient({
                   </div>
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground border border-dashed rounded-xl">
+                <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground border border-dashed rounded-3xl">
                   <Bell className="size-8 text-muted-foreground/40" />
                   <p className="mt-2 text-xs font-medium">Môi trường an toàn</p>
                   <p className="text-[11px] text-muted-foreground/80 mt-0.5">Không ghi nhận cảnh báo nào đang mở.</p>

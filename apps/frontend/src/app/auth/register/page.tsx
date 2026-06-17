@@ -74,7 +74,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           {/* Logo mobile */}
           <Link href="/" className="mb-8 inline-flex items-center gap-2.5 lg:hidden">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-700">
+            <span className="flex size-9 items-center justify-center rounded-3xl bg-emerald-700">
               <Sprout className="size-5 text-white" aria-hidden="true" />
             </span>
             <span>
@@ -100,7 +100,7 @@ export default function RegisterPage() {
 
             {/* Alert lỗi */}
             {errors.root?.message && (
-              <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              <div className="mb-5 flex items-start gap-2.5 rounded-3xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                 <XCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 <span>{errors.root.message}</span>
               </div>
@@ -117,7 +117,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Nguyễn Văn A"
                   aria-invalid={Boolean(errors.name)}
-                  className="h-11 w-full rounded-xl border bg-background px-3.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                  className="h-11 w-full rounded-3xl border bg-background px-3.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                   {...register("name")}
                 />
                 {errors.name?.message && (
@@ -135,7 +135,7 @@ export default function RegisterPage() {
                   type="email"
                   placeholder="manager@smartfarm.local"
                   aria-invalid={Boolean(errors.email)}
-                  className="h-11 w-full rounded-xl border bg-background px-3.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                  className="h-11 w-full rounded-3xl border bg-background px-3.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                   {...register("email")}
                 />
                 {errors.email?.message && (
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     aria-invalid={Boolean(errors.password)}
-                    className="h-11 w-full rounded-xl border bg-background px-3.5 pr-11 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                    className="h-11 w-full rounded-3xl border bg-background px-3.5 pr-11 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                     {...register("password")}
                   />
                   <button
@@ -186,7 +186,7 @@ export default function RegisterPage() {
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="••••••••"
                     aria-invalid={Boolean(errors.confirmPassword)}
-                    className="h-11 w-full rounded-xl border bg-background px-3.5 pr-11 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+                    className="h-11 w-full rounded-3xl border bg-background px-3.5 pr-11 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
                     {...register("confirmPassword")}
                   />
                   <button
@@ -211,7 +211,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-500 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-700 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isSubmitting ? (
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
@@ -289,7 +289,7 @@ export default function RegisterPage() {
                 const Icon = h.icon;
                 return (
                   <li key={h.title} className="flex items-start gap-3">
-                    <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10">
+                    <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-3xl bg-white/10 ring-1 ring-white/10">
                       <Icon className="size-4 text-teal-300" aria-hidden="true" />
                     </span>
                     <div>

@@ -41,7 +41,7 @@ export function ExportExcelButtons() {
             type="button"
             onClick={() => handleDownload("readings")}
             disabled={Boolean(loading)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border px-3 text-sm font-semibold transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading === "readings" ? (
               <Loader2 className="size-4 animate-spin" aria-hidden="true" />
@@ -54,7 +54,7 @@ export function ExportExcelButtons() {
             type="button"
             onClick={() => handleDownload("alerts")}
             disabled={Boolean(loading)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border px-3 text-sm font-semibold transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading === "alerts" ? (
               <Loader2 className="size-4 animate-spin" aria-hidden="true" />

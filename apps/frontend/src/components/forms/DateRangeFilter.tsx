@@ -66,7 +66,7 @@ export function DateRangeFilter({
             <select
               value={farmZoneId}
               onChange={(e) => setFarmZoneId(e.target.value)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
             >
               <option value="ALL">Tất cả các vùng</option>
               {zones.map((zone) => (
@@ -84,7 +84,7 @@ export function DateRangeFilter({
               type="date"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
             />
           </label>
 
@@ -95,7 +95,7 @@ export function DateRangeFilter({
               type="date"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
             />
           </label>
         </div>
@@ -108,7 +108,7 @@ export function DateRangeFilter({
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-5 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 disabled:opacity-75"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 px-5 text-sm font-semibold text-white transition-all shadow-sm shadow-emerald-600/10 disabled:opacity-75"
           >
             <Search className="size-4" />
             {loading ? "Đang tìm kiếm..." : "Tra cứu dữ liệu"}
@@ -118,7 +118,7 @@ export function DateRangeFilter({
             type="button"
             onClick={onExport}
             disabled={loading}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-background hover:bg-muted px-4 text-sm font-semibold transition disabled:opacity-75"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border bg-background hover:bg-muted px-4 text-sm font-semibold transition disabled:opacity-75"
           >
             <Download className="size-4" />
             Tải Excel (.xlsx)

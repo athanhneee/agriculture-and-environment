@@ -193,7 +193,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
           <div className="relative z-10 w-full max-w-md rounded-2xl border bg-card p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-start gap-4">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-destructive/10 text-destructive">
                 <Trash2 className="size-5" />
               </div>
               <div className="flex-1 min-w-0">
@@ -204,13 +204,13 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                   Hành động này không thể hoàn tác.
                 </p>
               </div>
-              <button onClick={() => setConfirmDelete(null)} className="shrink-0 rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition">
+              <button onClick={() => setConfirmDelete(null)} className="shrink-0 rounded-3xl p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition">
                 <X className="size-4" />
               </button>
             </div>
             <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setConfirmDelete(null)} className="h-9 rounded-xl border bg-card px-4 text-sm font-semibold hover:bg-muted transition">Hủy</button>
-              <button onClick={handleConfirmDelete} className="inline-flex h-9 items-center gap-2 rounded-xl bg-destructive px-4 text-sm font-semibold text-white hover:bg-destructive/90 transition">
+              <button onClick={() => setConfirmDelete(null)} className="h-9 rounded-3xl border bg-card px-4 text-sm font-semibold hover:bg-muted transition">Hủy</button>
+              <button onClick={handleConfirmDelete} className="inline-flex h-9 items-center gap-2 rounded-3xl bg-destructive px-4 text-sm font-semibold text-white hover:bg-destructive/90 transition">
                 <Trash2 className="size-3.5" /> Xác nhận xóa
               </button>
             </div>
@@ -220,11 +220,10 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
 
       {/* ── Toast ── */}
       {toast && (
-        <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-xl border px-4 py-3 text-sm font-semibold shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${
-          toast.type === "success"
-            ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
-            : "border-destructive/20 bg-destructive/10 text-destructive"
-        }`}>
+        <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-3xl border px-4 py-3 text-sm font-semibold shadow-lg animate-in fade-in slide-in-from-bottom-5 duration-300 ${toast.type === "success"
+          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
+          : "border-destructive/20 bg-destructive/10 text-destructive"
+          }`}>
           {toast.type === "success" ? <CheckCircle2 className="size-4 shrink-0" /> : <AlertTriangle className="size-4 shrink-0" />}
           {toast.message}
         </div>
@@ -242,7 +241,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {/* Tổng */}
         <div className="col-span-2 sm:col-span-1 flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
             <BellRing className="size-5" />
           </div>
           <div className="min-w-0">
@@ -256,7 +255,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
 
         {/* Nghiêm trọng */}
         <div className={`flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow ${criticalCount > 0 ? "border-red-200 dark:border-red-800/40" : ""}`}>
-          <div className="relative flex size-11 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400">
+          <div className="relative flex size-11 shrink-0 items-center justify-center rounded-3xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400">
             {criticalCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 flex size-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -275,7 +274,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
 
         {/* Cảnh báo */}
         <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
             <AlertTriangle className="size-5" />
           </div>
           <div className="min-w-0">
@@ -288,7 +287,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
 
         {/* Thông tin */}
         <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400">
             <Info className="size-5" />
           </div>
           <div className="min-w-0">
@@ -312,7 +311,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
               <select
                 value={filters.status}
                 onChange={(e) => handleFilterChange("status", e.target.value as AlertFilters["status"])}
-                className="h-9 w-full rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               >
                 <option value="ALL">Tất cả trạng thái</option>
                 <option value="OPEN">Đang mở (Open)</option>
@@ -329,7 +328,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
               <select
                 value={filters.severity}
                 onChange={(e) => handleFilterChange("severity", e.target.value as AlertFilters["severity"])}
-                className="h-9 w-full rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               >
                 <option value="ALL">Tất cả mức độ</option>
                 <option value="INFO">Thông tin (Info)</option>
@@ -346,7 +345,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
               <select
                 value={filters.farmZoneId}
                 onChange={(e) => handleFilterChange("farmZoneId", e.target.value)}
-                className="h-9 w-full rounded-lg border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+                className="h-9 w-full rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
               >
                 <option value="ALL">Tất cả vùng trồng</option>
                 {zones.map((zone) => (
@@ -359,14 +358,14 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
           <div className="flex gap-2 shrink-0">
             <button
               onClick={handleResetFilters}
-              className="inline-flex h-9 items-center gap-2 rounded-xl border bg-background px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
+              className="inline-flex h-9 items-center gap-2 rounded-3xl border bg-background px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
             >
               <Filter className="size-3.5" /> Xóa lọc
             </button>
             <button
               onClick={() => loadAlerts(filters)}
               disabled={isLoading}
-              className="inline-flex h-9 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed transition"
+              className="inline-flex h-9 items-center gap-2 rounded-3xl bg-emerald-600 px-4 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed transition"
             >
               {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : <RefreshCw className="size-3.5" />}
               Tải lại
@@ -381,7 +380,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-2xl border bg-card p-5 animate-pulse border-l-4 border-l-muted">
               <div className="flex gap-4 items-start">
-                <div className="size-11 rounded-xl bg-muted/70 shrink-0" />
+                <div className="size-11 rounded-3xl bg-muted/70 shrink-0" />
                 <div className="flex-1 space-y-2.5">
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-2/5 bg-muted rounded" />
@@ -407,7 +406,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
           </p>
           <button
             onClick={handleResetFilters}
-            className="mt-5 inline-flex h-9 items-center gap-2 rounded-xl border bg-card px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
+            className="mt-5 inline-flex h-9 items-center gap-2 rounded-3xl border bg-card px-4 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
           >
             <Filter className="size-3.5" /> Xóa bộ lọc
           </button>
@@ -434,9 +433,9 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                     {/* Left: Icon + Content */}
                     <div className="flex min-w-0 flex-1 gap-3.5">
                       {/* Severity Icon */}
-                      <div className={`relative flex size-11 shrink-0 items-center justify-center rounded-xl ${sev.iconClass}`}>
+                      <div className={`relative flex size-11 shrink-0 items-center justify-center rounded-3xl ${sev.iconClass}`}>
                         {isCritical && alert.status === "OPEN" && (
-                          <span className="absolute inset-0 rounded-xl animate-ping bg-red-400/20"></span>
+                          <span className="absolute inset-0 rounded-3xl animate-ping bg-red-400/20"></span>
                         )}
                         <SevIcon className="relative size-5" />
                       </div>
@@ -491,7 +490,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                             type="button"
                             onClick={() => handleAction(alert, "acknowledge")}
                             disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-sky-500/20 bg-sky-500/10 px-3 text-xs font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-sky-500/20 bg-sky-500/10 px-3 text-xs font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
                           >
                             {acknowledgePending ? <Loader2 className="size-3.5 animate-spin" /> : <ShieldCheck className="size-3.5" />}
                             Xác nhận
@@ -503,7 +502,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                             type="button"
                             onClick={() => handleAction(alert, "resolve")}
                             disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
                           >
                             {resolvePending ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCircle2 className="size-3.5" />}
                             Đã xử lý
@@ -515,7 +514,7 @@ export function AlertsClient({ initialAlerts, zones }: AlertsClientProps) {
                             type="button"
                             onClick={() => handleAction(alert, "delete")}
                             disabled={Boolean(pendingAction)}
-                            className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/10 px-3 text-xs font-semibold text-destructive hover:bg-destructive/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                            className="inline-flex h-8 items-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/10 px-3 text-xs font-semibold text-destructive hover:bg-destructive/20 disabled:opacity-60 disabled:cursor-not-allowed transition"
                           >
                             {deletePending ? <Loader2 className="size-3.5 animate-spin" /> : <Trash2 className="size-3.5" />}
                             Xóa

@@ -133,7 +133,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
         <div className="p-6 overflow-y-auto">
           {!importResult ? (
             <div className="space-y-6">
-              <div className="flex items-center justify-between bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
+              <div className="flex items-center justify-between bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-3xl border border-emerald-100 dark:border-emerald-900/30">
                 <div className="space-y-1">
                   <h3 className="font-semibold text-emerald-800 dark:text-emerald-300 text-sm">Chưa có file mẫu?</h3>
                   <p className="text-xs text-emerald-600/80 dark:text-emerald-400/70">
@@ -143,7 +143,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                 <button
                   type="button"
                   onClick={handleDownloadTemplate}
-                  className="shrink-0 flex items-center gap-2 px-3 py-2 bg-white dark:bg-background rounded-lg border shadow-sm text-sm font-medium hover:bg-muted transition"
+                  className="shrink-0 flex items-center gap-2 px-3 py-2 bg-white dark:bg-background rounded-3xl border shadow-sm text-sm font-medium hover:bg-muted transition"
                 >
                   <Download className="size-4" />
                   Tải File Mẫu
@@ -154,11 +154,10 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${
-                  isDragging
-                    ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-500/10"
-                    : "border-muted-foreground/25 hover:bg-muted/50"
-                }`}
+                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${isDragging
+                  ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-500/10"
+                  : "border-muted-foreground/25 hover:bg-muted/50"
+                  }`}
               >
                 <div className="flex flex-col items-center gap-3">
                   <div className="p-4 bg-muted rounded-full">
@@ -193,7 +192,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
               </div>
 
               {error && (
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-destructive/10 text-destructive text-sm">
+                <div className="flex items-start gap-3 p-4 rounded-3xl bg-destructive/10 text-destructive text-sm">
                   <AlertCircle className="size-5 shrink-0 mt-0.5" />
                   <p>{error}</p>
                 </div>
@@ -212,7 +211,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-card border rounded-xl text-center">
+                <div className="p-4 bg-card border rounded-3xl text-center">
                   <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
                     {importResult.imported}
                   </p>
@@ -220,7 +219,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                     Cảm biến hợp lệ
                   </p>
                 </div>
-                <div className="p-4 bg-card border rounded-xl text-center">
+                <div className="p-4 bg-card border rounded-3xl text-center">
                   <p className="text-3xl font-bold text-destructive">{importResult.skipped}</p>
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">
                     Bị lỗi / Bỏ qua
@@ -234,7 +233,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                     <AlertCircle className="size-4 text-destructive" />
                     Chi tiết lỗi:
                   </h4>
-                  <div className="max-h-40 overflow-y-auto rounded-xl border bg-muted/50 p-3 text-xs space-y-2">
+                  <div className="max-h-40 overflow-y-auto rounded-3xl border bg-muted/50 p-3 text-xs space-y-2">
                     {importResult.errors.map((err, idx) => (
                       <div key={idx} className="flex gap-2">
                         <span className="font-semibold shrink-0 text-muted-foreground">Dòng {err.row}:</span>
@@ -256,7 +255,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                 type="button"
                 onClick={handleClose}
                 disabled={isUploading}
-                className="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-muted transition disabled:opacity-50"
+                className="px-4 py-2 rounded-3xl text-sm font-semibold hover:bg-muted transition disabled:opacity-50"
               >
                 Hủy
               </button>
@@ -264,7 +263,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
                 type="button"
                 onClick={handleUpload}
                 disabled={!file || isUploading}
-                className="px-6 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-2 rounded-3xl bg-emerald-600 text-white text-sm font-semibold shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isUploading ? (
                   <>
@@ -280,7 +279,7 @@ export function ImportSensorsExcelModal({ open, onClose, onSuccess }: ImportSens
             <button
               type="button"
               onClick={handleFinish}
-              className="px-6 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold shadow-sm hover:bg-emerald-700 transition"
+              className="px-6 py-2 rounded-3xl bg-emerald-600 text-white text-sm font-semibold shadow-sm hover:bg-emerald-700 transition"
             >
               Đóng & Tải lại danh sách
             </button>

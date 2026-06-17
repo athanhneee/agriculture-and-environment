@@ -15,7 +15,7 @@ interface ZoneActionButtonsProps {
 export function ZoneActionButtons({ zoneId }: ZoneActionButtonsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
-  
+
   const user = useAuthStore((state) => state.user);
   const canManage = user?.role !== "ADMIN";
 
@@ -26,7 +26,7 @@ export function ZoneActionButtons({ zoneId }: ZoneActionButtonsProps) {
 
     setIsDeleting(true);
     const result = await deleteFarmZoneAction(zoneId);
-    
+
     if (result.success) {
       router.push("/dashboard/zones");
     } else {
@@ -37,27 +37,27 @@ export function ZoneActionButtons({ zoneId }: ZoneActionButtonsProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <button 
+      <button
         onClick={() => window.print()}
-        className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-emerald-600/20 bg-emerald-50/10 hover:bg-emerald-50/20 text-emerald-700 dark:text-emerald-400 px-4 text-xs font-semibold transition cursor-pointer no-print"
+        className="inline-flex h-9 items-center justify-center gap-1.5 rounded-3xl border border-emerald-600/20 bg-emerald-50/10 hover:bg-emerald-50/20 text-emerald-700 dark:text-emerald-400 px-4 text-xs font-semibold transition cursor-pointer no-print"
       >
         <Printer className="size-3.5" />
         Xuất PDF
       </button>
-      
+
       {canManage && (
         <>
-          <Link 
+          <Link
             href={`/dashboard/zones/${zoneId}/edit`}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border bg-card hover:bg-muted px-4 text-xs font-semibold transition no-print"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-3xl border bg-card hover:bg-muted px-4 text-xs font-semibold transition no-print"
           >
             <Edit className="size-3.5" />
             Sửa vùng
           </Link>
-          <button 
+          <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 text-destructive px-4 text-xs font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed no-print"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 text-destructive px-4 text-xs font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed no-print"
           >
             {isDeleting ? (
               <Loader2 className="size-3.5 animate-spin" />

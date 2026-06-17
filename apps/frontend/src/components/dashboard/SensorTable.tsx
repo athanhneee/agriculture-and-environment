@@ -98,13 +98,13 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
             <div className="mt-6 flex justify-end gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="h-9 rounded-xl border bg-background px-4 text-xs font-semibold hover:bg-muted transition"
+                className="h-9 rounded-3xl border bg-background px-4 text-xs font-semibold hover:bg-muted transition"
               >
                 Hủy
               </button>
               <button
                 onClick={handleDeleteConfirm}
-                className="h-9 rounded-xl bg-destructive text-destructive-foreground px-4 text-xs font-semibold hover:bg-destructive/90 transition"
+                className="h-9 rounded-3xl bg-destructive text-destructive-foreground px-4 text-xs font-semibold hover:bg-destructive/90 transition"
               >
                 Đồng ý xóa
               </button>
@@ -134,7 +134,7 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
                 <tr key={sensor.id} className="group hover:bg-emerald-500/5 dark:hover:bg-emerald-400/5 transition-all duration-150 cursor-default">
                   <td className="px-6 py-3.5 align-middle font-bold text-foreground">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-950/50 transition">
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-950/50 transition">
                         <Cpu className="size-4" />
                       </div>
                       <div>
@@ -145,7 +145,7 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
                   </td>
                   <td className="px-6 py-3.5 align-middle">
                     <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-medium text-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="size-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
                       <span>{sensor.farmZone?.name || <span className="text-muted-foreground/50 italic">Chưa gán</span>}</span>
                     </div>
                   </td>
@@ -156,7 +156,7 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
                     </span>
                   </td>
                   <td className="px-6 py-3.5 align-middle">
-                    <span className="inline-flex items-center rounded-lg bg-muted/60 px-2 py-0.5 text-xs font-mono font-semibold text-muted-foreground">
+                    <span className="inline-flex items-center rounded-3xl bg-muted/60 px-2 py-0.5 text-xs font-mono font-semibold text-muted-foreground">
                       {sensor.unit}
                     </span>
                   </td>
@@ -176,14 +176,14 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <button
                           onClick={() => onEdit(sensor)}
-                          className="flex size-8 items-center justify-center rounded-lg border bg-card hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 dark:hover:bg-emerald-950/30 dark:hover:border-emerald-500/30 dark:hover:text-emerald-400 transition text-muted-foreground"
+                          className="flex size-8 items-center justify-center rounded-3xl border bg-card hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 dark:hover:bg-emerald-950/30 dark:hover:border-emerald-500/30 dark:hover:text-emerald-400 transition text-muted-foreground"
                           title="Chỉnh sửa cảm biến"
                         >
                           <Edit2 className="size-3.5" />
                         </button>
                         <button
                           onClick={() => setDeleteId(sensor.id)}
-                          className="flex size-8 items-center justify-center rounded-lg border border-destructive/20 bg-destructive/5 hover:bg-destructive/15 hover:border-destructive/30 transition text-destructive"
+                          className="flex size-8 items-center justify-center rounded-3xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/15 hover:border-destructive/30 transition text-destructive"
                           title="Xóa cảm biến"
                         >
                           <Trash2 className="size-3.5" />
@@ -211,7 +211,7 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
               {/* Card Header */}
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
                     <Cpu className="size-4" />
                   </div>
                   <div>
@@ -229,7 +229,7 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
               </div>
 
               {/* Card Body */}
-              <div className="grid grid-cols-2 gap-2.5 p-3 bg-muted/30 rounded-xl">
+              <div className="grid grid-cols-2 gap-2.5 p-3 bg-muted/30 rounded-3xl">
                 <div>
                   <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/60 mb-1">Vùng trồng</p>
                   <p className="font-semibold text-xs text-emerald-700 dark:text-emerald-400">
@@ -253,13 +253,13 @@ export function SensorTable({ sensors, onEdit, onDelete, canManage }: SensorTabl
                 <div className="flex justify-end gap-2 pt-3 mt-2 border-t">
                   <button
                     onClick={() => onEdit(sensor)}
-                    className="flex h-8 items-center gap-1.5 rounded-lg border bg-card hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 dark:hover:bg-emerald-950/30 px-3 text-xs text-muted-foreground transition"
+                    className="flex h-8 items-center gap-1.5 rounded-3xl border bg-card hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 dark:hover:bg-emerald-950/30 px-3 text-xs text-muted-foreground transition"
                   >
                     <Edit2 className="size-3" /> Sửa
                   </button>
                   <button
                     onClick={() => setDeleteId(sensor.id)}
-                    className="flex h-8 items-center gap-1.5 rounded-lg border border-destructive/20 bg-destructive/5 hover:bg-destructive/15 px-3 text-xs text-destructive transition"
+                    className="flex h-8 items-center gap-1.5 rounded-3xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/15 px-3 text-xs text-destructive transition"
                   >
                     <Trash2 className="size-3" /> Xóa
                   </button>

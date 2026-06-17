@@ -7,13 +7,13 @@ export default function ZonesLoading() {
           <div className="h-7 w-48 rounded-full bg-muted" />
           <div className="h-4 w-64 rounded-full bg-muted" />
         </div>
-        <div className="h-11 w-36 rounded-xl bg-muted" />
+        <div className="h-11 w-36 rounded-3xl bg-muted" />
       </div>
 
       {/* Search bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="h-11 flex-1 rounded-xl bg-muted" />
-        <div className="h-11 w-40 rounded-xl bg-muted" />
+        <div className="h-11 flex-1 rounded-3xl bg-muted" />
+        <div className="h-11 w-40 rounded-3xl bg-muted" />
       </div>
 
       {/* Zone cards grid */}
@@ -30,7 +30,7 @@ export default function ZonesLoading() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {Array.from({ length: 3 }).map((_, j) => (
-                <div key={j} className="h-14 rounded-xl bg-muted/60" />
+                <div key={j} className="h-14 rounded-3xl bg-muted/60" />
               ))}
             </div>
           </div>

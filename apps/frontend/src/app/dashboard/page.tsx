@@ -41,7 +41,7 @@ export default async function DashboardPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
   const role = getRoleFromToken(token);
-  
+
   if (role === "ADMIN") {
     redirect("/dashboard/admin");
   }
@@ -71,9 +71,9 @@ export default async function DashboardPage() {
   const averageTemperature =
     temperatureValues.length > 0
       ? Math.round(
-          temperatureValues.reduce((sum, value) => sum + value, 0) /
-            temperatureValues.length,
-        )
+        temperatureValues.reduce((sum, value) => sum + value, 0) /
+        temperatureValues.length,
+      )
       : 0;
 
   const openAlertsCount =
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
           </div>
           <Link
             href={apiZones[0]?.id ? `/dashboard/zones/${apiZones[0].id}` : "/dashboard/zones"}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
           >
             Xem vùng trồng
             <ArrowRight className="size-4" aria-hidden="true" />
@@ -171,7 +171,7 @@ export default async function DashboardPage() {
                 </p>
               </div>
               <span
-                className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${card.tone}`}
+                className={`flex size-11 shrink-0 items-center justify-center rounded-3xl ${card.tone}`}
               >
                 <Icon className="size-5" aria-hidden="true" />
               </span>
@@ -217,19 +217,18 @@ export default async function DashboardPage() {
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-semibold">{zone.name}</h3>
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                          zone.status === "ACTIVE"
+                        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${zone.status === "ACTIVE"
                             ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
                             : zone.status === "INACTIVE"
-                            ? "bg-slate-100 text-slate-600 dark:bg-slate-400/15 dark:text-slate-300"
-                            : "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200"
-                        }`}
+                              ? "bg-slate-100 text-slate-600 dark:bg-slate-400/15 dark:text-slate-300"
+                              : "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200"
+                          }`}
                       >
                         {zone.status === "ACTIVE"
                           ? "Hoạt động"
                           : zone.status === "INACTIVE"
-                          ? "Không hoạt động"
-                          : zone.status}
+                            ? "Không hoạt động"
+                            : zone.status}
                       </span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -237,15 +236,15 @@ export default async function DashboardPage() {
                     </p>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-xs sm:min-w-64">
-                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-sky-50 px-2 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-3xl bg-sky-50 px-2 py-2 font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Độ ẩm đất</span>
                       {zone.soilMoisture}%
                     </span>
-                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-amber-50 px-2 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-3xl bg-amber-50 px-2 py-2 font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Nhiệt độ</span>
                       {zone.temperature}°C
                     </span>
-                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-xl bg-lime-50 px-2 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
+                    <span className="flex flex-col items-center justify-center gap-0.5 rounded-3xl bg-lime-50 px-2 py-2 font-semibold text-lime-700 dark:bg-lime-950/40 dark:text-lime-300">
                       <span className="text-[10px] font-medium text-muted-foreground">Ánh sáng</span>
                       {zone.light} lux
                     </span>

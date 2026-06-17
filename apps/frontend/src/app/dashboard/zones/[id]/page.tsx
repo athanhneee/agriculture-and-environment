@@ -36,7 +36,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const zone = await getFarmZoneById(id);
-  
+
   return {
     title: zone ? `${zone.name} | Smart Farm Monitoring System` : "Chi tiết Vùng Trồng",
     description: zone?.description || "Chi tiết chỉ số đo lường cảm biến và cây trồng nông nghiệp.",
@@ -131,7 +131,7 @@ export default async function ZoneDetailPage({ params }: PageProps) {
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard/zones"
-              className="flex size-9 items-center justify-center rounded-xl border bg-card hover:bg-muted transition"
+              className="flex size-9 items-center justify-center rounded-3xl border bg-card hover:bg-muted transition"
             >
               <ArrowLeft className="size-4" />
             </Link>
@@ -203,11 +203,10 @@ export default async function ZoneDetailPage({ params }: PageProps) {
               zone.alerts.map((alert) => (
                 <div
                   key={alert.id}
-                  className={`flex gap-3 rounded-xl border p-3 text-xs ${
-                    alert.severity === "CRITICAL"
+                  className={`flex gap-3 rounded-3xl border p-3 text-xs ${alert.severity === "CRITICAL"
                       ? "border-destructive/20 bg-destructive/5 text-destructive"
                       : "border-amber-500/20 bg-amber-500/5 text-amber-700 dark:text-amber-300"
-                  }`}
+                    }`}
                 >
                   <AlertTriangle className="size-4 shrink-0 mt-0.5" />
                   <div>
@@ -238,7 +237,7 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                 <p className="text-xs text-muted-foreground font-medium">{metric.label}</p>
                 <p className="mt-2 text-2xl font-bold tracking-tight">{metric.value}</p>
               </div>
-              <div className={`flex size-11 items-center justify-center rounded-xl ${metric.color}`}>
+              <div className={`flex size-11 items-center justify-center rounded-3xl ${metric.color}`}>
                 <Icon className="size-5" />
               </div>
             </article>
@@ -274,7 +273,7 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-xl">
+              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-3xl">
                 <Cpu className="size-8 text-muted-foreground/40 stroke-[1.5]" />
                 <p className="mt-2 text-xs font-semibold text-foreground">Không có cảm biến liên kết</p>
                 <p className="text-[11px] text-muted-foreground/80 mt-1 max-w-[280px]">
@@ -309,7 +308,7 @@ export default async function ZoneDetailPage({ params }: PageProps) {
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-xl">
+              <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground border border-dashed rounded-3xl">
                 <Sprout className="size-8 text-muted-foreground/40 stroke-[1.5]" />
                 <p className="mt-2 text-xs font-semibold text-foreground">Chưa có cây trồng</p>
                 <p className="text-[11px] text-muted-foreground/80 mt-1 max-w-[280px]">

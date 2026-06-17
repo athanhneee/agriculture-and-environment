@@ -107,7 +107,7 @@ export function HistoryLineChart({
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-muted/20 rounded-xl">
+          <div className="flex h-full w-full items-center justify-center bg-muted/20 rounded-3xl">
             <span className="text-xs text-muted-foreground">Không có dữ liệu</span>
           </div>
         )}

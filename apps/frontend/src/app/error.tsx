@@ -28,7 +28,7 @@ export default function ErrorPage({
         <button
           type="button"
           onClick={() => unstable_retry()}
-          className="mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+          className="mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
         >
           <RotateCcw className="size-4" aria-hidden="true" />
           Thử lại

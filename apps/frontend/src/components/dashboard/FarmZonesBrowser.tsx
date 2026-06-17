@@ -114,14 +114,14 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setIsImportOpen(true)}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border bg-card hover:bg-muted px-4 text-sm font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
               Import Excel
             </button>
             <Link
               href="/dashboard/zones/new"
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm shadow-emerald-600/20 transition hover:bg-emerald-700"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-3xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm shadow-emerald-600/20 transition hover:bg-emerald-700"
             >
               <Plus className="size-4" />
               Thêm vùng trồng
@@ -139,7 +139,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
             placeholder="Tìm theo tên vùng trồng, mô tả, loại đất..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-11 w-full rounded-xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            className="h-11 w-full rounded-3xl border bg-card pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           />
         </div>
 
@@ -148,7 +148,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-11 rounded-xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            className="h-11 rounded-3xl border bg-card px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
           >
             <option value="ALL">Tất cả trạng thái</option>
             <option value="ACTIVE">Đang hoạt động</option>
@@ -179,7 +179,7 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
             {canManage && (
               <Link
                 href="/dashboard/zones/new"
-                className="mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                className="mt-5 inline-flex h-10 items-center gap-2 rounded-3xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700"
               >
                 <Plus className="size-4" />
                 Thêm vùng trồng đầu tiên
@@ -212,11 +212,11 @@ export function FarmZonesBrowser({ initialZones }: FarmZonesBrowserProps) {
                 </div>
                 <p className="mt-2 text-xs text-emerald-700 dark:text-emerald-400 font-medium">{region.crop}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2">
-                  <div className="flex flex-col gap-0.5 rounded-xl bg-amber-50 px-3 py-2 dark:bg-amber-950/30">
+                  <div className="flex flex-col gap-0.5 rounded-3xl bg-amber-50 px-3 py-2 dark:bg-amber-950/30">
                     <span className="text-[10px] text-muted-foreground">Nhiệt độ</span>
                     <span className="text-xs font-bold text-amber-700 dark:text-amber-300">{region.temp}</span>
                   </div>
-                  <div className="flex flex-col gap-0.5 rounded-xl bg-sky-50 px-3 py-2 dark:bg-sky-950/30">
+                  <div className="flex flex-col gap-0.5 rounded-3xl bg-sky-50 px-3 py-2 dark:bg-sky-950/30">
                     <span className="text-[10px] text-muted-foreground">Ẩm đất</span>
                     <span className="text-xs font-bold text-sky-700 dark:text-sky-300">{region.soil}</span>
                   </div>

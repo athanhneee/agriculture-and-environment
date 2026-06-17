@@ -67,7 +67,7 @@ export default function FarmGuidePage() {
                                 key={item.title}
                                 className="rounded-2xl border bg-card p-5 shadow-sm"
                             >
-                                <span className="flex size-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
+                                <span className="flex size-11 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
                                     <Icon className="size-5" />
                                 </span>
                                 <h2 className="mt-4 font-semibold">{item.title}</h2>

@@ -56,8 +56,8 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
       const payload: Partial<Crop> = {
         ...values,
         plantedDate: new Date(values.plantedDate).toISOString(),
-        expectedHarvestDate: values.expectedHarvestDate 
-          ? new Date(values.expectedHarvestDate).toISOString() 
+        expectedHarvestDate: values.expectedHarvestDate
+          ? new Date(values.expectedHarvestDate).toISOString()
           : undefined,
       };
 
@@ -81,14 +81,14 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
         </h3>
         <button
           onClick={onCancel}
-          className="rounded-lg p-1 hover:bg-muted transition text-muted-foreground hover:text-foreground"
+          className="rounded-3xl p-1 hover:bg-muted transition text-muted-foreground hover:text-foreground"
         >
           <X className="size-5" />
         </button>
       </div>
 
       {errorMsg && (
-        <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div className="mb-6 rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {errorMsg}
         </div>
       )}
@@ -102,7 +102,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
               type="text"
               placeholder="Cà chua Cherry, Dưa lưới..."
               aria-invalid={Boolean(errors.name)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("name")}
             />
             {errors.name?.message && (
@@ -117,7 +117,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
               type="text"
               placeholder="F1 Nhật Bản, Thuần chủng..."
               aria-invalid={Boolean(errors.variety)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("variety")}
             />
             {errors.variety?.message && (
@@ -131,7 +131,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
             <input
               type="date"
               aria-invalid={Boolean(errors.plantedDate)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("plantedDate")}
             />
             {errors.plantedDate?.message && (
@@ -145,7 +145,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
             <input
               type="date"
               aria-invalid={Boolean(errors.expectedHarvestDate)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("expectedHarvestDate")}
             />
             {errors.expectedHarvestDate?.message && (
@@ -158,7 +158,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
             <span className="text-sm font-medium">Chọn vùng trồng *</span>
             <select
               aria-invalid={Boolean(errors.farmZoneId)}
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/10"
               {...register("farmZoneId")}
             >
               <option value="">-- Chọn vùng trồng --</option>
@@ -177,7 +177,7 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
           <label className="block">
             <span className="text-sm font-medium">Trạng thái cây trồng *</span>
             <select
-              className="mt-2 h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              className="mt-2 h-10 w-full rounded-3xl border bg-background px-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               {...register("status")}
             >
               <option value="PLANTED">Mới gieo hạt (Planted)</option>
@@ -192,14 +192,14 @@ export function CropForm({ initialData, zones, onSuccess, onCancel }: CropFormPr
           <button
             type="button"
             onClick={onCancel}
-            className="h-10 rounded-xl border bg-background px-4 text-sm font-semibold hover:bg-muted transition"
+            className="h-10 rounded-3xl border bg-background px-4 text-sm font-semibold hover:bg-muted transition"
           >
             Hủy bỏ
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition disabled:opacity-75"
+            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-3xl bg-emerald-600 hover:bg-emerald-700 px-4 text-sm font-semibold text-white transition disabled:opacity-75"
           >
             {isSubmitting ? (
               <Loader2 className="size-4 animate-spin" />

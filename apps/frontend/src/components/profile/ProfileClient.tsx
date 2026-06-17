@@ -13,7 +13,7 @@ export function ProfileClient() {
     newPassword: "",
     confirmNewPassword: "",
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -117,13 +117,13 @@ export function ProfileClient() {
             </div>
 
             {error && (
-              <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium animate-in fade-in slide-in-from-top-2">
+              <div className="mb-6 p-4 rounded-3xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium animate-in fade-in slide-in-from-top-2">
                 {error}
               </div>
             )}
 
             {success && (
-              <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+              <div className="mb-6 p-4 rounded-3xl bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
                 <CheckCircle2 className="size-5" />
                 Đổi mật khẩu thành công!
               </div>
@@ -136,8 +136,8 @@ export function ProfileClient() {
                   type="password"
                   required
                   value={form.oldPassword}
-                  onChange={(e) => setForm({...form, oldPassword: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  onChange={(e) => setForm({ ...form, oldPassword: e.target.value })}
+                  className="w-full rounded-3xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Nhập mật khẩu hiện tại"
                 />
               </div>
@@ -148,8 +148,8 @@ export function ProfileClient() {
                   type="password"
                   required
                   value={form.newPassword}
-                  onChange={(e) => setForm({...form, newPassword: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
+                  className="w-full rounded-3xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Nhập mật khẩu mới (Tối thiểu 8 ký tự)"
                 />
                 <p className="text-xs text-muted-foreground">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái và chữ số.</p>
@@ -161,8 +161,8 @@ export function ProfileClient() {
                   type="password"
                   required
                   value={form.confirmNewPassword}
-                  onChange={(e) => setForm({...form, confirmNewPassword: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  onChange={(e) => setForm({ ...form, confirmNewPassword: e.target.value })}
+                  className="w-full rounded-3xl border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Nhập lại mật khẩu mới"
                 />
               </div>
@@ -171,7 +171,7 @@ export function ProfileClient() {
                 <button
                   type="submit"
                   disabled={loading || !form.oldPassword || !form.newPassword || !form.confirmNewPassword}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed shadow-sm"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-3xl bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-70 disabled:cursor-not-allowed shadow-sm"
                 >
                   {loading && <Loader2 className="size-4 animate-spin" />}
                   Cập nhật mật khẩu

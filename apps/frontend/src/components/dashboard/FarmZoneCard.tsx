@@ -122,7 +122,7 @@ export function FarmZoneCard({ zone }: FarmZoneCardProps) {
 
       {/* Alert counter footer */}
       {zone.openAlertsCount !== undefined && zone.openAlertsCount > 0 && (
-        <div className="mt-5 flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/20 px-3 py-2 text-xs text-destructive">
+        <div className="mt-5 flex items-center gap-2 rounded-3xl bg-destructive/10 border border-destructive/20 px-3 py-2 text-xs text-destructive">
           <AlertTriangle className="size-4 shrink-0" />
           <span className="font-semibold">
             Có {zone.openAlertsCount} cảnh báo đang mở ở vùng này

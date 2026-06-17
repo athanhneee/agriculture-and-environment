@@ -8,15 +8,15 @@ import { ZoneMarkerPopup } from "./ZoneMarkerPopup";
 
 // ── Tọa độ fallback cho 3 vùng miền Việt Nam ──────────────────────────────────
 const REGION_FALLBACK: Record<string, [number, number]> = {
-  "miền bắc":   [21.0278, 105.8342],  // Hà Nội
-  "mien bac":   [21.0278, 105.8342],
-  "north":      [21.0278, 105.8342],
+  "miền bắc": [21.0278, 105.8342],  // Hà Nội
+  "mien bac": [21.0278, 105.8342],
+  "north": [21.0278, 105.8342],
   "miền trung": [16.4637, 107.5909],  // Huế
   "mien trung": [16.4637, 107.5909],
-  "central":    [16.4637, 107.5909],
-  "miền nam":   [10.7769, 106.7009],  // TP.HCM
-  "mien nam":   [10.7769, 106.7009],
-  "south":      [10.7769, 106.7009],
+  "central": [16.4637, 107.5909],
+  "miền nam": [10.7769, 106.7009],  // TP.HCM
+  "mien nam": [10.7769, 106.7009],
+  "south": [10.7769, 106.7009],
 };
 
 const VIETNAM_CENTER: [number, number] = [16.0, 108.0];
@@ -24,7 +24,7 @@ const VIETNAM_CENTER: [number, number] = [16.0, 108.0];
 function getZoneCoords(zone: FarmZone): [number, number] | null {
   // Nếu có tọa độ hợp lệ từ DB
   if (zone.latitude && zone.longitude &&
-      zone.latitude !== 0 && zone.longitude !== 0) {
+    zone.latitude !== 0 && zone.longitude !== 0) {
     return [zone.latitude, zone.longitude];
   }
   // Fallback theo tên vùng
@@ -70,7 +70,7 @@ function createCustomIcon(color: string, pulse = false) {
   });
 }
 
-const IconDefault  = createCustomIcon("#16a34a");          // emerald-600
+const IconDefault = createCustomIcon("#16a34a");          // emerald-600
 const IconCritical = createCustomIcon("#dc2626", true);    // red-600 + pulse
 const IconInactive = createCustomIcon("#71717a");          // zinc-500
 
@@ -179,7 +179,7 @@ export default function FarmMap({ zones, selectedZone, onSelectZone }: FarmMapPr
 
       {/* Overlay: Badge số vùng trồng */}
       <div className="absolute bottom-4 left-4 z-[9999] pointer-events-none">
-        <div className="flex items-center gap-1.5 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur border px-3 py-1.5 shadow-md text-xs font-semibold text-foreground">
+        <div className="flex items-center gap-1.5 rounded-3xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur border px-3 py-1.5 shadow-md text-xs font-semibold text-foreground">
           <span className="size-2 rounded-full bg-emerald-500 inline-block"></span>
           {zonesWithCoords.length} vùng trồng trên bản đồ
         </div>

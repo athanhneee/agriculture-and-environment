@@ -53,12 +53,12 @@ function DragDropZone({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={[
-          "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-10 text-center transition-all outline-none focus-visible:border-emerald-500",
+          "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed px-6 py-10 text-center transition-all outline-none focus-visible:border-emerald-500",
           isDragging
             ? "border-emerald-500 bg-emerald-50/40 dark:bg-emerald-950/20"
             : selectedFile
-            ? "border-emerald-400/60 bg-emerald-50/10 dark:bg-emerald-900/10"
-            : "border-border bg-muted/20 hover:border-emerald-400/60 hover:bg-muted/40",
+              ? "border-emerald-400/60 bg-emerald-50/10 dark:bg-emerald-900/10"
+              : "border-border bg-muted/20 hover:border-emerald-400/60 hover:bg-muted/40",
         ].join(" ")}
       >
         {selectedFile ? (
@@ -163,7 +163,7 @@ export function ImportFarmZonesClient() {
       <section className="rounded-2xl border bg-card p-6 shadow-sm">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300">
+            <span className="flex size-11 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300">
               <FileSpreadsheet className="size-5" />
             </span>
             <div>
@@ -184,11 +184,10 @@ export function ImportFarmZonesClient() {
               setError(null);
               setFile(null);
             }}
-            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === "zones"
-                ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
+            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${activeTab === "zones"
+              ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
           >
             <Layers className="size-4" />
             Vùng trồng
@@ -200,11 +199,10 @@ export function ImportFarmZonesClient() {
               setError(null);
               setFile(null);
             }}
-            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === "crops"
-                ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
+            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${activeTab === "crops"
+              ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
           >
             <Sprout className="size-4" />
             Cây trồng
@@ -216,11 +214,10 @@ export function ImportFarmZonesClient() {
               setError(null);
               setFile(null);
             }}
-            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === "sensors"
-                ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
+            className={`pb-3 text-sm font-semibold border-b-2 px-4 transition-all flex items-center gap-2 cursor-pointer ${activeTab === "sensors"
+              ? "border-emerald-600 text-emerald-700 dark:text-emerald-400"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
           >
             <Cpu className="size-4" />
             Thiết bị cảm biến
@@ -244,7 +241,7 @@ export function ImportFarmZonesClient() {
             <button
               type="button"
               onClick={handleDownloadTemplate}
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition cursor-pointer"
+              className="inline-flex h-9 items-center gap-1.5 rounded-3xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition cursor-pointer"
             >
               Tải file mẫu (.xlsx)
             </button>
@@ -259,21 +256,21 @@ export function ImportFarmZonesClient() {
             />
           </div>
 
-          <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+          <div className="mt-4 rounded-3xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
-            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-lg border">
+            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-3xl border">
               name,description,area,latitude,longitude,soilType,status
             </code>
           </div>
 
           {message && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+            <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
               {message}
             </div>
           )}
 
           {error && (
-            <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <div className="rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {error}
             </div>
           )}
@@ -281,7 +278,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />
@@ -308,7 +305,7 @@ export function ImportFarmZonesClient() {
             <button
               type="button"
               onClick={handleDownloadTemplate}
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
+              className="inline-flex h-9 items-center gap-1.5 rounded-3xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
             >
               Tải file mẫu (.xlsx)
             </button>
@@ -323,21 +320,21 @@ export function ImportFarmZonesClient() {
             />
           </div>
 
-          <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+          <div className="mt-4 rounded-3xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
-            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-lg border">
+            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-3xl border">
               name,variety,plantedDate,expectedHarvestDate,status,farmZoneName
             </code>
           </div>
 
           {message && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+            <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
               {message}
             </div>
           )}
 
           {error && (
-            <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <div className="rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {error}
             </div>
           )}
@@ -345,7 +342,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />
@@ -372,7 +369,7 @@ export function ImportFarmZonesClient() {
             <button
               type="button"
               onClick={handleDownloadTemplate}
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
+              className="inline-flex h-9 items-center gap-1.5 rounded-3xl border bg-background hover:bg-muted px-3 text-xs font-semibold transition"
             >
               Tải file mẫu (.xlsx)
             </button>
@@ -387,21 +384,21 @@ export function ImportFarmZonesClient() {
             />
           </div>
 
-          <div className="mt-4 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+          <div className="mt-4 rounded-3xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Mẫu header:</p>
-            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-lg border">
+            <code className="mt-2 block whitespace-pre-wrap text-xs font-mono bg-background p-2 rounded-3xl border">
               name,code,type,unit,status,farmZoneName
             </code>
           </div>
 
           {message && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+            <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
               {message}
             </div>
           )}
 
           {error && (
-            <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <div className="rounded-3xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {error}
             </div>
           )}
@@ -409,7 +406,7 @@ export function ImportFarmZonesClient() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-3xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 text-sm transition shadow-sm shadow-emerald-600/10 hover:shadow-emerald-600/20 disabled:opacity-70 cursor-pointer"
           >
             {submitting ? (
               <Loader2 className="size-4 animate-spin" />

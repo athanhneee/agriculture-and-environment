@@ -62,7 +62,7 @@ export function RealtimeReadingPanel({ isConnected }: RealtimeReadingPanelProps)
             Thông số môi trường cập nhật trực tiếp qua kết nối Socket.io
           </p>
         </div>
-        
+
         {/* Status bar */}
         <div className="flex items-center gap-2">
           {isConnected ? (
@@ -87,13 +87,12 @@ export function RealtimeReadingPanel({ isConnected }: RealtimeReadingPanelProps)
           return (
             <article
               key={index}
-              className={`rounded-2xl border bg-card p-4 transition-all duration-300 ${metric.border} ${
-                pulse ? "ring-2 ring-emerald-500/20 scale-[1.01]" : ""
-              }`}
+              className={`rounded-2xl border bg-card p-4 transition-all duration-300 ${metric.border} ${pulse ? "ring-2 ring-emerald-500/20 scale-[1.01]" : ""
+                }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-muted-foreground">{metric.label}</span>
-                <div className={`flex size-8 items-center justify-center rounded-lg ${metric.color}`}>
+                <div className={`flex size-8 items-center justify-center rounded-3xl ${metric.color}`}>
                   <Icon className="size-4.5" />
                 </div>
               </div>

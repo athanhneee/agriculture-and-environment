@@ -161,7 +161,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
       <div className="relative z-10 w-full max-w-xl rounded-2xl border bg-card shadow-2xl">
         <div className="flex items-center justify-between border-b px-6 py-4">
           <div className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-400">
+            <span className="flex size-9 items-center justify-center rounded-3xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-400">
               <FileSpreadsheet className="size-5" />
             </span>
             <div>
@@ -173,7 +173,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
             type="button"
             onClick={handleClose}
             disabled={isLoading}
-            className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-muted disabled:opacity-50"
+            className="flex size-8 items-center justify-center rounded-3xl text-muted-foreground transition hover:bg-muted disabled:opacity-50"
             aria-label="Đóng"
           >
             <X className="size-4" />
@@ -186,7 +186,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
               <p className="mb-1.5 text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
                 Dòng tiêu đề — copy &amp; paste vào hàng 1 của file Excel
               </p>
-              <div className="flex items-stretch overflow-hidden rounded-xl border">
+              <div className="flex items-stretch overflow-hidden rounded-3xl border">
                 <button
                   type="button"
                   onClick={handleCopyHeaders}
@@ -245,12 +245,12 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={[
-                "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-6 py-8 text-center transition",
+                "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-3xl border-2 border-dashed px-6 py-8 text-center transition",
                 isDragging
                   ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
                   : selectedFile
-                  ? "border-emerald-400/60 bg-emerald-50/50 dark:bg-emerald-900/10"
-                  : "border-border bg-muted/30 hover:border-emerald-400/60 hover:bg-muted/50",
+                    ? "border-emerald-400/60 bg-emerald-50/50 dark:bg-emerald-900/10"
+                    : "border-border bg-muted/30 hover:border-emerald-400/60 hover:bg-muted/50",
               ].join(" ")}
             >
               {selectedFile ? (
@@ -279,7 +279,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
 
           {importState.status === "success" && (
             <div className="space-y-2">
-              <div className="flex items-start gap-2.5 rounded-xl border border-emerald-400/30 bg-emerald-50 px-4 py-3 dark:bg-emerald-900/20">
+              <div className="flex items-start gap-2.5 rounded-3xl border border-emerald-400/30 bg-emerald-50 px-4 py-3 dark:bg-emerald-900/20">
                 <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                 <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
                   Thêm thành công{" "}
@@ -293,7 +293,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
               </div>
 
               {importState.errors.length > 0 && (
-                <div className="rounded-xl border border-destructive/20 bg-destructive/5 overflow-hidden">
+                <div className="rounded-3xl border border-destructive/20 bg-destructive/5 overflow-hidden">
                   <div className="flex items-center gap-2 border-b border-destructive/10 px-3 py-2">
                     <XCircle className="size-3.5 shrink-0 text-destructive" />
                     <p className="text-xs font-semibold text-destructive">
@@ -315,7 +315,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
             </div>
           )}
           {importState.status === "error" && (
-            <div className="flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+            <div className="flex items-start gap-2.5 rounded-3xl border border-destructive/30 bg-destructive/5 px-4 py-3">
               <XCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
               <p className="text-sm text-destructive">{importState.message}</p>
             </div>
@@ -327,7 +327,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
             type="button"
             onClick={handleDownloadTemplate}
             disabled={isDownloadingTemplate}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition hover:border-emerald-500/50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-60 dark:hover:text-emerald-400"
+            className="inline-flex items-center gap-1.5 rounded-3xl border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition hover:border-emerald-500/50 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-60 dark:hover:text-emerald-400"
           >
             {isDownloadingTemplate ? (
               <Loader2 className="size-4 animate-spin" />
@@ -342,7 +342,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
               type="button"
               onClick={handleClose}
               disabled={isLoading}
-              className="h-10 rounded-xl border border-border bg-card px-4 text-sm font-medium text-muted-foreground transition hover:bg-muted disabled:opacity-50"
+              className="h-10 rounded-3xl border border-border bg-card px-4 text-sm font-medium text-muted-foreground transition hover:bg-muted disabled:opacity-50"
             >
               {isDone ? "Đóng" : "Huỷ"}
             </button>
@@ -352,7 +352,7 @@ export function ImportUsersExcelModal({ open, onClose, onSuccess }: ImportUsersE
                 type="button"
                 onClick={handleImport}
                 disabled={!selectedFile || isLoading}
-                className="inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-10 items-center gap-2 rounded-3xl bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isLoading ? (
                   <>

@@ -10,7 +10,7 @@ interface AdminOverviewClientProps {
 
 export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProps) {
   const user = useAuthStore((state) => state.user);
-  
+
   if (user?.role !== "ADMIN") {
     return (
       <div className="flex h-[60vh] flex-col items-center justify-center text-center">
@@ -84,7 +84,7 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
                   <p className="mt-2 text-3xl font-bold">{card.value}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{card.description}</p>
                 </div>
-                <div className={`flex size-10 items-center justify-center rounded-xl ${card.tone}`}>
+                <div className={`flex size-10 items-center justify-center rounded-3xl ${card.tone}`}>
                   <Icon className="size-5" />
                 </div>
               </div>
@@ -92,7 +92,7 @@ export function AdminOverviewClient({ initialOverview }: AdminOverviewClientProp
           );
         })}
       </div>
-      
+
       <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
         <LayoutDashboard className="mx-auto size-12 opacity-20 mb-4" />
         <h3 className="font-semibold text-lg text-foreground">Không gian Quản trị viên</h3>

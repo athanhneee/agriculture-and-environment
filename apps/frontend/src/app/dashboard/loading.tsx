@@ -8,7 +8,7 @@ export default function DashboardLoading() {
             <div className="h-4 w-32 rounded-full bg-muted" />
             <div className="h-7 w-56 rounded-full bg-muted" />
           </div>
-          <div className="h-11 w-36 rounded-xl bg-muted" />
+          <div className="h-11 w-36 rounded-3xl bg-muted" />
         </div>
       </div>
 
@@ -22,7 +22,7 @@ export default function DashboardLoading() {
                 <div className="h-8 w-16 rounded-full bg-muted" />
                 <div className="h-3 w-20 rounded-full bg-muted" />
               </div>
-              <div className="size-11 rounded-xl bg-muted shrink-0" />
+              <div className="size-11 rounded-3xl bg-muted shrink-0" />
             </div>
           </div>
         ))}

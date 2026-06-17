@@ -137,20 +137,20 @@ export function UsersManagerClient() {
               placeholder="Tìm kiếm theo tên hoặc email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl border bg-background py-2 pl-9 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-3xl border bg-background py-2 pl-9 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setIsImportModalOpen(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-muted px-4 text-sm font-semibold text-foreground transition hover:bg-muted/80 shadow-sm border border-border"
+              className="inline-flex h-10 items-center gap-2 rounded-3xl bg-muted px-4 text-sm font-semibold text-foreground transition hover:bg-muted/80 shadow-sm border border-border"
             >
               <Upload className="size-4" />
               Import Excel
             </button>
             <button
               onClick={openAddModal}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700 shadow-sm"
+              className="inline-flex h-10 items-center gap-2 rounded-3xl bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700 shadow-sm"
             >
               <Plus className="size-4" />
               Thêm mới
@@ -169,7 +169,7 @@ export function UsersManagerClient() {
               <p className="font-medium">{error}</p>
               <button
                 onClick={fetchUsers}
-                className="mt-4 rounded-xl bg-white px-4 py-2 text-sm font-medium border shadow-sm hover:bg-gray-50 transition"
+                className="mt-4 rounded-3xl bg-white px-4 py-2 text-sm font-medium border shadow-sm hover:bg-gray-50 transition"
               >
                 Thử lại
               </button>
@@ -205,21 +205,19 @@ export function UsersManagerClient() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-                        u.role === "ADMIN" 
-                          ? "bg-rose-100 text-rose-700 border border-rose-200"
-                          : "bg-blue-100 text-blue-700 border border-blue-200"
-                      }`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.role === "ADMIN"
+                        ? "bg-rose-100 text-rose-700 border border-rose-200"
+                        : "bg-blue-100 text-blue-700 border border-blue-200"
+                        }`}>
                         {u.role === "ADMIN" ? <Shield className="size-3.5" /> : <Users className="size-3.5" />}
                         {u.role === "ADMIN" ? "Quản trị viên" : "Nông dân"}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-                        u.status === "ACTIVE" 
-                          ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
-                          : "bg-gray-100 text-gray-700 border border-gray-200"
-                      }`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${u.status === "ACTIVE"
+                        ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                        : "bg-gray-100 text-gray-700 border border-gray-200"
+                        }`}>
                         {u.status === "ACTIVE" ? "Hoạt động" : "Bị khóa"}
                       </span>
                     </td>
@@ -236,14 +234,14 @@ export function UsersManagerClient() {
                           <button
                             onClick={() => openEditModal(u)}
                             title="Sửa thông tin"
-                            className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition hover:text-blue-700"
+                            className="p-2 rounded-3xl text-blue-600 hover:bg-blue-50 transition hover:text-blue-700"
                           >
                             <Edit className="size-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(u.id, u.name)}
                             title="Xóa người dùng"
-                            className="p-2 rounded-lg text-rose-500 hover:bg-rose-50 transition hover:text-rose-700"
+                            className="p-2 rounded-3xl text-rose-500 hover:bg-rose-50 transition hover:text-rose-700"
                           >
                             <Trash2 className="size-4" />
                           </button>
@@ -271,7 +269,7 @@ export function UsersManagerClient() {
                 <X className="size-5" />
               </button>
             </div>
-            
+
             <form onSubmit={handleSave} className="p-5 space-y-4">
               <div className="space-y-1.5">
                 <label className="text-sm font-medium">Họ và tên</label>
@@ -279,8 +277,8 @@ export function UsersManagerClient() {
                   type="text"
                   required
                   value={form.name}
-                  onChange={(e) => setForm({...form, name: e.target.value})}
-                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full rounded-3xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
 
@@ -291,12 +289,11 @@ export function UsersManagerClient() {
                   required
                   readOnly={!!editingUser}
                   value={form.email}
-                  onChange={(e) => !editingUser && setForm({...form, email: e.target.value})}
-                  className={`w-full rounded-xl border px-3 py-2 text-sm outline-none ${
-                    editingUser 
-                      ? "bg-muted text-muted-foreground cursor-not-allowed" 
-                      : "bg-background focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                  }`}
+                  onChange={(e) => !editingUser && setForm({ ...form, email: e.target.value })}
+                  className={`w-full rounded-3xl border px-3 py-2 text-sm outline-none ${editingUser
+                    ? "bg-muted text-muted-foreground cursor-not-allowed"
+                    : "bg-background focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    }`}
                 />
               </div>
 
@@ -305,8 +302,8 @@ export function UsersManagerClient() {
                   <label className="text-sm font-medium">Quyền hạn</label>
                   <select
                     value={form.role}
-                    onChange={(e) => setForm({...form, role: e.target.value as "ADMIN" | "USER"})}
-                    className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    onChange={(e) => setForm({ ...form, role: e.target.value as "ADMIN" | "USER" })}
+                    className="w-full rounded-3xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   >
                     <option value="USER">Nông dân (USER)</option>
                     <option value="ADMIN">Quản trị viên (ADMIN)</option>
@@ -317,8 +314,8 @@ export function UsersManagerClient() {
                   <label className="text-sm font-medium">Trạng thái</label>
                   <select
                     value={form.status}
-                    onChange={(e) => setForm({...form, status: e.target.value as "ACTIVE" | "INACTIVE"})}
-                    className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    onChange={(e) => setForm({ ...form, status: e.target.value as "ACTIVE" | "INACTIVE" })}
+                    className="w-full rounded-3xl border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   >
                     <option value="ACTIVE">Hoạt động (ACTIVE)</option>
                     <option value="INACTIVE">Bị khóa (INACTIVE)</option>
@@ -330,14 +327,14 @@ export function UsersManagerClient() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 rounded-xl text-sm font-medium hover:bg-muted transition"
+                  className="px-4 py-2 rounded-3xl text-sm font-medium hover:bg-muted transition"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 rounded-xl text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition disabled:opacity-70 flex items-center gap-2"
+                  className="px-4 py-2 rounded-3xl text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition disabled:opacity-70 flex items-center gap-2"
                 >
                   {saving && <Loader2 className="size-4 animate-spin" />}
                   Lưu thay đổi
@@ -349,10 +346,10 @@ export function UsersManagerClient() {
       )}
 
       {/* Import Modal */}
-      <ImportUsersExcelModal 
-        open={isImportModalOpen} 
-        onClose={() => setIsImportModalOpen(false)} 
-        onSuccess={handleImportSuccess} 
+      <ImportUsersExcelModal
+        open={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onSuccess={handleImportSuccess}
       />
     </div>
   );

@@ -12,7 +12,7 @@ import { ThemeToggle } from "./ThemeToggle";
 export function Header() {
   const user = useAuthStore((state) => state.user);
   const { logout, isLoggingOut } = useLogout({ redirectTo: "/auth/login" });
-  
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +41,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <NotificationDropdown />
-          
+
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -56,7 +56,7 @@ export function Header() {
                 <Link
                   href="/dashboard/profile"
                   onClick={() => setIsDropdownOpen(false)}
-                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium hover:bg-muted"
+                  className="flex w-full items-center gap-2 rounded-3xl px-3 py-2 text-sm font-medium hover:bg-muted"
                 >
                   <UserCircle className="size-4" />
                   Hồ sơ cá nhân
@@ -66,7 +66,7 @@ export function Header() {
                   type="button"
                   onClick={logout}
                   disabled={isLoggingOut}
-                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="flex w-full items-center gap-2 rounded-3xl px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isLoggingOut ? (
                     <Loader2 className="size-4 animate-spin" aria-hidden="true" />
