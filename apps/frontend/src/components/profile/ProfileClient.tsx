@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useAuthStore } from "@/stores/auth.store";
-import { User, Shield, Calendar, Mail, KeyRound, Loader2, CheckCircle2 } from "lucide-react";
+import { User, Shield, Calendar, Mail, KeyRound, Loader2, CheckCircle2, LogOut, X } from "lucide-react";
 import { authApi } from "@/lib/api";
+import { useLogout } from "@/hooks/useLogout";
 
 export function ProfileClient() {
   const user = useAuthStore((state) => state.user);
@@ -17,6 +18,8 @@ export function ProfileClient() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const { logout, isLoggingOut } = useLogout({ redirectTo: "/auth/login" });
 
   if (!user) return null;
 
@@ -181,6 +184,58 @@ export function ProfileClient() {
           </div>
         </div>
       </div>
+
+      {/* ── Logout Section ── */}
+      <div className="rounded-2xl border border-destructive/20 bg-card p-4 shadow-sm sm:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Đăng xuất khỏi tài khoản</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">Bạn sẽ cần đăng nhập lại để truy cập hệ thống.</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowLogoutConfirm(true)}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-3xl border border-destructive/30 bg-destructive/10 px-5 text-sm font-semibold text-destructive hover:bg-destructive/20 transition w-full sm:w-auto"
+          >
+            <LogOut className="size-4" />
+            Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      {/* ── Logout Confirm Modal ── */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowLogoutConfirm(false)} />
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-card p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-4">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-3xl bg-destructive/10 text-destructive">
+                <LogOut className="size-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-base">Xác nhận đăng xuất</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+                  Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?
+                </p>
+              </div>
+              <button onClick={() => setShowLogoutConfirm(false)} className="shrink-0 rounded-3xl p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition">
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="mt-5 flex justify-end gap-2">
+              <button onClick={() => setShowLogoutConfirm(false)} className="h-9 rounded-3xl border bg-card px-4 text-sm font-semibold hover:bg-muted transition">Hủy</button>
+              <button
+                onClick={() => { setShowLogoutConfirm(false); logout(); }}
+                disabled={isLoggingOut}
+                className="inline-flex h-9 items-center gap-2 rounded-3xl bg-destructive px-4 text-sm font-semibold text-white hover:bg-destructive/90 transition disabled:opacity-70"
+              >
+                {isLoggingOut ? <Loader2 className="size-3.5 animate-spin" /> : <LogOut className="size-3.5" />}
+                Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
