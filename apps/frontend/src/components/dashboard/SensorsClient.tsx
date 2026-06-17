@@ -153,54 +153,54 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       </div>
 
       {/* Thống kê nhanh */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {/* Total */}
-        <div className="col-span-2 sm:col-span-1 flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 shrink-0">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400 shrink-0 sm:size-11 sm:rounded-3xl">
             <Cpu className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tổng thiết bị</p>
-            <p className="text-2xl font-bold tracking-tight mt-0.5">{loading ? "..." : totalSensors}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Tổng</p>
+            <p className="text-xl font-bold tracking-tight mt-0.5 sm:text-2xl">{loading ? "..." : totalSensors}</p>
             {!loading && totalSensors > 0 && (
-              <p className="text-[10px] text-muted-foreground mt-0.5">{activePercent}% đang hoạt động</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">{activePercent}% hoạt động</p>
             )}
           </div>
         </div>
 
         {/* Active */}
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 shrink-0">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-600 dark:bg-sky-400/10 dark:text-sky-400 shrink-0 sm:size-11 sm:rounded-3xl">
             <div className="relative flex size-3 items-center justify-center">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
             </div>
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hoạt động</p>
-            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-0.5">{loading ? "..." : activeSensors}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Hoạt động</p>
+            <p className="text-xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-0.5 sm:text-2xl">{loading ? "..." : activeSensors}</p>
           </div>
         </div>
 
         {/* Inactive */}
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-3xl bg-zinc-500/10 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-400 shrink-0">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-zinc-500/10 text-zinc-500 dark:bg-zinc-400/10 dark:text-zinc-400 shrink-0 sm:size-11 sm:rounded-3xl">
             <SlidersHorizontal className="size-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ngừng HĐ</p>
-            <p className="text-2xl font-bold tracking-tight text-zinc-600 dark:text-zinc-400 mt-0.5">{loading ? "..." : inactiveSensors}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Ngừng HĐ</p>
+            <p className="text-xl font-bold tracking-tight text-zinc-600 dark:text-zinc-400 mt-0.5 sm:text-2xl">{loading ? "..." : inactiveSensors}</p>
           </div>
         </div>
 
         {/* Error */}
-        <div className="flex items-center gap-4 rounded-2xl border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex size-11 items-center justify-center rounded-3xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 shrink-0">
+        <div className="flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-sm hover:shadow-md transition-shadow sm:p-4 sm:gap-4">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-400/10 dark:text-red-400 shrink-0 sm:size-11 sm:rounded-3xl">
             <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gặp sự cố</p>
-            <p className="text-2xl font-bold tracking-tight text-red-600 dark:text-red-400 mt-0.5">{loading ? "..." : errorSensors}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-xs">Sự cố</p>
+            <p className="text-xl font-bold tracking-tight text-red-600 dark:text-red-400 mt-0.5 sm:text-2xl">{loading ? "..." : errorSensors}</p>
           </div>
         </div>
       </div>
@@ -230,80 +230,86 @@ export function SensorsClient({ initialZones }: SensorsClientProps) {
       )}
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-4 p-5 bg-card rounded-2xl border shadow-sm sm:flex-row sm:items-center justify-between">
-        <div className="flex flex-wrap items-center gap-4 flex-1">
-          {/* Lọc theo Tên/Mã (Search) */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[240px] flex-1 sm:flex-initial">
-            <span className="shrink-0 font-medium text-foreground">Tìm kiếm:</span>
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Tên, mã cảm biến..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-full rounded-3xl border bg-background pl-9 pr-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
-              />
+      <div className="bg-card rounded-2xl border shadow-sm">
+        {/* Mobile: collapsed filter toggle */}
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById("sensor-filters");
+            el?.classList.toggle("hidden");
+          }}
+          className="flex w-full items-center justify-between px-4 py-3 text-sm font-semibold text-muted-foreground sm:hidden"
+        >
+          <span className="flex items-center gap-2">
+            <Search className="size-4" />
+            Tìm kiếm & Bộ lọc
+          </span>
+          <span className="text-xs text-muted-foreground/60">Nhấn để mở</span>
+        </button>
+
+        <div id="sensor-filters" className="hidden sm:block">
+          <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 flex-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              {/* Search */}
+              <div className="relative flex-1 min-w-[200px]">
+                <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Tên, mã cảm biến..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="h-9 w-full rounded-3xl border bg-background pl-9 pr-3 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                />
+              </div>
+
+              {/* Vùng */}
+              <select
+                value={filterZone}
+                onChange={(e) => setFilterZone(e.target.value)}
+                className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              >
+                <option value="ALL">Tất cả vùng</option>
+                {initialZones.map((zone) => (
+                  <option key={zone.id} value={zone.id}>{zone.name}</option>
+                ))}
+              </select>
+
+              {/* Loại */}
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              >
+                <option value="ALL">Tất cả loại</option>
+                <option value="TEMPERATURE">Nhiệt độ</option>
+                <option value="AIR_HUMIDITY">Ẩm không khí</option>
+                <option value="SOIL_MOISTURE">Ẩm đất</option>
+                <option value="LIGHT_INTENSITY">Ánh sáng</option>
+                <option value="ALL_IN_ONE">Đa năng</option>
+              </select>
+
+              {/* Trạng thái */}
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+              >
+                <option value="ALL">Tất cả trạng thái</option>
+                <option value="ACTIVE">Hoạt động</option>
+                <option value="INACTIVE">Ngừng HĐ</option>
+                <option value="ERROR">Lỗi</option>
+              </select>
             </div>
-          </div>
 
-          {/* Lọc theo Vùng */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Vùng:</span>
-            <select
-              value={filterZone}
-              onChange={(e) => setFilterZone(e.target.value)}
-              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
+            <button
+              onClick={fetchSensors}
+              className="flex size-9 items-center justify-center rounded-full border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0 self-end sm:self-auto"
+              title="Làm mới"
             >
-              <option value="ALL">Tất cả các vùng</option>
-              {initialZones.map((zone) => (
-                <option key={zone.id} value={zone.id}>
-                  {zone.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Lọc theo Loại cảm biến */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Loại:</span>
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
-            >
-              <option value="ALL">Tất cả loại</option>
-              <option value="TEMPERATURE">Nhiệt độ (Temperature)</option>
-              <option value="AIR_HUMIDITY">Độ ẩm khí (Air Humidity)</option>
-              <option value="SOIL_MOISTURE">Độ ẩm đất (Soil Moisture)</option>
-              <option value="LIGHT_INTENSITY">Ánh sáng (Light)</option>
-              <option value="ALL_IN_ONE">Tích hợp đa năng (All-in-one)</option>
-            </select>
-          </div>
-
-          {/* Lọc theo Trạng thái */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground border-l pl-4 border-muted-foreground/20">
-            <span className="shrink-0 font-medium text-foreground">Trạng thái:</span>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="h-9 rounded-3xl border bg-background px-3 text-xs font-semibold outline-none transition hover:bg-muted focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 cursor-pointer"
-            >
-              <option value="ALL">Tất cả trạng thái</option>
-              <option value="ACTIVE">Hoạt động (Active)</option>
-              <option value="INACTIVE">Ngừng hoạt động (Inactive)</option>
-              <option value="ERROR">Gặp lỗi (Error)</option>
-            </select>
+              <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
+            </button>
           </div>
         </div>
-
-        <button
-          onClick={fetchSensors}
-          className="flex size-9 items-center justify-center rounded-3xl border hover:bg-muted transition text-muted-foreground hover:text-foreground shrink-0 self-end sm:self-auto"
-          title="Làm mới"
-        >
-          <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
-        </button>
       </div>
 
       {/* Table & Loader */}
