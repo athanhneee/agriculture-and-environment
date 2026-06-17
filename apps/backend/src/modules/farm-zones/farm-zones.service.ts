@@ -65,7 +65,7 @@ export class FarmZoneService {
         orderBy: { createdAt: "desc" },
         include: {
           crops: {
-            orderBy: { createdAt: "desc" },
+            orderBy: { plantedDate: "desc" },
             take: 1,
           },
           sensors: {
@@ -108,7 +108,7 @@ export class FarmZoneService {
       where: { id },
       include: {
         crops: {
-          orderBy: { createdAt: "desc" },
+          orderBy: { plantedDate: "desc" },
           take: 5,
         },
         sensors: {

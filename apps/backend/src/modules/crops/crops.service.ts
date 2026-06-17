@@ -49,7 +49,7 @@ export class CropService {
             }
           }
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { plantedDate: 'desc' },
       }),
     ]);
 
