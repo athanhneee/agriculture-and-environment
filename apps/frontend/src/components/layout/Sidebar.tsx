@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart,
   BellRing,
+  LandPlot,
   LayoutDashboard,
   Leaf,
   LucideIcon,
@@ -36,7 +37,7 @@ const navItems: NavItem[] = [
     title: "Vùng trồng",
     href: "/dashboard/zones",
     match: "/dashboard/zones",
-    icon: MapPinned,
+    icon: LandPlot,
   },
   {
     title: "Cây trồng",

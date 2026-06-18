@@ -6,8 +6,8 @@ import {
   BarChart,
   BellRing,
   CircleUserRound,
+  LandPlot,
   LayoutDashboard,
-  Leaf,
   MapPinned,
   RadioTower,
   Users,
@@ -27,7 +27,7 @@ type NavItem = {
 
 /* ── farmer nav: 3 left + [center] + 3 right ────────────────── */
 const farmerItems: NavItem[] = [
-  { href: "/dashboard/zones",      match: "/dashboard/zones",      icon: Leaf,            label: "Vùng trồng" },
+  { href: "/dashboard/zones",      match: "/dashboard/zones",      icon: LandPlot,        label: "Vùng trồng" },
   { href: "/dashboard/sensors",    match: "/dashboard/sensors",    icon: RadioTower,      label: "Cảm biến" },
   { href: "/dashboard/statistics", match: "/dashboard/statistics", icon: BarChart,         label: "Thống kê" },
   { href: "/dashboard",            match: "/dashboard",            icon: LayoutDashboard, label: "Tổng quan",  isCenter: true },
@@ -38,7 +38,7 @@ const farmerItems: NavItem[] = [
 
 /* ── admin nav: 3 left + [center] + 3 right ─────────────────── */
 const adminItems: NavItem[] = [
-  { href: "/dashboard/zones",       match: "/dashboard/zones",       icon: Leaf,            label: "Vùng trồng" },
+  { href: "/dashboard/zones",       match: "/dashboard/zones",       icon: LandPlot,        label: "Vùng trồng" },
   { href: "/dashboard/sensors",     match: "/dashboard/sensors",     icon: RadioTower,      label: "Cảm biến" },
   { href: "/dashboard/statistics",  match: "/dashboard/statistics",  icon: BarChart,         label: "Thống kê" },
   { href: "/dashboard/admin",       match: "/dashboard/admin",       icon: LayoutDashboard, label: "Tổng quan",   isCenter: true },
